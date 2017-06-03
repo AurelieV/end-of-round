@@ -1,0 +1,17 @@
+.zones {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.zone {
+    border: 1px black solid;
+    padding: 20px;
+    width: 100px;
+    margin: 10px;
+    cursor: pointer;
+    
+    &:active {
+        border-width: 2px;
+    }
+}

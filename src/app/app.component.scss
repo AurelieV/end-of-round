@@ -1,0 +1,12 @@
+md-toolbar {
+    height: 60px;
+    display: flex;
+    .title {
+        flex: 1;
+    }
+    position: fixed;
+}
+
+.content {
+    padding-top: 70px;
+}

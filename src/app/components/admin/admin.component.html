@@ -1,0 +1,9 @@
+<div class="actions">
+    <button *ngIf="tournament && tournament.tables.length === 0" (click)="createTables()">Create tables</button>
+</div>
+<div class="zones">
+    <div *ngFor="let zone of tournament?.zones" class="zone" (click)="goToZone(zone.id)">
+        <div class="title">{{zone.name}}</div>
+        <div class="subtitle">{{zone.start}} - {{zone.end}}</div>
+    </div>
+</div>
