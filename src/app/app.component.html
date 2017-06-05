@@ -13,6 +13,12 @@
         [routerLinkActiveOptions]="{exact: true}">Home</a>
       </li>
       <li><a (click)="sidenav.close()" [routerLink]="['/admin']" routerLinkActive="active">Admin</a></li>
+      <li class="separator"></li>
+      <li><a
+        *ngFor="let zone of tournament?.zones"
+        (click)="sidenav.close()"
+        [routerLink]="['/zone', zone.id]"
+        routerLinkActive="active">{{zone.name}}</a></li>
     </ul>
   </md-sidenav>
   <router-outlet></router-outlet>
