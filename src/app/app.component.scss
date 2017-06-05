@@ -9,4 +9,26 @@ md-toolbar {
 
 .content {
     padding-top: 70px;
+    padding-bottom: 80px;
+}
+.add-time {
+    position: fixed;
+    bottom: 10px; right: 10px;
+    z-index: 10;
+}
+
+.zones-info {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: right;
+    font-size: 12px;
+}
+.zone-info {
+    margin: 2px;
+    padding: 4px;
+    &.need-judge {
+        transform: scale(1.2);
+        color: red;
+    }
 }

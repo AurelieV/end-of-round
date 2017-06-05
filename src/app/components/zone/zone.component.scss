@@ -37,4 +37,14 @@
     &.need-info {
         background: red;
     }
+    height: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .time {
+        font-size: 13px;
+        font-style: italic;
+    }
 }

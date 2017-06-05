@@ -8,7 +8,7 @@ import { Tournament, Zone, Table } from '../model';
 const data: Tournament = {
     name: 'GP Las Vegas',
     start: 1,
-    end: 200,
+    end: 600,
     zones: [
         {
             id: 0,
@@ -21,6 +21,30 @@ const data: Tournament = {
             name: "Zone2",
             start: 101,
             end: 200
+        },
+        {
+            id: 2,
+            name: "Zone3",
+            start: 201,
+            end: 300
+        },
+        {
+            id: 3,
+            name: "Zone4",
+            start: 301,
+            end: 400
+        },
+        {
+            id: 4,
+            name: "Zone5",
+            start: 401,
+            end: 500
+        },
+        {
+            id: 5,
+            name: "Zone6",
+            start: 501,
+            end: 600
         }
     ],
     tables: []
@@ -28,7 +52,7 @@ const data: Tournament = {
 for (let i = data.start; i <= data.end; i++ ) {
     data.tables.push({
         id: i,
-        time: null,
+        time: i % 23 === 0 ? "3min" : null,
         status: null
     });
 }
@@ -51,5 +75,9 @@ export class TournamentService {
 
     getTables(zone: Zone): Observable<Table[]> { 
         return Observable.of(data.tables.filter(table => table.id >= zone.start && table.id <= zone.end));
+    }
+
+    setTime(table: Table, time: string): Observable<Table> {
+        return Observable.of(Object.assign({}, table, { time }));
     }
 }

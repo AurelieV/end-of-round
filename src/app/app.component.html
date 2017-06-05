@@ -1,6 +1,10 @@
 <md-toolbar color="primary">
   <div class="title">{{tournament.name}}</div>
+  <div class="zones-info">
+    <div class="zone-info" *ngFor="let info of zonesInfo" [class.need-judge]="info.needJudge">{{info.zone.name}}</div>
+  </div>
 </md-toolbar>
 <div class="content">
   <router-outlet></router-outlet>
 </div>
+<button md-fab class="add-time" color="primary" (click)="addTime()"><md-icon>&#xE145;</md-icon></button>
