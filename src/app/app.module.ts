@@ -4,16 +4,17 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule, Routes } from '@angular/router';
-import { MdToolbarModule, MdButtonModule, MdIconModule, MdDialogModule, MdInputModule } from '@angular/material';
+import { MdToolbarModule, MdButtonModule, MdIconModule, MdDialogModule, MdInputModule, MdSidenavModule } from '@angular/material';
 
 import { AppComponent } from './app.component';
 import { AdminComponent } from './components/admin/admin.component';
 import { TournamentService } from './services/tournament.service';
 import { ZoneComponent } from './components/zone/zone.component';
 import { TimeComponent } from './components/time/time.component';
+import { HomeComponent } from './components/home/home.component';
 
 const appRoutes: Routes = [
-  { path: '', redirectTo: 'admin', pathMatch: 'full' },
+  { path: '', component: HomeComponent, pathMatch: 'full' },
   { path: 'admin', component: AdminComponent },
   { path: 'zone/:id', component: ZoneComponent }
 ]
@@ -23,7 +24,8 @@ const appRoutes: Routes = [
     AppComponent,
     AdminComponent,
     ZoneComponent,
-    TimeComponent
+    TimeComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
@@ -35,6 +37,7 @@ const appRoutes: Routes = [
     MdIconModule,
     MdDialogModule,
     MdInputModule,
+    MdSidenavModule,
     RouterModule.forRoot(appRoutes)
   ],
   entryComponents: [

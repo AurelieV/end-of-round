@@ -1,10 +1,13 @@
 <md-toolbar color="primary">
-  <div class="title">{{tournament.name}}</div>
-  <div class="zones-info">
-    <div class="zone-info" *ngFor="let info of zonesInfo" [class.need-judge]="info.needJudge">{{info.zone.name}}</div>
-  </div>
+  <button (click)="sidenav.toggle()" md-icon-button><md-icon>&#xE5D2;</md-icon></button>
 </md-toolbar>
-<div class="content">
+
+<md-sidenav-container (backdropClick)="sidenav.close()" class="content">
+  <md-sidenav mode="over" #sidenav class="menu">
+    <ul>
+      <li><a (click)="sidenav.close()" [routerLink]="['/']">Home</a></li>
+      <li><a (click)="sidenav.close()" [routerLink]="['/admin']">Admin</a></li>
+    </ul>
+  </md-sidenav>
   <router-outlet></router-outlet>
-</div>
-<button md-fab class="add-time" color="primary" (click)="addTime()"><md-icon>&#xE145;</md-icon></button>
+</md-sidenav-container>

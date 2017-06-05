@@ -8,27 +8,17 @@ md-toolbar {
 }
 
 .content {
-    padding-top: 70px;
+    top: 60px;
+    padding-top: 10px;
     padding-bottom: 80px;
-}
-.add-time {
+    background: none;
     position: fixed;
-    bottom: 10px; right: 10px;
-    z-index: 10;
+    height: 100%;
+    min-height: 100%;
+    width: 100%;
+    min-width: 100%;
 }
 
-.zones-info {
-    flex: 1;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: right;
-    font-size: 12px;
-}
-.zone-info {
-    margin: 2px;
-    padding: 4px;
-    &.need-judge {
-        transform: scale(1.2);
-        color: red;
-    }
+.menu {
+    min-width: 200px;
 }

@@ -1,6 +1,5 @@
 <div class="header">
     <div class="title">{{zone.name}}</div>
-    <a [routerLink]="['/admin']">Go back to admin</a>
 </div>
 <div class="tables">
     <div class="table" *ngFor="let table of tables" [ngClass]="table.status" (click)="onTableClick(table.id)">
