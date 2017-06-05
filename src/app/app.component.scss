@@ -48,3 +48,27 @@ md-toolbar {
         }
     }
 }
+
+.header {
+    display: flex;
+    .status {
+        flex: 1;
+        text-align: center;
+    }
+}
+
+.playing {
+    color: orange;
+}
+.extra-time {
+    color: lightblue;
+}
+.covered {
+    color: yellow;
+}
+.featured {
+    color: black;
+}
+.done {
+    color: lightgreen;
+}

@@ -1,5 +1,11 @@
-<md-toolbar color="primary">
+<md-toolbar color="primary" class="header">
   <button (click)="sidenav.toggle()" md-icon-button><md-icon>&#xE5D2;</md-icon></button>
+  <div class="status">
+    <span class="playing">17</span> /
+    <span class="covered">2</span> /
+    <span class="extra-time">1</span>
+  </div>
+  <button (click)="openHelp()" md-icon-button><md-icon>&#xE8FD;</md-icon></button>
 </md-toolbar>
 
 <md-sidenav-container (backdropClick)="sidenav.close()" class="content">
@@ -23,3 +29,15 @@
   </md-sidenav>
   <router-outlet></router-outlet>
 </md-sidenav-container>
+
+<ng-template #help>
+  <div class="help">
+    <ul>
+      <li class="playing">Playing</li>
+      <li class="covered">Covered</li>
+      <li class="featured">Featured</li>
+      <li class="done">Empty</li>
+      <li class="extra-time">Extra time</li>
+    </ul>
+  </div>
+</ng-template>
