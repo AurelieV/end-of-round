@@ -19,6 +19,29 @@ md-toolbar {
     min-width: 100%;
 }
 
-.menu {
+.sidenav {
     min-width: 200px;
+    padding-top: 20px;
+    ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+    li > a {
+        display: block;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        padding-left: 20px;
+        text-decoration: none;
+        color: black;
+        outline: none;
+        &:active, &.active{
+            color: #673ab7;
+            font-weight: bold;
+            background: #f3f3f3;
+        }
+        &:hover {
+            background: #f3f3f3;
+        }
+    }
 }

@@ -3,10 +3,16 @@
 </md-toolbar>
 
 <md-sidenav-container (backdropClick)="sidenav.close()" class="content">
-  <md-sidenav mode="over" #sidenav class="menu">
+  <div></div>
+  <md-sidenav mode="over" #sidenav class="sidenav">
     <ul>
-      <li><a (click)="sidenav.close()" [routerLink]="['/']">Home</a></li>
-      <li><a (click)="sidenav.close()" [routerLink]="['/admin']">Admin</a></li>
+      <li><a 
+        (click)="sidenav.close()"
+        [routerLink]="['/']"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{exact: true}">Home</a>
+      </li>
+      <li><a (click)="sidenav.close()" [routerLink]="['/admin']" routerLinkActive="active">Admin</a></li>
     </ul>
   </md-sidenav>
   <router-outlet></router-outlet>
