@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
+import { AngularFireDatabase, FirebaseObjectObservable, FirebaseListObservable } from 'angularfire2/database';
+import { Subscription } from 'rxjs/Subscription';
 
-import { TournamentService } from '../../services/tournament.service';
 import { Tournament, Zone, Table } from '../../model';
 
 @Component({
@@ -9,13 +10,19 @@ import { Tournament, Zone, Table } from '../../model';
     styleUrls: [ 'admin.component.scss' ],
     templateUrl: 'admin.component.html'
 })
-export class AdminComponent implements OnInit {
+export class AdminComponent implements OnInit, OnDestroy {
     tournament: Tournament;
+    zones$: FirebaseListObservable<Zone[]>;
 
-    constructor(private tournamentService: TournamentService, private router: Router) {}
+    private subscriptions: Subscription[] = [];
+
+    constructor(private db: AngularFireDatabase, private router: Router) {}
 
     ngOnInit() {
-        this.tournamentService.getTournament().subscribe(tournament => this.tournament = tournament);
+        const tournament$: FirebaseObjectObservable<Tournament> = this.db.object('/vegas');
+        this.zones$ = this.db.list('/vegas/zones');
+        
+        this.subscriptions.push(tournament$.subscribe(tournament => this.tournament = tournament));
     }
 
     goToZone(id: number) {
@@ -23,14 +30,17 @@ export class AdminComponent implements OnInit {
     }
 
     createTables() {
-        const tables: Table[] = [];
+        const tables: { [id: string]: Table } = {};
         for (let i = this.tournament.start; i <= this.tournament.end; i++ ) {
-            tables.push({
-                id: i,
-                time: null,
-                status: null
-            });
+            tables[i] = {
+                time: "",
+                status: ""
+            };
         }
-        this.tournamentService.addTables(this.tournament.name, tables);
+        this.db.object('/vegas/tables').set(tables);
+    }
+
+    ngOnDestroy() {
+        this.subscriptions.forEach(s => s.unsubscribe());
     }
 }

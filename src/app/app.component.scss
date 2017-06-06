@@ -60,9 +60,6 @@ md-toolbar {
 .playing {
     color: orange;
 }
-.extra-time {
-    color: lightblue;
-}
 .covered {
     color: yellow;
 }
@@ -71,4 +68,18 @@ md-toolbar {
 }
 .done {
     color: lightgreen;
+}
+
+.help {
+    width: 100px;
+    ul {
+        text-align: center;
+        list-style: none;
+        padding: 0;
+        font-size: 20px;
+        li {
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+    }
 }

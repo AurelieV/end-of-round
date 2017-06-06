@@ -1,8 +1,8 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { MdDialog } from '@angular/material';
+import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
 
-import { Tournament, Zone } from './model';
-import { TournamentService } from './services/tournament.service';
+import { Zone } from './model';
 
 interface ZoneInformation {
   zone: Zone;
@@ -14,13 +14,13 @@ interface ZoneInformation {
   styleUrls: [ './app.component.scss' ]
 })
 export class AppComponent implements OnInit {
-  tournament: Tournament;
+  zones$: FirebaseListObservable<Zone[]>;
   @ViewChild('help') help: TemplateRef<any>;
 
-  constructor(private tournamentService: TournamentService, private md: MdDialog) {}
+  constructor(private md: MdDialog, private db: AngularFireDatabase) {}
 
   ngOnInit() {
-    this.tournamentService.getTournament().subscribe(tournament => this.tournament = tournament);
+    this.zones$ = this.db.list('/vegas/zones');
   }
 
   openHelp() {

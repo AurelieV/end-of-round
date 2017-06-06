@@ -5,10 +5,12 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule, Routes } from '@angular/router';
 import { MdToolbarModule, MdButtonModule, MdIconModule, MdDialogModule, MdInputModule, MdSidenavModule } from '@angular/material';
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireDatabaseModule } from 'angularfire2/database';
 
+import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { AdminComponent } from './components/admin/admin.component';
-import { TournamentService } from './services/tournament.service';
 import { ZoneComponent } from './components/zone/zone.component';
 import { TimeComponent } from './components/time/time.component';
 import { HomeComponent } from './components/home/home.component';
@@ -38,13 +40,14 @@ const appRoutes: Routes = [
     MdDialogModule,
     MdInputModule,
     MdSidenavModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFireDatabaseModule,
     RouterModule.forRoot(appRoutes)
   ],
   entryComponents: [
     TimeComponent
   ],
   providers: [
-    TournamentService
   ],
   bootstrap: [AppComponent]
 })

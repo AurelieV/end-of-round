@@ -1,9 +1,9 @@
 <div class="header">
-    <div class="title">{{zone.name}}</div>
+    <div class="title">{{(zone$ | async)?.$key}}</div>
 </div>
 <div class="tables">
-    <div class="table" *ngFor="let table of tables" [ngClass]="table.status" (click)="onTableClick(table.id)">
-        <div class="number">{{table.id}}</div>
+    <div class="table" *ngFor="let table of tables$ | async" [ngClass]="table.status" (click)="onTableClick(table)">
+        <div class="number">{{table.$key}}</div>
         <div class="time" *ngIf="table.time">{{table.time}}</div>
     </div>
 </div>

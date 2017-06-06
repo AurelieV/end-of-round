@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs/Observable';  
 
-import { Zone, Table } from '../../model';
-import { TournamentService } from '../../services/tournament.service';
+import { Zone, Table, TableStatus } from '../../model';
+import { AngularFireDatabase, FirebaseObjectObservable, FirebaseListObservable } from 'angularfire2/database';
 
 
 @Component({
@@ -11,37 +12,44 @@ import { TournamentService } from '../../services/tournament.service';
     templateUrl: 'zone.component.html' 
 })
 export class ZoneComponent implements OnInit {
-    zone: Zone;
-    tables: Table[];
+    zone$: Observable<Zone>;
+    tables$: Observable<Table[]>;
 
-    constructor(private route: ActivatedRoute, private tournamentService: TournamentService) {}
+    constructor(private route: ActivatedRoute, private db: AngularFireDatabase) {}
 
     ngOnInit() {
-        this.route.params
+        this.zone$ = this.route.params
             .map(params => params.id)
-            .switchMap(id => this.tournamentService.getZone(id))
-            .subscribe(zone => {
-                this.zone = zone;
-                this.tournamentService.getTables(zone).subscribe(tables => this.tables = tables);
-            })
+            .switchMap(id => this.db.object('/vegas/zones/' + id))
         ;
+        this.tables$ = this.zone$.switchMap(zone => {
+            return this.db.list('/vegas/tables', {
+                query: {
+                    orderByKey: true,
+                    startAt: zone.start + "",
+                    endAt: zone.end + ""
+                }
+            });
+        });
     }
 
-    onTableClick(id: number) {
-        this.tables = this.tables.map(table => {
-            if (table.id !== id) {
-                return table;
-            }
-            switch (table.status) {
-                case null:
-                    return Object.assign({}, table, { status: "not-finished" });
-                case "not-finished":
-                    return Object.assign({}, table, { status: "ok" });
-                case "ok":
-                    return Object.assign({}, table, { status: "need-info" });
-                case "need-info":
-                    return Object.assign({}, table, { status: "not-finished" });
-            }
-        });
+    onTableClick(table: Table) {
+        let newStatus: TableStatus = "";
+        if (table.status === "featured") return;
+        switch (table.status) {
+            case "":
+                newStatus = "playing";
+                break;
+            case "playing":
+                newStatus = "covered";
+                break;
+            case "covered":
+                newStatus = "done";
+                break;
+            case "done":
+                newStatus = "";
+                break;
+        }
+        this.db.object('/vegas/tables/' + (table as any).$key).update( { status: newStatus });
     }
 }

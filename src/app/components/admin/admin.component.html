@@ -1,9 +1,9 @@
 <div class="actions">
-    <button *ngIf="tournament && tournament.tables.length === 0" (click)="createTables()">Create tables</button>
+    <button *ngIf="!tournament?.tables" (click)="createTables()" md-raised-button color="accent">Create tables</button>
 </div>
 <div class="zones">
-    <div *ngFor="let zone of tournament?.zones" class="zone" (click)="goToZone(zone.id)">
-        <div class="title">{{zone.name}}</div>
+    <div *ngFor="let zone of zones$ | async" class="zone" (click)="goToZone(zone.$key)">
+        <div class="title">{{zone.$key}}</div>
         <div class="subtitle">{{zone.start}} - {{zone.end}}</div>
     </div>
 </div>

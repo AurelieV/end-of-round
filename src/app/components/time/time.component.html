@@ -1,7 +1,7 @@
 <h3 md-dialog-title>Add time to a table</h3>
 <form md-dialog-content #form="ngForm">
     <md-input-container>
-      <input name="number" mdInput placeholder="Table number" type="number" required [(ngModel)]="data.tableNumber">
+      <input name="number" mdInput placeholder="Table number" type="number" [min]="start" [max]="end" required [(ngModel)]="data.tableNumber">
     </md-input-container>
     <md-input-container>
       <input name="time" mdInput placeholder="Time" type="text" required [(ngModel)]="data.time">

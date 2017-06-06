@@ -11,6 +11,8 @@ interface TimeData {
     templateUrl: 'time.component.html'
 })
 export class TimeComponent {
+    start: number;
+    end: number;
     data: TimeData = {
         time: "",
         tableNumber: null

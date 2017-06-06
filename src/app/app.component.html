@@ -21,10 +21,10 @@
       <li><a (click)="sidenav.close()" [routerLink]="['/admin']" routerLinkActive="active">Admin</a></li>
       <li class="separator"></li>
       <li><a
-        *ngFor="let zone of tournament?.zones"
+        *ngFor="let zone of zones$ | async"
         (click)="sidenav.close()"
-        [routerLink]="['/zone', zone.id]"
-        routerLinkActive="active">{{zone.name}}</a></li>
+        [routerLink]="['/zone', zone.$key]"
+        routerLinkActive="active">{{zone.$key}}</a></li>
     </ul>
   </md-sidenav>
   <router-outlet></router-outlet>
@@ -35,9 +35,8 @@
     <ul>
       <li class="playing">Playing</li>
       <li class="covered">Covered</li>
-      <li class="featured">Featured</li>
       <li class="done">Empty</li>
-      <li class="extra-time">Extra time</li>
+      <li class="featured">Featured</li>
     </ul>
   </div>
 </ng-template>

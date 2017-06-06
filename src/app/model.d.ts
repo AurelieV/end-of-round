@@ -1,22 +1,19 @@
-export type TableStatus = "ok" | "not-finished" | "need-info";
+export type TableStatus = "playing" | "covered" | "featured" | "done" | "";
 
 export interface Table {
-    status: TableStatus | null;
-    time: string | null;
-    id: number;
+    status: TableStatus;
+    time: string;
 }
 
 export interface Zone {
     start: number;
     end: number;
-    name: string;
-    id: number;
 }
 
 export interface Tournament {
-    name: string;
-    zones: Zone[];
-    tables: Table[];
+    information: string;
+    zones: { [name: string]: Zone };
+    tables: { [id: string]: Table };
     start: number;
     end: number;
 }
