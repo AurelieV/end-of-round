@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 interface TimeData {
-    time: string;
+    time: null | number;
     tableNumber: null | number;
 }
 
@@ -14,7 +14,7 @@ export class TimeComponent {
     start: number;
     end: number;
     data: TimeData = {
-        time: "",
+        time: null,
         tableNumber: null
     };
 }

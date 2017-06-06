@@ -4,6 +4,6 @@
 <div class="tables">
     <div class="table" *ngFor="let table of tables$ | async" [ngClass]="table.status" (click)="onTableClick(table)">
         <div class="number">{{table.$key}}</div>
-        <div class="time" *ngIf="table.time">{{table.time}}</div>
+        <div class="time" *ngIf="table.time">{{table.time}}min</div>
     </div>
 </div>
