@@ -1,7 +1,23 @@
+:host {
+    display: flex;
+}
+
+.column {
+    width: 50%;
+    .actions {
+        padding: 10px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+    }
+}
 .zones {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    border-left: 1px solid black;
+    min-height: 100%;
 }
 
 .zone {
@@ -13,5 +29,15 @@
     
     &:active {
         border-width: 2px;
+    }
+}
+
+.confirmation {
+    .actions {
+        display: flex;
+        justify-content: flex-end;
+        button {
+            padding: 5px;
+        }
     }
 }

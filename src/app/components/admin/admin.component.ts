@@ -1,6 +1,7 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AngularFireDatabase, FirebaseObjectObservable, FirebaseListObservable } from 'angularfire2/database';
+import { MdDialogRef, MdDialog } from '@angular/material';
 import { Subscription } from 'rxjs/Subscription';
 
 import { Tournament, Zone, Table } from '../../model';
@@ -13,10 +14,12 @@ import { Tournament, Zone, Table } from '../../model';
 export class AdminComponent implements OnInit, OnDestroy {
     tournament: Tournament;
     zones$: FirebaseListObservable<Zone[]>;
+    @ViewChild('confirmEnd') confirmEnd: TemplateRef<any>;
+    confirmation: MdDialogRef<any>;
 
     private subscriptions: Subscription[] = [];
 
-    constructor(private db: AngularFireDatabase, private router: Router) {}
+    constructor(private db: AngularFireDatabase, private router: Router, private md: MdDialog) {}
 
     ngOnInit() {
         const tournament$: FirebaseObjectObservable<Tournament> = this.db.object('/vegas');
@@ -38,6 +41,19 @@ export class AdminComponent implements OnInit, OnDestroy {
             };
         }
         this.db.object('/vegas/tables').set(tables);
+    }
+
+    endRound() {
+        this.confirmation = this.md.open(this.confirmEnd);
+    }
+
+    cancelRestart() {
+        this.confirmation.close();
+    }
+
+    restart() {
+        this.createTables();
+        this.confirmation.close();
     }
 
     ngOnDestroy() {

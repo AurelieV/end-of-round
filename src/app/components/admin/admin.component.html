@@ -1,9 +1,27 @@
-<div class="actions">
-    <button *ngIf="!tournament?.tables" (click)="createTables()" md-raised-button color="accent">Create tables</button>
-</div>
-<div class="zones">
-    <div *ngFor="let zone of zones$ | async" class="zone" (click)="goToZone(zone.$key)">
-        <div class="title">{{zone.$key}}</div>
-        <div class="subtitle">{{zone.start}} - {{zone.end}}</div>
+<div class="column">
+    <div class="actions">
+        <button *ngIf="!tournament?.tables" (click)="createTables()" md-raised-button color="accent">Create tables</button>
+        <button (click)="endRound()" md-raised-button color="warn">End round</button>
     </div>
 </div>
+<div class="column">
+    <div class="zones">
+        <div *ngFor="let zone of zones$ | async" class="zone" (click)="goToZone(zone.$key)">
+            <div class="title">{{zone.$key}}</div>
+            <div class="subtitle">{{zone.start}} - {{zone.end}}</div>
+        </div>
+    </div>
+</div>
+
+<ng-template #confirmEnd>
+    <div class="confirmation">
+        <h3>End round?</h3>
+        <div md-dialog-content>
+            Are your sure to end round? All current informations will be erased
+        </div>
+        <div class="actions" md-dialog-actions>
+            <button md-raised-button color="warning" (click)="cancelRestart()">Cancel</button>
+            <button md-raised-button color="primary" (click)="restart()">Restart</button>
+        </div>
+    </div>
+</ng-template>
