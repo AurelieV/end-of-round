@@ -1,9 +1,9 @@
 <md-toolbar color="primary" class="header">
   <button (click)="sidenav.toggle()" md-icon-button><md-icon>&#xE5D2;</md-icon></button>
   <div class="status">
-    <span class="playing">17</span> /
-    <span class="covered">2</span> /
-    <span class="extra-time">1</span>
+    <span class="playing">{{playingTableNumber}}</span> /
+    <span class="covered">{{coveredTableNumber}}</span> /
+    <span class="extra-time">{{extraTimedTableNumber}}</span>
   </div>
   <button (click)="openHelp()" md-icon-button><md-icon>&#xE8FD;</md-icon></button>
 </md-toolbar>
