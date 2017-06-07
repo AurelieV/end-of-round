@@ -8,7 +8,10 @@
         <h3>Outstanding</h3>
         <div class="tables">
             <div *ngFor="let table of outstandingTables" class="table">
-                <div class="title" [ngClass]="table.status">Table {{table.$key}}</div>
+                <div class="header">
+                    <div class="title" [ngClass]="table.status">Table {{table.$key}}</div>
+                    <md-checkbox color="primary"></md-checkbox>
+                </div>
             </div>
         </div>
     </div>

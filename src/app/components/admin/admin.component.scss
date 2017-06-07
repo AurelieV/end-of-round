@@ -19,6 +19,7 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    align-items: flex-start;
     border-left: 1px solid black;
     min-height: 100%;
 }
@@ -46,6 +47,14 @@ zone-info {
         border: 1px solid black;
         padding: 10px;
         margin: 10px;
+
+        .header {
+            display: flex;
+            align-items: center;
+            md-checkbox {
+                margin-left: 10px;
+            }
+        }
     }
 }
 
