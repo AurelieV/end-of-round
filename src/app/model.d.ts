@@ -9,6 +9,7 @@ export interface Zone {
     start: number;
     end: number;
     leader: string;
+    needHelp: boolean;
 }
 
 export interface Tournament {

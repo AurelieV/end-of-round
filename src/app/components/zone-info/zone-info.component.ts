@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, HostBinding } from '@angular/core';
 
 import { Table } from '../../model';
 
@@ -14,6 +14,10 @@ export class ZoneInfoComponent implements OnChanges {
     playingTableNumber: number;
     coveredTableNumber: number;
     extraTimeTables: Table[] = [];
+
+    @HostBinding("class.need-help") get needHelp() {
+        return this.zone.needHelp;
+    }
 
     ngOnChanges() {
         const tables = (this.tables || []).filter(t => +(t as any).$key >= this.zone.start && +(t as any).$key <= this.zone.end);

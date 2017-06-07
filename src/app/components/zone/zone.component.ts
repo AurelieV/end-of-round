@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs/Observable';  
+import { Observable } from 'rxjs/Observable';
 
 import { Zone, Table, TableStatus } from '../../model';
 import { AngularFireDatabase, FirebaseObjectObservable, FirebaseListObservable } from 'angularfire2/database';
@@ -14,13 +14,17 @@ import { AngularFireDatabase, FirebaseObjectObservable, FirebaseListObservable }
 export class ZoneComponent implements OnInit {
     zone$: Observable<Zone>;
     tables$: Observable<Table[]>;
+    zoneId: number;
 
     constructor(private route: ActivatedRoute, private db: AngularFireDatabase) {}
 
     ngOnInit() {
         this.zone$ = this.route.params
             .map(params => params.id)
-            .switchMap(id => this.db.object('/vegas/zones/' + id))
+            .switchMap(id => {
+                this.zoneId = id;
+                return this.db.object('/vegas/zones/' + id)
+            })
         ;
         this.tables$ = this.zone$.switchMap(zone => {
             return this.db.list('/vegas/tables', {
@@ -51,5 +55,9 @@ export class ZoneComponent implements OnInit {
                 break;
         }
         this.db.object('/vegas/tables/' + (table as any).$key).update( { status: newStatus });
+    }
+
+    callHelp(needHelp: boolean) {
+        this.db.object('/vegas/zones/' + this.zoneId).update( { needHelp });
     }
 }

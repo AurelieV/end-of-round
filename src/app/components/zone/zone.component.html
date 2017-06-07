@@ -7,3 +7,6 @@
         <div class="time" *ngIf="table.time">{{table.time}}min</div>
     </div>
 </div>
+
+<button *ngIf="!(zone$ | async)?.needHelp" md-fab color="primary" class="call-help" (click)="callHelp(true)"><md-icon>&#xE91F;</md-icon></button>
+<button *ngIf="(zone$ | async)?.needHelp" md-fab color="warn" class="call-help" (click)="callHelp(false)"><md-icon>&#xE14C;</md-icon></button>

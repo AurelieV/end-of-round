@@ -7,6 +7,10 @@
     &:active {
         border-width: 2px;
     }
+    &.need-help {
+        border-width: 2px;
+        border-color: red;
+    }
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
