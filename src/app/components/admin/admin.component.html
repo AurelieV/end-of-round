@@ -1,7 +1,16 @@
 <div class="column">
     <div class="actions">
         <button *ngIf="!tournament?.tables" (click)="createTables()" md-raised-button color="accent">Create tables</button>
+        <button (click)="openOutStandingModal()" md-raised-button color="primary">Add outstanding</button>
         <button (click)="endRound()" md-raised-button color="warn">End round</button>
+    </div>
+    <div *ngIf="outstandings?.length">
+        <h3>Outstanding</h3>
+        <div class="tables">
+            <div *ngFor="let table of outstandingTables" class="table">
+                <div class="title" [ngClass]="table.status">Table {{table.$key}}</div>
+            </div>
+        </div>
     </div>
 </div>
 <div class="column">
@@ -24,6 +33,24 @@
         <div class="actions" md-dialog-actions>
             <button md-raised-button color="warning" (click)="cancelRestart()">Cancel</button>
             <button md-raised-button color="primary" (click)="restart()">Restart</button>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #outStandingModal>
+    <div class="outstandingModal">
+        <h3>Add outstanding tables</h3>
+        <div md-dialog-content>
+            <form #outstandingForm="ngForm">
+                <textarea required type="text" #outstandingsInput></textarea>
+            </form>
+        </div>
+        <div class="actions" md-dialog-actions>
+            <button 
+                md-raised-button
+                color="primary"
+                (click)="addOutStanding(outstandingsInput.value)"
+                [disabled]="!outstandingForm.form.valid">Add</button>
         </div>
     </div>
 </ng-template>

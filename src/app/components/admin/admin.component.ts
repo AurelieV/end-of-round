@@ -15,8 +15,13 @@ export class AdminComponent implements OnInit, OnDestroy {
     tournament: Tournament;
     zones$: FirebaseListObservable<Zone[]>;
     tables$: FirebaseListObservable<Table[]>;
+    tables: Table[];
+    outstandings: string[];
+    outstandingTables: Table[];
     @ViewChild('confirmEnd') confirmEnd: TemplateRef<any>;
+    @ViewChild('outStandingModal') outstandingModal: TemplateRef<any>;
     confirmation: MdDialogRef<any>;
+    outstandingModalRef: MdDialogRef<any>;
 
     private subscriptions: Subscription[] = [];
 
@@ -28,10 +33,30 @@ export class AdminComponent implements OnInit, OnDestroy {
         this.tables$ = this.db.list('/vegas/tables');
         
         this.subscriptions.push(tournament$.subscribe(tournament => this.tournament = tournament));
+        this.subscriptions.push(this.tables$.subscribe(tables => {
+            this.tables = tables;
+            this.updateOustandingTables();
+        }));
+        this.subscriptions.push(
+            this.db.object('/vegas/outstandings').subscribe(data => {
+                if (!data.$value) {
+                    this.outstandings = [];
+                    return;
+                }
+                this.outstandings = data.$value.split(' ');
+                this.updateOustandingTables();
+            })
+        );
     }
 
     goToZone(id: number) {
         this.router.navigate(['zone', id]);
+    }
+
+    updateOustandingTables() {
+        this.outstandingTables = (this.tables || []).filter(table => {
+            return (this.outstandings || []).indexOf((table as any).$key) > -1
+        });
     }
 
     createTables() {
@@ -49,12 +74,25 @@ export class AdminComponent implements OnInit, OnDestroy {
         this.confirmation = this.md.open(this.confirmEnd);
     }
 
+    openOutStandingModal() {
+        this.outstandingModalRef = this.md.open(this.outstandingModal);
+    }
+
+    addOutStanding(val: string) {
+        const tableIds = (val || '').split(' ');
+        this.db.object('/vegas/outstandings').set(
+            this.outstandings.concat(tableIds).filter((val, key, tab) => tab.indexOf(val) === key).join(' ')
+        );
+        this.outstandingModalRef.close();
+    }
+
     cancelRestart() {
         this.confirmation.close();
     }
 
     restart() {
         this.createTables();
+        this.db.object('/vegas/outstandings').set("");
         this.confirmation.close();
     }
 
