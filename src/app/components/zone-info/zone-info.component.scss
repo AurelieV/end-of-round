@@ -1,0 +1,48 @@
+:host {
+    border: 1px black solid;
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 5px;
+    &:active {
+        border-width: 2px;
+    }
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+.title {
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: capitalize;
+}
+.subtitle {
+    font-style: italic;
+    text-align: center;
+}
+.status {
+    display: flex;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    justify-content: space-around;
+    font-weight: bold;
+    font-size: 16px;
+    flex: 1;
+}
+.extra-timed-tables {
+    margin-top: 10px;
+    list-style: none;
+    padding: 0;
+}
+.table {
+    font-weight: bold;
+}
+.playing {
+    color: orange;
+}
+.covered {
+    color: #f2da07;
+}
+.extra-time {
+    color: lightblue;
+}

@@ -1,0 +1,16 @@
+<div class="title">{{zone.$key}} - {{zone.leader}}</div>
+<div class="subtitle">({{zone.start}} - {{zone.end}})</div>
+
+<div class="status">
+    <span class="playing">{{playingTableNumber}}</span>
+    <span>/</span>
+    <span class="covered">{{coveredTableNumber}}</span>
+    <span>/</span>
+    <span class="extra-time">{{extraTimeTables.length}}</span>
+</div>
+
+<ul class="extra-timed-tables" *ngIf="extraTimeTables.length">
+    <li *ngFor="let table of extraTimeTables">
+        <span class="table" [ngClass]="table.status">Table {{table.$key}}:</span> +{{table.time}}min
+    </li>
+</ul>

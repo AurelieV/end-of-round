@@ -2,12 +2,13 @@ export type TableStatus = "playing" | "covered" | "featured" | "done" | "";
 
 export interface Table {
     status: TableStatus;
-    time: string;
+    time: number;
 }
 
 export interface Zone {
     start: number;
     end: number;
+    leader: string;
 }
 
 export interface Tournament {

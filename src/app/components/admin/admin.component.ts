@@ -14,6 +14,7 @@ import { Tournament, Zone, Table } from '../../model';
 export class AdminComponent implements OnInit, OnDestroy {
     tournament: Tournament;
     zones$: FirebaseListObservable<Zone[]>;
+    tables$: FirebaseListObservable<Table[]>;
     @ViewChild('confirmEnd') confirmEnd: TemplateRef<any>;
     confirmation: MdDialogRef<any>;
 
@@ -24,6 +25,7 @@ export class AdminComponent implements OnInit, OnDestroy {
     ngOnInit() {
         const tournament$: FirebaseObjectObservable<Tournament> = this.db.object('/vegas');
         this.zones$ = this.db.list('/vegas/zones');
+        this.tables$ = this.db.list('/vegas/tables');
         
         this.subscriptions.push(tournament$.subscribe(tournament => this.tournament = tournament));
     }
@@ -36,7 +38,7 @@ export class AdminComponent implements OnInit, OnDestroy {
         const tables: { [id: string]: Table } = {};
         for (let i = this.tournament.start; i <= this.tournament.end; i++ ) {
             tables[i] = {
-                time: "",
+                time: 0,
                 status: ""
             };
         }

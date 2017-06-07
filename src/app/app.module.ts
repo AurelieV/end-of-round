@@ -14,6 +14,7 @@ import { AdminComponent } from './components/admin/admin.component';
 import { ZoneComponent } from './components/zone/zone.component';
 import { TimeComponent } from './components/time/time.component';
 import { HomeComponent } from './components/home/home.component';
+import { ZoneInfoComponent } from './components/zone-info/zone-info.component';
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
@@ -27,7 +28,8 @@ const appRoutes: Routes = [
     AdminComponent,
     ZoneComponent,
     TimeComponent,
-    HomeComponent
+    HomeComponent,
+    ZoneInfoComponent
   ],
   imports: [
     BrowserModule,

@@ -6,10 +6,12 @@
 </div>
 <div class="column">
     <div class="zones">
-        <div *ngFor="let zone of zones$ | async" class="zone" (click)="goToZone(zone.$key)">
-            <div class="title">{{zone.$key}}</div>
-            <div class="subtitle">{{zone.start}} - {{zone.end}}</div>
-        </div>
+        <zone-info 
+            *ngFor="let zone of zones$ | async"
+            class="zone"
+            (click)="goToZone(zone.$key)"
+            [zone]="zone"
+            [tables]="tables$ | async"></zone-info>
     </div>
 </div>
 

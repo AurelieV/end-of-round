@@ -20,16 +20,9 @@
     min-height: 100%;
 }
 
-.zone {
-    border: 1px black solid;
-    padding: 20px;
-    width: 100px;
+zone-info {
     margin: 10px;
     cursor: pointer;
-    
-    &:active {
-        border-width: 2px;
-    }
 }
 
 .confirmation {
