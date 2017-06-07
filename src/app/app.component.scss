@@ -4,21 +4,29 @@ md-toolbar {
     .title {
         flex: 1;
     }
+    .status {
+        flex: 1;
+        text-align: center;
+    }
     position: fixed;
+    z-index: 10;
+}
+md-sidenav-container { 
+    height: 100%;
+    padding-top: 60px;
 }
 
 .content {
-    top: 60px;
     padding-top: 10px;
-    padding-bottom: 80px;
-    background: none;
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
+    padding-bottom: 20px;
+    margin: 0;
+    width: 100%;
+    height: 100%;
 }
 
 .sidenav {
     min-width: 200px;
-    padding-top: 20px;
+    padding-top: 80px;
     ul {
         list-style: none;
         margin: 0;
@@ -43,14 +51,6 @@ md-toolbar {
         &:hover {
             background: #f3f3f3;
         }
-    }
-}
-
-.header {
-    display: flex;
-    .status {
-        flex: 1;
-        text-align: center;
     }
 }
 

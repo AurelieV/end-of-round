@@ -7,9 +7,7 @@
   </div>
   <button (click)="openHelp()" md-icon-button><md-icon>&#xE8FD;</md-icon></button>
 </md-toolbar>
-
-<md-sidenav-container (backdropClick)="sidenav.close()" class="content">
-  <div></div>
+<md-sidenav-container (backdropClick)="sidenav.close()">
   <md-sidenav mode="over" #sidenav class="sidenav">
     <ul>
       <li><a 
@@ -27,7 +25,9 @@
         routerLinkActive="active">{{zone.$key}}</a></li>
     </ul>
   </md-sidenav>
-  <router-outlet></router-outlet>
+  <div class="content">
+    <router-outlet></router-outlet>
+  </div>
 </md-sidenav-container>
 
 <ng-template #help>
