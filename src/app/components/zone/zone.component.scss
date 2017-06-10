@@ -42,8 +42,11 @@
     justify-content: center;
     align-items: center;
     .time {
-        font-size: 13px;
         font-style: italic;
+    }
+    &.has-time {
+        font-weight: bold;
+        font-size: 18px;
     }
 }
 
