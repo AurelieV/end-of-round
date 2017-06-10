@@ -1,9 +1,9 @@
 <md-toolbar color="primary" class="header">
   <button (click)="sidenav.toggle()" md-icon-button><md-icon>&#xE5D2;</md-icon></button>
   <div class="status">
-    <span class="playing">{{playingTableNumber}}</span> /
-    <span class="covered">{{coveredTableNumber}}</span> /
-    <span class="extra-time">{{extraTimedTableNumber}}</span>
+    <span class="text playing">{{(tablesInformation$ | async)?.playing}}</span> /
+    <span class="text covered">{{(tablesInformation$ | async)?.covered}}</span> /
+    <span class="text extra-time">{{(tablesInformation$ | async)?.extraTimed}}</span>
   </div>
   <button (click)="openHelp()" md-icon-button><md-icon>&#xE8FD;</md-icon></button>
 </md-toolbar>
@@ -33,10 +33,10 @@
 <ng-template #help>
   <div class="help">
     <ul>
-      <li class="playing">Playing</li>
-      <li class="covered">Covered</li>
-      <li class="done">Empty</li>
-      <li class="featured">Featured</li>
+      <li class="text playing">Playing</li>
+      <li class="text covered">Covered</li>
+      <li class="text done">Empty</li>
+      <li class="text featured">Featured</li>
     </ul>
   </div>
 </ng-template>

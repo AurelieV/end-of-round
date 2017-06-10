@@ -12,7 +12,7 @@ import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { AdminComponent } from './components/admin/admin.component';
 import { ZoneComponent } from './components/zone/zone.component';
-import { TimeComponent } from './components/time/time.component';
+import { DialogComponents } from './components/dialogs';
 import { HomeComponent } from './components/home/home.component';
 import { ZoneInfoComponent } from './components/zone-info/zone-info.component';
 
@@ -27,9 +27,9 @@ const appRoutes: Routes = [
     AppComponent,
     AdminComponent,
     ZoneComponent,
-    TimeComponent,
     HomeComponent,
-    ZoneInfoComponent
+    ZoneInfoComponent,
+    ...DialogComponents
   ],
   imports: [
     BrowserModule,
@@ -48,7 +48,7 @@ const appRoutes: Routes = [
     RouterModule.forRoot(appRoutes)
   ],
   entryComponents: [
-    TimeComponent
+    ...DialogComponents
   ],
   providers: [
   ],

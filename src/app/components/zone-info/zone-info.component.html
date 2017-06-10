@@ -2,11 +2,11 @@
 <div class="subtitle">({{zone.start}} - {{zone.end}})</div>
 
 <div class="status">
-    <span class="playing">{{playingTableNumber}}</span>
+    <span class="text playing">{{tablesInformation.playing}}</span>
     <span>/</span>
-    <span class="covered">{{coveredTableNumber}}</span>
+    <span class="text covered">{{tablesInformation.covered}}</span>
     <span>/</span>
-    <span class="extra-time">{{extraTimeTables.length}}</span>
+    <span class="text extra-time">{{tablesInformation.extraTimed}}</span>
 </div>
 
 <ul class="extra-timed-tables" *ngIf="extraTimeTables.length">

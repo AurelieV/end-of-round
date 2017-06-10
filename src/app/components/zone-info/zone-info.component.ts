@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges, HostBinding } from '@angular/core';
 
-import { Table } from '../../model';
+import { Table, TablesInformation, Zone } from '../../model';
 
 
 @Component({
@@ -11,8 +11,7 @@ import { Table } from '../../model';
 export class ZoneInfoComponent implements OnChanges {
     @Input() zone: any;
     @Input() tables: Table[];
-    playingTableNumber: number;
-    coveredTableNumber: number;
+    tablesInformation: TablesInformation;
     extraTimeTables: Table[] = [];
 
     @HostBinding("class.need-help") get needHelp() {
@@ -21,8 +20,11 @@ export class ZoneInfoComponent implements OnChanges {
 
     ngOnChanges() {
         const tables = (this.tables || []).filter(t => +(t as any).$key >= this.zone.start && +(t as any).$key <= this.zone.end);
-        this.playingTableNumber = (tables || []).filter(t => t.status === "playing").length;
-        this.coveredTableNumber = (tables || []).filter(t => t.status === "covered").length;
         this.extraTimeTables = (tables || []).filter(t => t.time > 0);
+        this.tablesInformation = {
+            playing: tables.filter(t => t.status === "playing").length,
+            covered: tables.filter(t => t.status === "covered").length,
+            extraTimed: this.extraTimeTables.length
+        }
     }
 }

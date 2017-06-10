@@ -25,25 +25,22 @@
     flex-wrap: wrap;
 }
 .table {
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    cursor: pointer;
+    
+    height: 30px;
+    width: 50px;
+    
     border: 1px solid black;
     padding: 10px;
-    width: 50px;
-    cursor: pointer;
-    &.done{
-        background: lightgreen;
-    }
-    &.covered {
-        background: #f2da07;
-    }
-    &.playing {
-        background: orange;
-    }
-    height: 30px;
+    
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
     .time {
         font-size: 13px;
         font-style: italic;

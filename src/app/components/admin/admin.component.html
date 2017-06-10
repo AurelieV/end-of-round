@@ -1,16 +1,22 @@
 <div class="column">
     <div class="actions">
-        <button *ngIf="!tournament?.tables" (click)="createTables()" md-raised-button color="accent">Create tables</button>
-        <button (click)="openOutStandingModal()" md-raised-button color="primary">Add outstanding</button>
+        <button 
+            *ngIf="(tables$ | async) && (tables$ | async).length === 0"
+            (click)="createTables()" 
+            md-raised-button color="accent">Create tables</button>
+        <button (click)="addOutstandings()" md-raised-button color="primary">Add outstanding</button>
         <button (click)="endRound()" md-raised-button color="warn">End round</button>
     </div>
-    <div *ngIf="outstandings?.length">
+    <div *ngIf="(outstandings$ | async)?.$value">
         <h3>Outstanding</h3>
         <div class="tables">
-            <div *ngFor="let table of outstandingTables" class="table">
+            <div *ngFor="let table of tables$ | async" class="table">
                 <div class="header">
                     <div class="title" [ngClass]="table.status">Table {{table.$key}}</div>
-                    <md-checkbox color="primary"></md-checkbox>
+                    <md-checkbox 
+                        color="primary"
+                        [checked]="!!table.hasResult"
+                        (change)="setHasResult(table.$key, $event.checked)"></md-checkbox>
                 </div>
             </div>
         </div>
@@ -36,24 +42,6 @@
         <div class="actions" md-dialog-actions>
             <button md-raised-button color="warning" (click)="cancelRestart()">Cancel</button>
             <button md-raised-button color="primary" (click)="restart()">Restart</button>
-        </div>
-    </div>
-</ng-template>
-
-<ng-template #outStandingModal>
-    <div class="outstandingModal">
-        <h3>Add outstanding tables</h3>
-        <div md-dialog-content>
-            <form #outstandingForm="ngForm">
-                <textarea required type="text" #outstandingsInput></textarea>
-            </form>
-        </div>
-        <div class="actions" md-dialog-actions>
-            <button 
-                md-raised-button
-                color="primary"
-                (click)="addOutStanding(outstandingsInput.value)"
-                [disabled]="!outstandingForm.form.valid">Add</button>
         </div>
     </div>
 </ng-template>

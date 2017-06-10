@@ -26,7 +26,7 @@ export class ZoneComponent implements OnInit {
                 return this.db.object('/vegas/zones/' + id)
             })
         ;
-        this.tables$ = this.zone$.switchMap(zone => {
+        const tables$ = this.zone$.switchMap(zone => {
             return this.db.list('/vegas/tables', {
                 query: {
                     orderByKey: true,
@@ -35,6 +35,15 @@ export class ZoneComponent implements OnInit {
                 }
             });
         });
+        const outstandings$ = this.db.object('/vegas/outstandings');
+        this.tables$ = Observable.combineLatest(outstandings$, tables$)
+            .map(([outstandings, tables]) => {
+                if (!(outstandings as any).$value) return tables;
+                const ids: string[] = (outstandings as any).$value.split(' ');
+
+                return tables.filter(t => ids.indexOf((t as any).$key) > -1);
+            })
+        ;
     }
 
     onTableClick(table: Table) {

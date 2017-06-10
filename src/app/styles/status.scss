@@ -1,0 +1,38 @@
+@import '_color.scss';
+
+.text {
+    &.playing {
+        color: $playing;
+    }
+    &.covered {
+        color: $covered;
+    }
+    &.done {
+        color: $done;
+    }
+    &.extra-time {
+        color: $extra-time;
+    }
+    &.featured {
+        color: $featured;
+    }
+}
+
+.block {
+    &.playing {
+        background: $playing;
+    }
+    &.covered {
+        background: $covered;
+    }
+    &.done {
+        background: $done;
+    }
+    &.extra-time {
+        background: $extra-time;
+    }
+    &.featured {
+        background: $featured;
+        color: white;
+    }
+}

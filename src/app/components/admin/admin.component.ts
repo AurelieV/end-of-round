@@ -1,102 +1,94 @@
-import { Component, OnInit, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AngularFireDatabase, FirebaseObjectObservable, FirebaseListObservable } from 'angularfire2/database';
 import { MdDialogRef, MdDialog } from '@angular/material';
-import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/take';
+import 'rxjs/add/observable/combineLatest';
 
 import { Tournament, Zone, Table } from '../../model';
+import { AddOutstandingsDialogComponent } from '../dialogs/add-outstandings/add-outstandings.dialog.component';
+
 
 @Component({
     selector: 'admin',
     styleUrls: [ 'admin.component.scss' ],
     templateUrl: 'admin.component.html'
 })
-export class AdminComponent implements OnInit, OnDestroy {
-    tournament: Tournament;
+export class AdminComponent implements OnInit {
     zones$: FirebaseListObservable<Zone[]>;
-    tables$: FirebaseListObservable<Table[]>;
-    tables: Table[];
-    outstandings: string[];
-    outstandingTables: Table[];
+    tables$: Observable<Table[]>;
+    tournament$: FirebaseObjectObservable<Tournament>;
+    outstandings$: FirebaseObjectObservable<string>;
+    
     @ViewChild('confirmEnd') confirmEnd: TemplateRef<any>;
-    @ViewChild('outStandingModal') outstandingModal: TemplateRef<any>;
     confirmation: MdDialogRef<any>;
-    outstandingModalRef: MdDialogRef<any>;
-
-    private subscriptions: Subscription[] = [];
 
     constructor(private db: AngularFireDatabase, private router: Router, private md: MdDialog) {}
 
     ngOnInit() {
-        const tournament$: FirebaseObjectObservable<Tournament> = this.db.object('/vegas');
+        this.tournament$ = this.db.object('/vegas');
         this.zones$ = this.db.list('/vegas/zones');
-        this.tables$ = this.db.list('/vegas/tables');
-        
-        this.subscriptions.push(tournament$.subscribe(tournament => this.tournament = tournament));
-        this.subscriptions.push(this.tables$.subscribe(tables => {
-            this.tables = tables;
-            this.updateOustandingTables();
-        }));
-        this.subscriptions.push(
-            this.db.object('/vegas/outstandings').subscribe(data => {
-                if (!data.$value) {
-                    this.outstandings = [];
-                    return;
-                }
-                this.outstandings = data.$value.split(' ');
-                this.updateOustandingTables();
+        this.outstandings$ = this.db.object('/vegas/outstandings');
+        const tables$ = this.db.list('/vegas/tables');
+        this.tables$ = Observable.combineLatest(this.outstandings$, tables$)
+            .map(([outstandings, tables]) => {
+                if (!(outstandings as any).$value) return tables;
+                const ids: string[] = (outstandings as any).$value.split(' ');
+
+                return tables.filter(t => ids.indexOf((t as any).$key) > -1);
             })
-        );
+        ;
     }
 
     goToZone(id: number) {
         this.router.navigate(['zone', id]);
     }
 
-    updateOustandingTables() {
-        this.outstandingTables = (this.tables || []).filter(table => {
-            return (this.outstandings || []).indexOf((table as any).$key) > -1
-        });
-    }
-
     createTables() {
+        this.tournament$.take(1).subscribe(tournament => {
         const tables: { [id: string]: Table } = {};
-        for (let i = this.tournament.start; i <= this.tournament.end; i++ ) {
+        for (let i = tournament.start; i <= tournament.end; i++ ) {
             tables[i] = {
                 time: 0,
                 status: ""
             };
         }
         this.db.object('/vegas/tables').set(tables);
+        })
     }
 
     endRound() {
         this.confirmation = this.md.open(this.confirmEnd);
     }
 
-    openOutStandingModal() {
-        this.outstandingModalRef = this.md.open(this.outstandingModal);
-    }
-
-    addOutStanding(val: string) {
-        const tableIds = (val || '').split(' ');
-        this.db.object('/vegas/outstandings').set(
-            this.outstandings.concat(tableIds).filter((val, key, tab) => tab.indexOf(val) === key).join(' ')
-        );
-        this.outstandingModalRef.close();
+    addOutstandings() {
+        const dialogRef = this.md.open(AddOutstandingsDialogComponent);
+        Observable.combineLatest(dialogRef.afterClosed(), this.outstandings$).subscribe(([val, outstandings]) => {
+            if (!val) return;
+            const previousVal = (outstandings as any).$value;
+            const tableIds: string[] = (val || '').split(' ');
+            const previousIds: string[] = (previousVal || '').split(' ');
+            const newVal = previousIds
+                .concat(tableIds)
+                .filter((val, key, tab) => tab.indexOf(val) === key)
+                .join(' ')
+            ;
+            this.db.object('/vegas/outstandings').set(newVal);
+        });
     }
 
     cancelRestart() {
         this.confirmation.close();
     }
 
-    restart() {
-        this.createTables();
-        this.db.object('/vegas/outstandings').set("");
-        this.confirmation.close();
+    setHasResult(id: string, hasResult: boolean) {
+        this.db.object('/vegas/tables/' + id).update({ hasResult });
     }
 
-    ngOnDestroy() {
-        this.subscriptions.forEach(s => s.unsubscribe());
+    restart() {
+        this.createTables();
+        this.db.object('/vegas/outstandings').set('');
+        this.confirmation.close();
     }
 }

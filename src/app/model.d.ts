@@ -3,13 +3,15 @@ export type TableStatus = "playing" | "covered" | "featured" | "done" | "";
 export interface Table {
     status: TableStatus;
     time: number;
+    doneTime?: Date;
+    hasResult?: boolean;
 }
 
 export interface Zone {
     start: number;
     end: number;
     leader: string;
-    needHelp: boolean;
+    needHelp?: boolean;
 }
 
 export interface Tournament {
@@ -18,4 +20,10 @@ export interface Tournament {
     tables: { [id: string]: Table };
     start: number;
     end: number;
+}
+
+export interface TablesInformation {
+    playing: number;
+    covered: number;
+    extraTimed: number;
 }

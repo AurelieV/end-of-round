@@ -6,13 +6,10 @@ interface TimeData {
 }
 
 @Component({
-    selector: 'time',
-    styleUrls: [ 'time.component.scss' ],
-    templateUrl: 'time.component.html'
+    styleUrls: [ 'time.dialog.component.scss' ],
+    templateUrl: 'time.dialog.component.html'
 })
-export class TimeComponent {
-    start: number;
-    end: number;
+export class TimeDialogComponent {
     data: TimeData = {
         time: null,
         tableNumber: null
