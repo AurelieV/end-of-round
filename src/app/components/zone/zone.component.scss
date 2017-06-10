@@ -4,25 +4,26 @@
 }
 
 .header {
-    padding-left: 5px;
-    padding-right: 5px;
     display: flex;
-    a {
-        flex: 1;
-        text-align: right;
-    }
+    align-items: center;
+    padding-top: 5px;
+    padding-bottom: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 .title {
+    flex: 1;
     font-style: italic;
     font-weight: bold;
     font-size: 15px;
+    text-transform: uppercase;
 }
 
 .tables {
     display: flex;
-    justify-content: center;
     flex-wrap: wrap;
+    justify-content: center;
 }
 .table {
     user-select: none;

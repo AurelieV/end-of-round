@@ -1,5 +1,12 @@
 <div class="header">
     <div class="title">{{(zone$ | async)?.$key}}</div>
+    <md-slide-toggle
+          *ngIf="!(outstandings$ | async)?.$value"
+          color="primary"
+          [checked]="filter$ | async"
+          (change)="toggleDisplayOnlyPlaying($event.checked)">
+          <span> Display only playing</span>
+      </md-slide-toggle>
 </div>
 <div class="tables">
     <div class="table block" *ngFor="let table of tables$ | async" [ngClass]="table.status" [class.has-time]="table.time" (click)="onTableClick(table)">

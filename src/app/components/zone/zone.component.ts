@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import { Zone, Table, TableStatus } from '../../model';
 import { AngularFireDatabase, FirebaseObjectObservable, FirebaseListObservable } from 'angularfire2/database';
@@ -14,6 +15,8 @@ import { AngularFireDatabase, FirebaseObjectObservable, FirebaseListObservable }
 export class ZoneComponent implements OnInit {
     zone$: Observable<Zone>;
     tables$: Observable<Table[]>;
+    outstandings$: Observable<string>;
+    filter$: BehaviorSubject<boolean> = new BehaviorSubject(false);
     zoneId: number;
 
     constructor(private route: ActivatedRoute, private db: AngularFireDatabase) {}
@@ -35,12 +38,13 @@ export class ZoneComponent implements OnInit {
                 }
             });
         });
-        const outstandings$ = this.db.object('/vegas/outstandings');
-        this.tables$ = Observable.combineLatest(outstandings$, tables$)
-            .map(([outstandings, tables]) => {
-                if (!(outstandings as any).$value) return tables;
+        this.outstandings$ = this.db.object('/vegas/outstandings');
+        this.tables$ = Observable.combineLatest(this.outstandings$, tables$, this.filter$)
+            .map(([outstandings, tables, filter]) => {
+                if (!(outstandings as any).$value) {
+                    return filter ? tables.filter(t => t.status === 'playing' || t.status === 'covered') : tables;
+                }
                 const ids: string[] = (outstandings as any).$value.split(' ');
-
                 return tables.filter(t => ids.indexOf((t as any).$key) > -1);
             })
         ;
@@ -68,5 +72,9 @@ export class ZoneComponent implements OnInit {
 
     callHelp(needHelp: boolean) {
         this.db.object('/vegas/zones/' + this.zoneId).update( { needHelp });
+    }
+
+    toggleDisplayOnlyPlaying(val: boolean) {
+        this.filter$.next(val);
     }
 }
