@@ -20,6 +20,8 @@ export class AdminComponent implements OnInit {
     tables$: Observable<Table[]>;
     tournament$: FirebaseObjectObservable<Tournament>;
     outstandings$: FirebaseObjectObservable<string>;
+    waitingTables$: Observable<Table[]>;
+    okTables$: Observable<Table[]>;
     
     @ViewChild('confirmEnd') confirmEnd: TemplateRef<any>;
     confirmation: MdDialogRef<any>;
@@ -39,6 +41,8 @@ export class AdminComponent implements OnInit {
                 return tables.filter(t => ids.indexOf((t as any).$key) > -1);
             })
         ;
+        this.okTables$ = this.tables$.map(tables => tables.filter(t => t.hasResult));
+        this.waitingTables$ = this.tables$.map(tables => tables.filter(t => !t.hasResult));
     }
 
     goToZone(id: number) {
@@ -47,14 +51,14 @@ export class AdminComponent implements OnInit {
 
     createTables() {
         this.tournament$.take(1).subscribe(tournament => {
-        const tables: { [id: string]: Table } = {};
-        for (let i = tournament.start; i <= tournament.end; i++ ) {
-            tables[i] = {
-                time: 0,
-                status: ""
-            };
-        }
-        this.db.object('/vegas/tables').set(tables);
+            const tables: { [id: string]: Table } = {};
+            for (let i = tournament.start; i <= tournament.end; i++ ) {
+                tables[i] = {
+                    time: 0,
+                    status: ""
+                };
+            }
+            this.db.object('/vegas/tables').set(tables);
         })
     }
 
@@ -80,10 +84,6 @@ export class AdminComponent implements OnInit {
 
     cancelRestart() {
         this.confirmation.close();
-    }
-
-    setHasResult(id: string, hasResult: boolean) {
-        this.db.object('/vegas/tables/' + id).update({ hasResult });
     }
 
     restart() {

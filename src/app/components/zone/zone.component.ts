@@ -47,23 +47,23 @@ export class ZoneComponent implements OnInit {
     }
 
     onTableClick(table: Table) {
-        let newStatus: TableStatus = "";
+        let update = {};
         if (table.status === "featured") return;
         switch (table.status) {
             case "":
-                newStatus = "playing";
+                update = { status: "playing" };
                 break;
             case "playing":
-                newStatus = "covered";
+                update = { status: "covered" };
                 break;
             case "covered":
-                newStatus = "done";
+                update = { status: "done", doneTime: new Date() };
                 break;
             case "done":
-                newStatus = "";
+                update = { status: "" };
                 break;
         }
-        this.db.object('/vegas/tables/' + (table as any).$key).update( { status: newStatus });
+        this.db.object('/vegas/tables/' + (table as any).$key).update(update);
     }
 
     callHelp(needHelp: boolean) {

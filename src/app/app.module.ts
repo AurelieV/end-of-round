@@ -15,6 +15,9 @@ import { ZoneComponent } from './components/zone/zone.component';
 import { DialogComponents } from './components/dialogs';
 import { HomeComponent } from './components/home/home.component';
 import { ZoneInfoComponent } from './components/zone-info/zone-info.component';
+import { TablesInfoComponent } from './components/tables-info/tables-info.component'
+import { AgoPipe } from './pipes/ago.pipe';
+import { WarnAgoPipe } from './pipes/warn-ago.pipe';
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
@@ -29,6 +32,9 @@ const appRoutes: Routes = [
     ZoneComponent,
     HomeComponent,
     ZoneInfoComponent,
+    TablesInfoComponent,
+    AgoPipe,
+    WarnAgoPipe,
     ...DialogComponents
   ],
   imports: [

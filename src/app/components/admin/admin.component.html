@@ -9,17 +9,9 @@
     </div>
     <div *ngIf="(outstandings$ | async)?.$value">
         <h3>Outstanding</h3>
-        <div class="tables">
-            <div *ngFor="let table of tables$ | async" class="table">
-                <div class="header">
-                    <div class="title" [ngClass]="table.status">Table {{table.$key}}</div>
-                    <md-checkbox 
-                        color="primary"
-                        [checked]="!!table.hasResult"
-                        (change)="setHasResult(table.$key, $event.checked)"></md-checkbox>
-                </div>
-            </div>
-        </div>
+        <tables-info [tables]="waitingTables$ | async"></tables-info>
+        <h3>Done</h3>
+        <tables-info [tables]="okTables$ | async"></tables-info>
     </div>
 </div>
 <div class="column">

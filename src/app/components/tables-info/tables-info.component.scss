@@ -1,0 +1,32 @@
+:host {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.table {
+    border: 1px solid black;
+    padding: 10px;
+    margin: 10px;
+    width: 120px;
+
+    .header {
+        display: flex;
+        align-items: center;
+        .title {
+            flex: 1;
+        }
+        md-checkbox {
+            margin-left: 10px;
+        }
+    }
+    .content {
+        margin-top: 2px;
+    }
+    .time.warn {
+        color: red;
+        font-weight: bold;
+    }
+    &.ok {
+        opacity: 0.8;
+    }
+}

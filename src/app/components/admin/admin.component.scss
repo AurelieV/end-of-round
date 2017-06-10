@@ -38,36 +38,3 @@ zone-info {
         }
     }
 }
-
-.tables {
-    display: flex;
-    flex-wrap: wrap;
-
-    .table {
-        border: 1px solid black;
-        padding: 10px;
-        margin: 10px;
-        width: 110px;
-
-        .header {
-            display: flex;
-            align-items: center;
-            .title {
-                flex: 1;
-            }
-            md-checkbox {
-                margin-left: 10px;
-            }
-        }
-    }
-}
-
-.playing {
-    color: orange;
-}
-.covered {
-    color: #f2da07;
-}
-.done {
-    color: lightgreen;
-}
