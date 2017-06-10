@@ -14,7 +14,8 @@
         color: $extra-time;
     }
     &.featured {
-        color: $featured;
+        color: white;
+        background: $featured;
     }
 }
 

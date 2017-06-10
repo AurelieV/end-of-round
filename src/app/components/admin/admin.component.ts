@@ -7,7 +7,7 @@ import 'rxjs/add/operator/take';
 import 'rxjs/add/observable/combineLatest';
 
 import { Tournament, Zone, Table } from '../../model';
-import { AddOutstandingsDialogComponent } from '../dialogs/add-outstandings/add-outstandings.dialog.component';
+import { AddTablesDialogComponent } from '../dialogs/add-tables/add-tables.dialog.component';
 
 
 @Component({
@@ -67,7 +67,8 @@ export class AdminComponent implements OnInit {
     }
 
     addOutstandings() {
-        const dialogRef = this.md.open(AddOutstandingsDialogComponent);
+        const dialogRef = this.md.open(AddTablesDialogComponent);
+        dialogRef.componentInstance.title = 'Add outstandings tables';
         Observable.combineLatest(dialogRef.afterClosed(), this.outstandings$).subscribe(([val, outstandings]) => {
             if (!val) return;
             const previousVal = (outstandings as any).$value;
@@ -79,6 +80,17 @@ export class AdminComponent implements OnInit {
                 .join(' ')
             ;
             this.db.object('/vegas/outstandings').set(newVal);
+        });
+    }
+
+    addFeatured() {
+        const dialogRef = this.md.open(AddTablesDialogComponent);
+        dialogRef.componentInstance.title = 'Add featured tables'
+        dialogRef.afterClosed().subscribe(val => {
+            if (!val) return;
+            const tableIds: string[] = (val || '').split(' ');
+            debugger;
+            tableIds.forEach(id => this.db.object('/vegas/tables/' + id).update({ status: 'featured'}));
         });
     }
 

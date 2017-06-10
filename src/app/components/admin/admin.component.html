@@ -5,6 +5,7 @@
             (click)="createTables()" 
             md-raised-button color="accent">Create tables</button>
         <button (click)="addOutstandings()" md-raised-button color="primary">Add outstanding</button>
+        <button (click)="addFeatured()" md-raised-button color="primary">Add featured</button>
         <button (click)="endRound()" md-raised-button color="warn">End round</button>
     </div>
     <div *ngIf="(outstandings$ | async)?.$value">
