@@ -69,7 +69,7 @@ export class AdminComponent implements OnInit {
     addOutstandings() {
         const dialogRef = this.md.open(AddTablesDialogComponent);
         dialogRef.componentInstance.title = 'Add outstandings tables';
-        Observable.combineLatest(dialogRef.afterClosed(), this.outstandings$).subscribe(([val, outstandings]) => {
+        Observable.combineLatest(dialogRef.afterClosed(), this.outstandings$.take(1)).subscribe(([val, outstandings]) => {
             if (!val) return;
             const previousVal = (outstandings as any).$value;
             const tableIds: string[] = (val || '').split(' ');
