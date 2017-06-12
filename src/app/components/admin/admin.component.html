@@ -22,7 +22,7 @@
             class="zone"
             (click)="goToZone(zone.$key)"
             [zone]="zone"
-            [tables]="tables$ | async"></zone-info>
+            [tables]="waitingTables$ | async"></zone-info>
     </div>
 </div>
 

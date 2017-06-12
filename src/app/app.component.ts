@@ -26,7 +26,7 @@ export class AppComponent implements OnInit {
             if (!(outstandings as any).$value) return tables;
             const ids: string[] = (outstandings as any).$value.split(' ');
 
-            return tables.filter(t => ids.indexOf((t as any).$key) > -1);
+            return tables.filter(t => ids.indexOf((t as any).$key) > -1 && !t.hasResult);
         })
         .map(tables => ({
           playing: tables.filter(t => t.status === "playing").length,
