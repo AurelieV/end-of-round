@@ -20,11 +20,11 @@ export class AddResultDialogComponent {
         draw: 0
     };
 
-    incrementScore(id: 0 | 1) {
+    incrementScore(id: 2 | 1) {
         this.result[`player${id}`].score++;
     }
 
-    decrementScore(id: 0 | 1) {
+    decrementScore(id: 2 | 1) {
         this.result[`player${id}`].score--;
     }
 
