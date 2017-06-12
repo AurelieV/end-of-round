@@ -20,7 +20,7 @@ export class ZoneInfoComponent implements OnChanges {
 
     ngOnChanges() {
         const tables = (this.tables || []).filter(t => +(t as any).$key >= this.zone.start && +(t as any).$key <= this.zone.end);
-        this.extraTimeTables = (tables || []).filter(t => t.time > 0);
+        this.extraTimeTables = (tables || []).filter(t => t.time > 0 && t.status !== "done");
         this.tablesInformation = {
             playing: tables.filter(t => t.status === "playing").length,
             covered: tables.filter(t => t.status === "covered").length,

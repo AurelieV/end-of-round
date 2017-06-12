@@ -31,7 +31,7 @@ export class AppComponent implements OnInit {
         .map(tables => ({
           playing: tables.filter(t => t.status === "playing").length,
           covered: tables.filter(t => t.status === "covered").length,
-          extraTimed: tables.filter(t => t.time > 0).length
+          extraTimed: tables.filter(t => t.time > 0 && t.status !== 'done').length
         }))
       ;
   }
