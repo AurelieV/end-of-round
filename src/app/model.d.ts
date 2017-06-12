@@ -1,10 +1,23 @@
 export type TableStatus = "playing" | "covered" | "featured" | "done" | "";
 
+export interface Result {
+    player1: {
+        score: number;
+        drop: boolean;
+    },
+    player2: {
+        score: number;
+        drop: boolean;
+    },
+    draw: number;
+}
+
 export interface Table {
     status: TableStatus;
     time: number;
     doneTime?: Date;
     hasResult?: boolean;
+    result?: Result;
 }
 
 export interface Zone {

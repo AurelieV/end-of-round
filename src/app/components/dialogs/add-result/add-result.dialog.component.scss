@@ -1,0 +1,65 @@
+.actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+    button {
+        padding: 5px;
+    }
+}
+
+.row {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.player, .result {
+    cursor: pointer;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+.player {
+    padding-right: 20px;
+    width: 50px;
+}
+
+.empty, .result-container {
+    width: 40px;
+    margin: 5px;
+}
+
+.result-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    button {
+        margin-top: 10px;
+    }
+
+    .mat-raised-button {
+        min-width: initial;
+        padding: 4px 10px;
+        line-height: initial;
+    }
+}
+.result {
+    border: 1px solid black;
+    font-size: 30px;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    width: 40px;
+}
+
+.drop {
+    width: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

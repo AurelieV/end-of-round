@@ -2,10 +2,11 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { AngularFireDatabase, FirebaseObjectObservable, FirebaseListObservable } from 'angularfire2/database';
+import { MdDialog, MdDialogRef } from '@angular/material';
 
 import { Zone, Table, TableStatus } from '../../model';
-import { AngularFireDatabase, FirebaseObjectObservable, FirebaseListObservable } from 'angularfire2/database';
-
+import { AddResultDialogComponent } from '../dialogs/add-result/add-result.dialog.component';
 
 @Component({
     selector: "zone",
@@ -19,7 +20,7 @@ export class ZoneComponent implements OnInit {
     filter$: BehaviorSubject<boolean> = new BehaviorSubject(false);
     zoneId: number;
 
-    constructor(private route: ActivatedRoute, private db: AngularFireDatabase) {}
+    constructor(private route: ActivatedRoute, private db: AngularFireDatabase, private md: MdDialog) {}
 
     ngOnInit() {
         this.zone$ = this.route.params
@@ -45,7 +46,7 @@ export class ZoneComponent implements OnInit {
                     return filter ? tables.filter(t => t.status === 'playing' || t.status === 'covered') : tables;
                 }
                 const ids: string[] = (outstandings as any).$value.split(' ');
-                return tables.filter(t => ids.indexOf((t as any).$key) > -1);
+                return tables.filter(t => ids.indexOf((t as any).$key) > -1 && !t.hasResult);
             })
         ;
     }
@@ -76,5 +77,21 @@ export class ZoneComponent implements OnInit {
 
     toggleDisplayOnlyPlaying(val: boolean) {
         this.filter$.next(val);
+    }
+
+    addResult(e: Event, table: any) {
+        e.stopPropagation();
+        const dialogRef = this.md.open(AddResultDialogComponent, { width: "90%" });
+        if (table.result) {
+            dialogRef.componentInstance.result = table.result;
+        }
+        dialogRef.afterClosed().subscribe(result => {
+            if (!result) return;
+            this.db.object('/vegas/tables/' + table.$key).update({ 
+                result,
+                status: 'done',
+                doneTime: table.doneTime  || new Date()
+            })
+        })
     }
 }

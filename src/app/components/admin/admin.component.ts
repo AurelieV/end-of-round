@@ -76,7 +76,7 @@ export class AdminComponent implements OnInit {
             const previousIds: string[] = (previousVal || '').split(' ');
             const newVal = previousIds
                 .concat(tableIds)
-                .filter((val, key, tab) => tab.indexOf(val) === key)
+                .filter((val, key, tab) => tab.indexOf(val) === key && val)
                 .join(' ')
             ;
             this.db.object('/vegas/outstandings').set(newVal);

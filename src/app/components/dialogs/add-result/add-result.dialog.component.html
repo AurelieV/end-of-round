@@ -1,0 +1,37 @@
+<h3>Add result</h3>
+<div md-dialog-content>
+    <div class="row">
+        <div class="player">P1</div>
+        <div class="result-container">
+            <div class="result" (click)="incrementScore(1)">{{result.player1.score}}</div>
+            <button [disabled]="result.player1.score === 0" md-raised-button color="primary" (click)="decrementScore(1)">-</button>
+        </div>
+        <div class="empty"></div>
+        <div class="drop">
+            <md-checkbox [(ngModel)]="result.player1.drop"></md-checkbox>
+        </div>
+    </div>
+    <div class="row">
+        <div class="player"></div>
+        <div class="empty"></div>
+        <div class="result-container">
+            <div class="result" (click)="incrementDraw()">{{result.draw}}</div>
+            <button [disabled]="result.draw === 0" md-raised-button color="primary" (click)="decrementDraw()">-</button>
+        </div>
+        <div class="drop"></div>
+    </div>
+    <div class="row">
+        <div class="player">P2</div>
+        <div class="result-container">
+            <div class="result" (click)="incrementScore(2)">{{result.player2.score}}</div>
+            <button [disabled]="result.player2.score === 0"md-raised-button color="primary" (click)="decrementScore(2)">-</button>
+        </div>
+        <div class="empty"></div>
+        <div class="drop">
+            <md-checkbox [(ngModel)]="result.player2.drop"></md-checkbox>
+        </div>
+    </div>
+</div>
+<div class="actions" md-dialog-actions>
+    <button md-raised-button color="primary" md-dialog-close [md-dialog-close]="result">Add</button>
+</div>

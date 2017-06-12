@@ -32,8 +32,8 @@
     -ms-user-select: none;
     cursor: pointer;
     
-    height: 30px;
-    width: 50px;
+    min-height: 30px;
+    min-width: 50px;
     
     border: 1px solid black;
     padding: 10px;
@@ -48,6 +48,9 @@
     &.has-time {
         font-weight: bold;
         font-size: 18px;
+    }
+    .actions {
+        margin-top: 20px;
     }
 }
 

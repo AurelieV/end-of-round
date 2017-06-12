@@ -1,17 +1,22 @@
 <div class="header">
     <div class="title">{{(zone$ | async)?.$key}}</div>
-    <md-slide-toggle
-          *ngIf="!(outstandings$ | async)?.$value"
+    <div class="actions" *ngIf="!(outstandings$ | async)?.$value">
+        <md-slide-toggle
           color="primary"
           [checked]="filter$ | async"
           (change)="toggleDisplayOnlyPlaying($event.checked)">
-          <span> Display only playing</span>
-      </md-slide-toggle>
+          <span>Display only playing</span>
+        </md-slide-toggle>
+    </div>
 </div>
 <div class="tables">
     <div class="table block" *ngFor="let table of tables$ | async" [ngClass]="table.status" [class.has-time]="table.time" (click)="onTableClick(table)">
         <div class="number">{{table.$key}}</div>
         <div class="time" *ngIf="table.time">{{table.time}}min</div>
+        <div class="result">{{table.result | result }}</div>
+        <div class="actions" *ngIf="(tables$ | async)?.length <= 2">
+            <button md-raised-button color="primary" (click)="addResult($event, table)">Add result</button>
+        </div>
     </div>
 </div>
 

@@ -10,6 +10,9 @@
         <div class="time" [ngClass]="table.doneTime | warnAgo" *ngIf="table.status === 'done' && !table.hasResult">
             Done {{table.doneTime | ago}}
         </div>
+        <div class="result" class="result" *ngIf="table.result">
+            {{table.result | result}}
+        </div>
     </div>
 </div>
 <div *ngIf="tables?.length === 0">

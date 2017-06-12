@@ -16,6 +16,10 @@ html, body, material-app, md-sidenav-container {
     transform: none !important;
 }
 
+md-dialog-container {
+    margin: auto;
+}
+
 .loader-container {
     display: flex;
     justify-content: center;
