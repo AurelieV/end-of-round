@@ -1,15 +1,16 @@
-<div *ngFor="let table of tables" class="table" [class.ok]="table.hasResult">
+<div *ngFor="let table of tables" 
+    class="table block"
+    [ngClass]="[table.status, table.hasResult ? '' : (table.doneTime | warnAgo)]"
+    [class.no-status]="!table.status">
     <div class="header">
-        <div class="title text" [ngClass]="table.status">Table {{table.$key}}</div>
+        <div class="title">Table {{table.$key}}</div>
         <md-checkbox 
             color="primary"
             [checked]="!!table.hasResult"
             (change)="setHasResult(table.$key, $event.checked)"></md-checkbox>
     </div>
     <div class="content">
-        <div class="time" [ngClass]="table.doneTime | warnAgo" *ngIf="table.status === 'done' && !table.hasResult">
-            Done {{table.doneTime | ago}}
-        </div>
+        <div class="time" *ngIf="table.status === 'done' && !table.hasResult">{{table.doneTime | ago}}</div>
         <div class="result" class="result" *ngIf="table.result">
             {{table.result | result}}
         </div>

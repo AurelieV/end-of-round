@@ -1,14 +1,21 @@
 :host {
     display: flex;
     flex-wrap: wrap;
+    align-items: flex-start;
 }
 
 .table {
-    border: 1px solid black;
-    padding: 10px;
+    padding: 10px 20px;
     margin: 10px;
     width: 120px;
-
+    height: 70px;
+    border-radius: 20px;
+    &.no-status {
+        border: 1px solid black;
+    }
+    &.warn {
+        border: 3px solid red;
+    }
     .header {
         display: flex;
         align-items: center;
@@ -21,13 +28,6 @@
     }
     .content {
         margin-top: 2px;
-    }
-    .time.warn {
-        color: red;
-        font-weight: bold;
-    }
-    &.ok {
-        opacity: 0.8;
     }
     .result {
         margin-top: 10px;

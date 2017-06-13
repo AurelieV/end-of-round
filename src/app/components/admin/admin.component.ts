@@ -22,9 +22,13 @@ export class AdminComponent implements OnInit {
     outstandings$: FirebaseObjectObservable<string>;
     waitingTables$: Observable<Table[]>;
     okTables$: Observable<Table[]>;
+    extraTimedTables$: Observable<Table[]>;
     
     @ViewChild('confirmEnd') confirmEnd: TemplateRef<any>;
     confirmation: MdDialogRef<any>;
+
+    @ViewChild('extraTimed') extraTimedTemplate: TemplateRef<any>;
+    extraTimedDialog: MdDialogRef<any>;
 
     constructor(private db: AngularFireDatabase, private router: Router, private md: MdDialog) {}
 
@@ -43,6 +47,7 @@ export class AdminComponent implements OnInit {
         ;
         this.okTables$ = this.tables$.map(tables => tables.filter(t => t.hasResult));
         this.waitingTables$ = this.tables$.map(tables => tables.filter(t => !t.hasResult));
+        this.extraTimedTables$ = this.waitingTables$.map(tables => tables.filter(t => t.time > 0).sort((a, b) => b.time - a.time));
     }
 
     goToZone(id: number) {
@@ -102,5 +107,13 @@ export class AdminComponent implements OnInit {
         this.createTables();
         this.db.object('/vegas/outstandings').set('');
         this.confirmation.close();
+    }
+
+    openExtraTimed() {
+        this.extraTimedDialog = this.md.open(this.extraTimedTemplate);
+    }
+
+    closeExtraTimed() {
+        this.extraTimedDialog.close();
     }
 }

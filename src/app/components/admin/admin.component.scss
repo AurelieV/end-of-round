@@ -1,11 +1,7 @@
-:host {
-    display: flex;
-}
-
-.column {
-    width: 50%;
+.content {
     padding-left: 10px;
     padding-right: 10px;
+    padding-top: 210px;
     .actions {
         padding-top: 10px;
         padding-bottom: 10px;
@@ -15,27 +11,42 @@
         align-items: center;
     }
 }
-.zones {
+
+.header {
+    position: fixed;
+    margin-top: -10px;
+    height: 180px;
+    background: #CCCCE5;
     display: flex;
-    flex-wrap: wrap;
     justify-content: center;
-    align-items: flex-start;
-    border-left: 1px solid black;
-    min-height: 100%;
+    align-items: center;
+    padding: 10px 20px;
+    left: 0; right: 0;
+    z-index: 10;
 }
 
 zone-info {
     margin: 10px;
     cursor: pointer;
-    width: 170px;
+    min-width: 150px;
+    height: 100px;
 }
 
-.confirmation {
+.confirmation, .extra-timed {
     .actions {
         display: flex;
         justify-content: flex-end;
         button {
-            padding: 5px;
+            margin-left: 5px;
         }
+    }
+}
+
+.extra-timed {
+    ul {
+        padding-right: 15px;
+    }
+    .extra-timed-table {
+        font-weight: bold;
     }
 }

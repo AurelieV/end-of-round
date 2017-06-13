@@ -1,4 +1,12 @@
-<div class="column">
+<div class="header">
+    <zone-info 
+        *ngFor="let zone of zones$ | async"
+        class="zone"
+        (click)="goToZone(zone.$key)"
+        [zone]="zone"
+        [tables]="waitingTables$ | async"></zone-info>
+</div>
+<div class="content">
     <div class="actions">
         <button 
             *ngIf="(tables$ | async) && (tables$ | async).length === 0"
@@ -6,7 +14,8 @@
             md-raised-button color="accent">Create tables</button>
         <button (click)="addOutstandings()" md-raised-button color="primary">Add outstanding</button>
         <button (click)="addFeatured()" md-raised-button color="primary">Add featured</button>
-        <button (click)="endRound()" md-raised-button color="warn">End round</button>
+        <button (click)="openExtraTimed()" md-raised-button color="primary">Show extra timed</button>
+        <button (click)="endRound()" md-raised-button color="accent">End round</button>
     </div>
     <div *ngIf="(outstandings$ | async)?.$value">
         <h3>Outstanding</h3>
@@ -15,17 +24,6 @@
         <tables-info [tables]="okTables$ | async"></tables-info>
     </div>
 </div>
-<div class="column">
-    <div class="zones">
-        <zone-info 
-            *ngFor="let zone of zones$ | async"
-            class="zone"
-            (click)="goToZone(zone.$key)"
-            [zone]="zone"
-            [tables]="waitingTables$ | async"></zone-info>
-    </div>
-</div>
-
 <ng-template #confirmEnd>
     <div class="confirmation">
         <h3>End round?</h3>
@@ -33,8 +31,24 @@
             Are your sure to end round? All current informations will be erased
         </div>
         <div class="actions" md-dialog-actions>
-            <button md-raised-button color="warning" (click)="cancelRestart()">Cancel</button>
+            <button md-raised-button color="warn" (click)="cancelRestart()">Cancel</button>
             <button md-raised-button color="primary" (click)="restart()">Restart</button>
+        </div>
+    </div>
+</ng-template>
+<ng-template #extraTimed>
+    <div class="extra-timed">
+        <h3>Extra timed tables</h3>
+        <div md-dialog-content>
+            <ul>
+                <li *ngFor="let table of extraTimedTables$ | async">
+                    <span class="extra-timed-table">Table {{table.$key}}</span>: +{{table.time}}min
+                </li>
+            </ul>
+            <div *ngIf="(extraTimedTables$ | async)?.length === 0">No tables</div>
+        </div>
+        <div class="actions" md-dialog-actions>
+            <button md-raised-button color="primary" (click)="closeExtraTimed()">Closed</button>
         </div>
     </div>
 </ng-template>

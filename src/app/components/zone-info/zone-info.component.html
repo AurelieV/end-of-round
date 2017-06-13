@@ -2,15 +2,7 @@
 <div class="subtitle">({{zone.start}} - {{zone.end}})</div>
 
 <div class="status">
-    <span class="text playing">{{tablesInformation.playing}}</span>
-    <span>/</span>
-    <span class="text covered">{{tablesInformation.covered}}</span>
-    <span>/</span>
-    <span class="text extra-time">{{tablesInformation.extraTimed}}</span>
+    <div class="block playing">{{tablesInformation.playing}}</div>
+    <div class="block covered">{{tablesInformation.covered}}</div>
+    <div class="block extra-time">{{tablesInformation.extraTimed}}</div>
 </div>
-
-<ul class="extra-timed-tables" *ngIf="extraTimeTables.length">
-    <li *ngFor="let table of extraTimeTables">
-        <span class="table" [ngClass]="table.status">Table {{table.$key}}:</span> +{{table.time}}min
-    </li>
-</ul>

@@ -1,15 +1,12 @@
 :host {
-    border: 1px black solid;
-    padding-top: 10px;
-    padding-left: 10px;
-    padding-right: 10px;
-    padding-bottom: 5px;
+    background: white;
+    border-radius: 20%;
+    padding: 20px;
     &:active {
-        border-width: 2px;
+        border: black solid 2px;
     }
     &.need-help {
-        border-width: 2px;
-        border-color: red;
+        border: red solid 2px;
     }
     display: flex;
     flex-direction: column;
@@ -26,18 +23,19 @@
 }
 .status {
     display: flex;
+    .block {
+        font-size: 14px;
+        margin-right: 5px;
+        margin-left: 5px;
+        width: 30px;
+        height: 30px;
+        border-radius: 25%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
     padding-top: 10px;
     padding-bottom: 10px;
-    justify-content: space-around;
-    font-weight: bold;
-    font-size: 16px;
+    justify-content: center;
     flex: 1;
-}
-.extra-timed-tables {
-    margin-top: 10px;
-    list-style: none;
-    padding: 0;
-}
-.table {
-    font-weight: bold;
 }
