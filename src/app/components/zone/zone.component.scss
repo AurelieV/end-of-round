@@ -55,6 +55,9 @@
         font-weight: bold;
         font-size: 18px;
     }
+    &.done.warn {
+        border: 2px solid red;
+    }
     .actions {
         margin-top: 20px;
     }
