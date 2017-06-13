@@ -4,9 +4,23 @@ md-toolbar {
     .title {
         flex: 1;
     }
-    .status {
+    .header-content {
         flex: 1;
-        text-align: center;
+        display: flex;
+        justify-content: center;
+    }
+    .statuses {
+        display: flex;
+        .block {
+            margin-right: 5px;
+            margin-left: 5px;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
     }
     position: fixed;
     z-index: 10;

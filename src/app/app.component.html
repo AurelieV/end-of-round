@@ -1,9 +1,11 @@
 <md-toolbar color="primary" class="header">
   <button (click)="sidenav.toggle()" md-icon-button><md-icon>&#xE5D2;</md-icon></button>
-  <div class="status">
-    <span class="text playing">{{(tablesInformation$ | async)?.playing}}</span> /
-    <span class="text covered">{{(tablesInformation$ | async)?.covered}}</span> /
-    <span class="text extra-time">{{(tablesInformation$ | async)?.extraTimed}}</span>
+  <div class="header-content">
+    <div class="statuses">
+      <div class="block playing">{{(tablesInformation$ | async)?.playing}}</div>
+      <div class="block covered">{{(tablesInformation$ | async)?.covered}}</div>
+      <div class="block extra-time">{{(tablesInformation$ | async)?.extraTimed}}</div>
+    </div>
   </div>
   <button (click)="openHelp()" md-icon-button><md-icon>&#xE8FD;</md-icon></button>
 </md-toolbar>

@@ -24,6 +24,12 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    color: black;
+    &.hide-button {
+        .table .actions {
+            display: none;
+        }
+    }
 }
 .table {
     user-select: none;

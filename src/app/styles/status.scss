@@ -22,15 +22,19 @@
 .block {
     &.playing {
         background: $playing;
+        color: white;
     }
     &.covered {
         background: $covered;
+        color: white;
     }
     &.done {
         background: $done;
+        color: white;
     }
     &.extra-time {
         background: $extra-time;
+        color: white;
     }
     &.featured {
         background: $featured;
