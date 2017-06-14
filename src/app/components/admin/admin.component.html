@@ -17,11 +17,13 @@
         <button (click)="openExtraTimed()" md-raised-button color="primary">Show extra timed</button>
         <button (click)="endRound()" md-raised-button color="accent">End round</button>
     </div>
-    <div *ngIf="(outstandings$ | async)?.$value">
-        <h3>Outstanding</h3>
-        <tables-info [tables]="waitingTables$ | async"></tables-info>
-        <h3>Done</h3>
-        <tables-info [tables]="okTables$ | async"></tables-info>
+    <div class="tables">
+        <div *ngIf="(outstandings$ | async)?.$value">
+            <h3>Outstanding</h3>
+            <tables-info [tables]="waitingTables$ | async"></tables-info>
+            <h3>Done</h3>
+            <tables-info [tables]="okTables$ | async"></tables-info>
+        </div>
     </div>
 </div>
 <ng-template #confirmEnd>

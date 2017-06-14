@@ -56,7 +56,9 @@
         font-size: 18px;
     }
     &.done.warn {
-        border: 2px solid red;
+        border: 1px solid red;
+        color: red;
+        font-weight: bold;
     }
     .actions {
         margin-top: 20px;

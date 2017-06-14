@@ -1,21 +1,25 @@
 .content {
     padding-left: 10px;
     padding-right: 10px;
-    padding-top: 210px;
+    padding-top: 250px;
     .actions {
-        padding-top: 10px;
+        padding-top: 20px;
         padding-bottom: 10px;
+        position: fixed;
+        left: 0; right: 0;
         display: flex;
         flex-wrap: wrap;
         justify-content: space-around;
         align-items: center;
+        z-index: 1;
+        background: white;
     }
 }
 
 .header {
     position: fixed;
     margin-top: -10px;
-    height: 180px;
+    height: 250px;
     background: #CCCCE5;
     display: flex;
     justify-content: center;
@@ -23,13 +27,17 @@
     padding: 10px 20px;
     left: 0; right: 0;
     z-index: 1;
+    flex-wrap: wrap;
+}
+
+.tables {
+    padding-top: 50px;
 }
 
 zone-info {
-    margin: 10px;
+    margin: 5px 10px;
     cursor: pointer;
-    min-width: 150px;
-    height: 100px;
+    min-width: 220px;
 }
 
 .confirmation, .extra-timed {
