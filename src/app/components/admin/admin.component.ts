@@ -47,7 +47,8 @@ export class AdminComponent implements OnInit {
         ;
         this.okTables$ = this.tables$.map(tables => tables.filter(t => t.hasResult));
         this.waitingTables$ = this.tables$.map(tables => tables.filter(t => !t.hasResult));
-        this.extraTimedTables$ = this.waitingTables$.map(tables => tables.filter(t => t.time > 0).sort((a, b) => b.time - a.time));
+        this.extraTimedTables$ = this.waitingTables$
+            .map(tables => tables.filter(t => t.time > 0 && t.status !== 'done').sort((a, b) => b.time - a.time));
     }
 
     goToZone(id: number) {
