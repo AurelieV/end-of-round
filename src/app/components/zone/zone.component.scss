@@ -30,6 +30,13 @@
             display: none;
         }
     }
+    &.show-warn {
+        .table.done.warn {
+            border: 1px solid red;
+            color: red;
+            font-weight: bold;
+        }
+    }
 }
 .table {
     user-select: none;
@@ -54,11 +61,6 @@
     &.has-time {
         font-weight: bold;
         font-size: 18px;
-    }
-    &.done.warn {
-        border: 1px solid red;
-        color: red;
-        font-weight: bold;
     }
     .actions {
         margin-top: 20px;

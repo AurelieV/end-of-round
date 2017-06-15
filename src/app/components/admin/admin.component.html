@@ -44,7 +44,7 @@
         <div md-dialog-content>
             <ul>
                 <li *ngFor="let table of extraTimedTables$ | async">
-                    <span class="extra-timed-table">Table {{table.$key}}</span>: +{{table.time}}min
+                    <span class="extra-timed-table text" [ngClass]="table.status">Table {{table.$key}}</span>: +{{table.time}}min
                 </li>
             </ul>
             <div *ngIf="(extraTimedTables$ | async)?.length === 0">No tables</div>
