@@ -10,6 +10,10 @@
     padding-bottom: 20px;
     padding-left: 10px;
     padding-right: 10px;
+
+    button {
+        margin-left: 5px;
+    }
 }
 
 .title {
@@ -71,4 +75,14 @@
     position: fixed;
     bottom: 20px;
     right: 20px;
+}
+
+.confirmation {
+    .actions {
+        display: flex;
+        justify-content: flex-end;
+        button {
+            margin-left: 5px;
+        }
+    }
 }

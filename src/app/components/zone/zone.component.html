@@ -14,6 +14,7 @@
           <span>Display only extra time</span>
         </md-slide-toggle>
     </div>
+    <button md-raised-button color="primary" *ngIf="!(outstandings$ | async)?.$value" (click)="allGreen()">Green</button>
 </div>
 <div class="tables" [class.hide-button]="(tables$ | async)?.length > 2" [class.show-warn]="(outstandings$ | async)?.$value">
     <div class="table block" *ngFor="let table of tables$ | async" [ngClass]="[table.status, table.doneTime | warnAgo]" [class.has-time]="table.time" (click)="onTableClick(table)">
@@ -28,3 +29,16 @@
 
 <button *ngIf="!(zone$ | async)?.needHelp" md-fab color="primary" class="call-help" (click)="callHelp(true)"><md-icon>&#xE91F;</md-icon></button>
 <button *ngIf="(zone$ | async)?.needHelp" md-fab color="warn" class="call-help" (click)="callHelp(false)"><md-icon>&#xE14C;</md-icon></button>
+
+<ng-template #confirm>
+    <div class="confirmation">
+        <h3>Are you sure</h3>
+        <div md-dialog-content>
+            All current empty tables (white) will become done (green). Filters will NOT be taken in account.
+        </div>
+        <div class="actions" md-dialog-actions>
+            <button md-raised-button color="warn" (click)="cancelAllGreen()">Cancel</button>
+            <button md-raised-button color="primary" (click)="confirmAllGreen()">Go</button>
+        </div>
+    </div>
+</ng-template>

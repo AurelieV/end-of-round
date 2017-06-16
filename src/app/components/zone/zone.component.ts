@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, TemplateRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
@@ -27,6 +27,9 @@ export class ZoneComponent implements OnInit {
         onlyExtraTime: false
     });
     zoneId: number;
+
+    @ViewChild('confirm') confirmTemplate: TemplateRef<any>;
+    confirmation: MdDialogRef<any>;
 
     constructor(private route: ActivatedRoute, private db: AngularFireDatabase, private md: MdDialog) {}
 
@@ -94,6 +97,35 @@ export class ZoneComponent implements OnInit {
 
     toggleOnlyExtraTime(val: boolean) {
         this.filter$.take(1).subscribe(f => this.filter$.next(Object.assign({}, f, { onlyExtraTime: val })));
+    }
+
+    allGreen() {
+        this.confirmation = this.md.open(this.confirmTemplate);
+    }
+
+    confirmAllGreen() {
+        this.confirmation.close();
+        const tables$: Observable<Table[]> = this.zone$.switchMap(zone => {
+            return this.db.list('/vegas/tables', {
+                query: {
+                    orderByKey: true,
+                    startAt: zone.start + "",
+                    endAt: zone.end + ""
+                }
+            });
+        }).map(tables => {
+            return tables.filter(t => !t.status)
+        }).take(1);
+        tables$.subscribe(tables => {
+            tables.forEach(t => {
+                this.db.object('/vegas/tables/' + (t as any).$key).update({ status: "done", doneTime: new Date() });
+            })
+        })
+
+    }
+
+    cancelAllGreen() {
+        this.confirmation.close();
     }
 
     addResult(e: Event, table: any) {
