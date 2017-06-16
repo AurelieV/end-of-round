@@ -1,20 +1,27 @@
 <div class="header">
     <div class="title">{{(zone$ | async)?.$key}}</div>
-    <div class="actions" *ngIf="!(outstandings$ | async)?.$value">
-        <md-slide-toggle
-          color="primary"
-          [checked]="(filter$ | async).onlyPlaying"
-          (change)="toggleOnlyPlaying($event.checked)">
-          <span>Display only playing</span>
-        </md-slide-toggle>
-        <md-slide-toggle
-          color="primary"
-          [checked]="(filter$ | async).onlyExtraTime"
-          (change)="toggleOnlyExtraTime($event.checked)">
-          <span>Display only extra time</span>
-        </md-slide-toggle>
-    </div>
-    <button md-raised-button color="primary" *ngIf="!(outstandings$ | async)?.$value" (click)="allGreen()">Green</button>
+    <button md-icon-button [mdMenuTriggerFor]="params" *ngIf="!(outstandings$ | async)?.$value">
+        <md-icon>&#xE8B8;</md-icon>
+    </button>
+    <md-menu #params="mdMenu">
+        <div md-menu-item>
+            <md-slide-toggle
+            color="primary"
+            [checked]="(filter$ | async).onlyPlaying"
+            (change)="toggleOnlyPlaying($event.checked)">
+            <span>Display only playing</span>
+            </md-slide-toggle>
+        </div>
+        <div md-menu-item>
+            <md-slide-toggle
+            color="primary"
+            [checked]="(filter$ | async).onlyExtraTime"
+            (change)="toggleOnlyExtraTime($event.checked)">
+            <span>Display only extra time</span>
+            </md-slide-toggle>
+        </div>
+        <button md-menu-item (click)="allGreen()">Mark all empty as done</button>
+    </md-menu>
 </div>
 <div class="tables" [class.hide-button]="(tables$ | async)?.length > 2" [class.show-warn]="(outstandings$ | async)?.$value">
     <div class="table block" *ngFor="let table of tables$ | async" [ngClass]="[table.status, table.doneTime | warnAgo]" [class.has-time]="table.time" (click)="onTableClick(table)">

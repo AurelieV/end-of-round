@@ -8,6 +8,7 @@ import { MdToolbarModule, MdButtonModule, MdIconModule, MdDialogModule, MdInput
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { MdSlideToggleModule } from '@angular/material';
+import { MdMenuModule } from '@angular/material';
 
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
@@ -53,6 +54,7 @@ const appRoutes: Routes = [
     MdSidenavModule,
     MdCheckboxModule,
     MdSlideToggleModule,
+    MdMenuModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireDatabaseModule,
     RouterModule.forRoot(appRoutes)
