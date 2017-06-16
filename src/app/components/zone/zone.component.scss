@@ -11,11 +11,17 @@
     padding-left: 10px;
     padding-right: 10px;
 
-    button {
+    .actions {
         margin-left: 5px;
+        &.active {
+                color: red;
+        }
     }
 }
 
+.message {
+    padding: 10px;
+}
 .title {
     flex: 1;
     font-style: italic;

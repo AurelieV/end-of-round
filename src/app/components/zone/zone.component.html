@@ -1,8 +1,13 @@
 <div class="header">
     <div class="title">{{(zone$ | async)?.$key}}</div>
-    <button md-icon-button [mdMenuTriggerFor]="params" *ngIf="!(outstandings$ | async)?.$value">
-        <md-icon>&#xE8B8;</md-icon>
-    </button>
+    <div class="actions" [class.active]="(filter$ | async).onlyPlaying || (filter$ | async).onlyExtraTime">
+        <button md-icon-button 
+            class="menu-button"
+            [mdMenuTriggerFor]="params"
+            *ngIf="!(outstandings$ | async)?.$value">
+            <md-icon>&#xE8B8;</md-icon>
+        </button>
+    </div>
     <md-menu #params="mdMenu">
         <div md-menu-item>
             <md-slide-toggle
@@ -32,6 +37,11 @@
             <button md-raised-button color="primary" (click)="addResult($event, table)">Add result</button>
         </div>
     </div>
+</div>
+<div class="message" *ngIf="(tables$ | async)?.length === 0">
+    No tables.
+    <span *ngIf="(outstandings$ | async)?.$value"><br/>your team leader have all result</span>
+    <span *ngIf="!(outstandings$ | async)?.$value"><br/>If this is not normal, check your filters (<md-icon>&#xE8B8;</md-icon>).</span>
 </div>
 
 <button *ngIf="!(zone$ | async)?.needHelp" md-fab color="primary" class="call-help" (click)="callHelp(true)"><md-icon>&#xE91F;</md-icon></button>
