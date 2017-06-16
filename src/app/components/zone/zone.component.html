@@ -3,9 +3,15 @@
     <div class="actions" *ngIf="!(outstandings$ | async)?.$value">
         <md-slide-toggle
           color="primary"
-          [checked]="filter$ | async"
-          (change)="toggleDisplayOnlyPlaying($event.checked)">
+          [checked]="(filter$ | async).onlyPlaying"
+          (change)="toggleOnlyPlaying($event.checked)">
           <span>Display only playing</span>
+        </md-slide-toggle>
+        <md-slide-toggle
+          color="primary"
+          [checked]="(filter$ | async).onlyExtraTime"
+          (change)="toggleOnlyExtraTime($event.checked)">
+          <span>Display only extra time</span>
         </md-slide-toggle>
     </div>
 </div>

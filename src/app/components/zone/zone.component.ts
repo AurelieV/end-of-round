@@ -8,6 +8,11 @@ import { MdDialog, MdDialogRef } from '@angular/material';
 import { Zone, Table, TableStatus } from '../../model';
 import { AddResultDialogComponent } from '../dialogs/add-result/add-result.dialog.component';
 
+interface Filter {
+    onlyPlaying: boolean;
+    onlyExtraTime: boolean;
+}
+
 @Component({
     selector: "zone",
     styleUrls: [ 'zone.component.scss' ],
@@ -17,7 +22,10 @@ export class ZoneComponent implements OnInit {
     zone$: Observable<Zone>;
     tables$: Observable<Table[]>;
     outstandings$: Observable<string>;
-    filter$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+    filter$: BehaviorSubject<Filter> = new BehaviorSubject({
+        onlyPlaying: false,
+        onlyExtraTime: false
+    });
     zoneId: number;
 
     constructor(private route: ActivatedRoute, private db: AngularFireDatabase, private md: MdDialog) {}
@@ -30,7 +38,7 @@ export class ZoneComponent implements OnInit {
                 return this.db.object('/vegas/zones/' + id)
             })
         ;
-        const tables$ = this.zone$.switchMap(zone => {
+        const tables$: Observable<Table[]> = this.zone$.switchMap(zone => {
             return this.db.list('/vegas/tables', {
                 query: {
                     orderByKey: true,
@@ -43,7 +51,12 @@ export class ZoneComponent implements OnInit {
         this.tables$ = Observable.combineLatest(this.outstandings$, tables$, this.filter$)
             .map(([outstandings, tables, filter]) => {
                 if (!(outstandings as any).$value) {
-                    return filter ? tables.filter(t => t.status === 'playing' || t.status === 'covered') : tables;
+                    return tables.filter(t => {
+                        if (filter.onlyExtraTime && !t.time) return false;
+                        if (filter.onlyPlaying && t.status !== 'playing' && t.status !== 'covered') return false;
+
+                        return true;
+                    });
                 }
                 const ids: string[] = (outstandings as any).$value.split(' ');
                 return tables.filter(t => ids.indexOf((t as any).$key) > -1 && !t.hasResult);
@@ -65,7 +78,7 @@ export class ZoneComponent implements OnInit {
                 update = { status: "done", doneTime: new Date() };
                 break;
             case "done":
-                update = { status: "" };
+                update = { status: "playing", doneTime: null };
                 break;
         }
         this.db.object('/vegas/tables/' + (table as any).$key).update(update);
@@ -75,8 +88,12 @@ export class ZoneComponent implements OnInit {
         this.db.object('/vegas/zones/' + this.zoneId).update( { needHelp });
     }
 
-    toggleDisplayOnlyPlaying(val: boolean) {
-        this.filter$.next(val);
+    toggleOnlyPlaying(val: boolean) {
+        this.filter$.take(1).subscribe(f => this.filter$.next(Object.assign({}, f, { onlyPlaying: val })));
+    }
+
+    toggleOnlyExtraTime(val: boolean) {
+        this.filter$.take(1).subscribe(f => this.filter$.next(Object.assign({}, f, { onlyExtraTime: val })));
     }
 
     addResult(e: Event, table: any) {
