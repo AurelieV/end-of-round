@@ -39,3 +39,20 @@
     justify-content: center;
     flex: 1;
 }
+
+.message {
+    cursor: pointer;
+    &.new {
+        color: red;
+    }
+}
+
+.message-modal {
+    .actions {
+        display: flex;
+        justify-content: flex-end;
+        button {
+            margin-left: 5px;
+        }
+    }
+}

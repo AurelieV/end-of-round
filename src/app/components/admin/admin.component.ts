@@ -97,6 +97,11 @@ export class AdminComponent implements OnInit {
                     })
                 })
             }
+            this.zones$.take(1).subscribe(zones => {
+                zones.forEach(z => {
+                    this.db.object('/vegas/zones/' + z.$key).update( { message: ""} );
+                })
+            })
         });
     }
 
@@ -127,5 +132,9 @@ export class AdminComponent implements OnInit {
 
     closeExtraTimed() {
         this.extraTimedDialog.close();
+    }
+
+    trackByFn(val) {
+        return val.$key;
     }
 }

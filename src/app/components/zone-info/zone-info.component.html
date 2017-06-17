@@ -5,4 +5,10 @@
     <div class="block playing">{{tablesInformation.playing}}</div>
     <div class="block covered">{{tablesInformation.covered}}</div>
     <div class="block extra-time">{{tablesInformation.extraTimed}}</div>
+    <div class="block message" [class.new]="newMessage" (click)="seeMessage($event)"><md-icon>&#xE0C9;</md-icon></div>
 </div>
+
+<ng-template class="message-modal" #message>
+    <h6>{{zone.$key}}</h6>
+    <zone-message [zone]="zone"></zone-message>
+</ng-template>

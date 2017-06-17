@@ -1,0 +1,19 @@
+:host {
+    text-align: center;
+    display: block;
+}
+
+.subtitle {
+    font-style: italic;
+    font-weight: bold;
+}
+.text {
+    white-space: pre-wrap;
+}
+input {
+    border: 1px solid black;
+    width: 100%;
+}
+button {
+    margin-top: 20px;
+}

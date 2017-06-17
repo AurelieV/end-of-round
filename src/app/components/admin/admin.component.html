@@ -1,6 +1,6 @@
 <div class="header">
     <zone-info 
-        *ngFor="let zone of zones$ | async"
+        *ngFor="let zone of zones$ | async;trackBy:trackByFn"
         class="zone"
         (click)="goToZone(zone.$key)"
         [zone]="zone"

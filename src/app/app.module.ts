@@ -18,6 +18,7 @@ import { DialogComponents } from './components/dialogs';
 import { HomeComponent } from './components/home/home.component';
 import { ZoneInfoComponent } from './components/zone-info/zone-info.component';
 import { TablesInfoComponent } from './components/tables-info/tables-info.component'
+import { ZoneMessageComponent } from './components/zone-message/zone-message.component';
 import { AgoPipe } from './pipes/ago.pipe';
 import { WarnAgoPipe } from './pipes/warn-ago.pipe';
 import { ResultPipe } from './pipes/result';
@@ -36,6 +37,7 @@ const appRoutes: Routes = [
     HomeComponent,
     ZoneInfoComponent,
     TablesInfoComponent,
+    ZoneMessageComponent,
     AgoPipe,
     WarnAgoPipe,
     ResultPipe,

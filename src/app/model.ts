@@ -25,6 +25,7 @@ export interface Zone {
     end: number;
     leader: string;
     needHelp?: boolean;
+    message: string;
 }
 
 export interface Tournament {
