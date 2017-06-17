@@ -78,14 +78,25 @@ export class AdminComponent implements OnInit {
         Observable.combineLatest(dialogRef.afterClosed(), this.outstandings$.take(1)).subscribe(([val, outstandings]) => {
             if (!val) return;
             const previousVal = (outstandings as any).$value;
+            const hasToResetGreen = !previousVal;
             const tableIds: string[] = (val || '').split(' ');
             const previousIds: string[] = (previousVal || '').split(' ');
-            const newVal = previousIds
+            const newIds = previousIds
                 .concat(tableIds)
                 .filter((val, key, tab) => tab.indexOf(val) === key && val)
-                .join(' ')
             ;
+            const newVal = newIds.join(' ');
             this.db.object('/vegas/outstandings').set(newVal);
+            if (hasToResetGreen) {
+                this.tables$.take(1).subscribe(tables => {
+                    tables.forEach(table => {
+                        if (table.status !== 'done') return;
+                        const id = (table as any).$key;
+                        if (newIds.indexOf(id) === -1) return;
+                        this.db.object('/vegas/tables/' + id).update({ status: null, doneTime: null});
+                    })
+                })
+            }
         });
     }
 
