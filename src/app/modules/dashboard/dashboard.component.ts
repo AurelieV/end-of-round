@@ -36,7 +36,6 @@ export class DashboardComponent implements OnInit {
         this.tables$ = this.tournamentService.getActiveTables();
         this.isOnOutstandingsStep$ = this.tournamentService.isOnOutstandingsStep();
         this.okTables$ = this.tournamentService.getOkTables();
-        //@TODO: check with Sophie if show done table without result
         this.extraTimedTables$ = this.tables$
             .map(tables => tables.filter(t => t.time > 0 && t.status !== 'done').sort((a, b) => b.time - a.time));
     }

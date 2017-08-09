@@ -142,7 +142,8 @@ export class TournamentService {
     }
 
     getActiveTablesInformationByZone(zone: TournamentZone): Observable<TablesInformation> {
-        return this.getActiveTablesByZone(zone).map(tables => {
+        const tables$ = zone ? this.getActiveTablesByZone(zone) : this.getActiveTables();
+        return tables$.map(tables => {
             const extraTimeTables = (tables || []).filter(t => t.time > 0 && t.status !== "done");
             return {
                 playing: tables.filter(t => t.status === "playing").length,
@@ -193,25 +194,12 @@ export class TournamentService {
             const newTablesString = newTableIds.join(' ');
             
             this.db.object(`/outstandings/${this.key.getValue()}`).set(newTablesString);
-
-            //@TODO: check with Sophie if still need + add documentation
-            if (hasToResetGreen) {
-                this.getAllTables().take(1).subscribe(tables => {
-                    tables.forEach(table => {
-                        if (table.status !== 'done') return;
-                        if (newTableIds.indexOf(table.$key) === -1) return;
-                        this.db.object(`/tables/${this.key.getValue()}/${table.$key}}`).update({ status: null, doneTime: null});
-                    })
-                })
-            }
-            //@TODO: check with Sophie if message has to be reset
         });
     }
 
     addFeatured(tablesString: string) {
         if (!tablesString) return;
         const tableIds: string[] = tablesString.match(/(\d+)/g) || [];
-        //@TODO: ngZone outside?
         tableIds.forEach(id => this.db.object(`/tables/${this.key.getValue()}/${id}`).update({ status: 'featured'}));
     }
 
@@ -231,6 +219,12 @@ export class TournamentService {
             }
             this.db.object(`tables/${this.key.getValue()}`).update(tables);
         });
+        this.getZones().take(1).subscribe(zones => {
+            zones.forEach(zone => {
+                this.db.object(`/messages/${this.key.getValue()}/${zone.$key}`).set("");
+            })
+        })
+
     }
 
     updateTable(tableId: string, update: any) {

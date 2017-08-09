@@ -1,9 +1,14 @@
-<div class="title">{{zone.name}} - {{zone.leader}}</div>
-<div class="subtitle">({{zone.start}} - {{zone.end}})</div>
+<ng-container *ngIf="zone">
+    <div class="title">{{zone.name}} - {{zone.leader}}</div>
+    <div class="subtitle">({{zone.start}} - {{zone.end}})</div>
+</ng-container>
+<ng-container *ngIf="!zone">
+    <div class="title">Total</div>
+    <div class="subtitle">(All tables)</div>
+</ng-container>
 
 <div class="status">
     <div class="block playing">{{(tablesInformation$ | async)?.playing}}</div>
     <div class="block covered">{{(tablesInformation$ | async)?.covered}}</div>
     <div class="block extra-time">{{(tablesInformation$ | async)?.extraTimed}}</div>
-    <zone-message class="block" [zone]="zone"></zone-message>
 </div>

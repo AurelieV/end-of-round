@@ -13,7 +13,6 @@ interface Filter {
     onlyExtraTime: boolean;
 }
 
-//@TODO: check with Sophie condition for button AddResult
 @Component({
     selector: "zone",
     styleUrls: [ 'zone.component.scss' ],

@@ -13,7 +13,7 @@ export class ZoneInfoComponent implements OnInit {
     tablesInformation$: Observable<TablesInformation>;
 
     @HostBinding("class.need-help") get needHelp() {
-        return this.zone.needHelp;
+        return this.zone && this.zone.needHelp;
     }
 
     constructor(private tournamentService: TournamentService) {}
