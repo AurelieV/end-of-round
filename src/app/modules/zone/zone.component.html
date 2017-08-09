@@ -1,9 +1,10 @@
 <div class="header">
     <div class="title">{{(zone$ | async)?.name}}</div>
-    <div class="actions" [class.active]="(filter$ | async).onlyPlaying || (filter$ | async).onlyExtraTime">
+    <div class="actions">
         <zone-message [zone]="zone$ | async"></zone-message>
         <button md-icon-button 
             class="menu-button"
+            [class.active]="(filter$ | async).onlyPlaying || (filter$ | async).onlyExtraTime"
             [mdMenuTriggerFor]="params"
             *ngIf="!(isOnOutstandingsStep$ | async)">
             <md-icon>&#xE8B8;</md-icon>
