@@ -6,11 +6,11 @@
 export const environment = {
   production: false,
   firebaseConfig: {
-    apiKey: "AIzaSyC2ZotUqWPnxwZZ9Xup_HnqHdRByYB_IPk",
-    authDomain: "end-of-round.firebaseapp.com",
-    databaseURL: "https://end-of-round.firebaseio.com",
-    projectId: "end-of-round",
-    storageBucket: "end-of-round.appspot.com",
-    messagingSenderId: "569384953582"
+    apiKey: "AIzaSyCQfbpg8loIPtP0Db1L6-EDtIRsed6VDbM",
+    authDomain: "end-of-round-dev.firebaseapp.com",
+    databaseURL: "https://end-of-round-dev.firebaseio.com",
+    projectId: "end-of-round-dev",
+    storageBucket: "",
+    messagingSenderId: "525436489918"
   }
 };

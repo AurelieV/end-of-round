@@ -4,68 +4,48 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule, Routes } from '@angular/router';
-import { MdToolbarModule, MdButtonModule, MdIconModule, MdDialogModule, MdInputModule, MdSidenavModule, MdCheckboxModule } from '@angular/material';
+import { MdListModule, MdToolbarModule, MdButtonModule } from '@angular/material';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
-import { MdSlideToggleModule } from '@angular/material';
-import { MdMenuModule } from '@angular/material';
 
 import { environment } from '../environments/environment';
+
+/* Components */
 import { AppComponent } from './app.component';
-import { AdminComponent } from './components/admin/admin.component';
-import { ZoneComponent } from './components/zone/zone.component';
-import { DialogComponents } from './components/dialogs';
-import { HomeComponent } from './components/home/home.component';
-import { ZoneInfoComponent } from './components/zone-info/zone-info.component';
-import { TablesInfoComponent } from './components/tables-info/tables-info.component'
-import { ZoneMessageComponent } from './components/zone-message/zone-message.component';
-import { AgoPipe } from './pipes/ago.pipe';
-import { WarnAgoPipe } from './pipes/warn-ago.pipe';
-import { ResultPipe } from './pipes/result';
+import { TournamentListComponent } from './tournament-list.component';
+
+/* Modules */
+import { TournamentModule } from './modules/tournament/tournament.module';
 
 const appRoutes: Routes = [
-  { path: '', component: HomeComponent, pathMatch: 'full' },
-  { path: 'admin', component: AdminComponent },
-  { path: 'zone/:id', component: ZoneComponent }
+  { path: '', component: TournamentListComponent, pathMatch: 'full' },
+  { path: 'tournament/:key', loadChildren: './modules/tournament/tournament.module#TournamentModule' },
+  { path: 'administration', loadChildren: './modules/administration/administration.module#AdministrationModule' }
 ]
 
 @NgModule({
   declarations: [
     AppComponent,
-    AdminComponent,
-    ZoneComponent,
-    HomeComponent,
-    ZoneInfoComponent,
-    TablesInfoComponent,
-    ZoneMessageComponent,
-    AgoPipe,
-    WarnAgoPipe,
-    ResultPipe,
-    ...DialogComponents
+    TournamentListComponent
   ],
   imports: [
+    /* Angular */
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
     HttpModule,
+    RouterModule.forRoot(appRoutes),
+
+    /* Angular Material */
+    MdListModule,
     MdToolbarModule,
     MdButtonModule,
-    MdIconModule,
-    MdDialogModule,
-    MdInputModule,
-    MdSidenavModule,
-    MdCheckboxModule,
-    MdSlideToggleModule,
-    MdMenuModule,
+
+    /* FireBase */
     AngularFireModule.initializeApp(environment.firebaseConfig),
-    AngularFireDatabaseModule,
-    RouterModule.forRoot(appRoutes)
+    AngularFireDatabaseModule
   ],
-  entryComponents: [
-    ...DialogComponents
-  ],
-  providers: [
-  ],
-  bootstrap: [AppComponent]
+  providers: [],
+  bootstrap: [ AppComponent ]
 })
-export class AppModule { }
+export class AppModule {}

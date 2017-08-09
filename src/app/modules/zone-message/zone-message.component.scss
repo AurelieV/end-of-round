@@ -1,0 +1,28 @@
+:host {
+    cursor: pointer;
+    &.new {
+        color: red;
+    }
+}
+
+.body {
+    text-align: center;
+    .sending {
+        display: flex;
+        input {
+            flex: 1;
+        }
+        button {
+            margin-left: 10px;
+        }
+        margin-bottom: 20px;
+    }
+    .text {
+        white-space: pre-wrap;
+        max-height: 300px;
+        overflow: auto;
+    }
+    input {
+        border: 1px solid black;
+    }
+}

@@ -1,0 +1,12 @@
+<md-icon [class.new]="hasNewMessage" (click)="seeMessage($event)">&#xE0C9;</md-icon>
+
+<ng-template class="message-modal" #message>
+    <h3>{{zone.name}}</h3>
+    <div class="body">
+        <div class="sending">
+            <input type="text" [(ngModel)]="newMessage">
+            <button md-raised-button color="primary" (click)="addMessage()">Send</button>
+        </div>
+        <div class="text">{{messages$ | async}}</div>
+    </div>
+</ng-template>

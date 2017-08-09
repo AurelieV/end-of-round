@@ -1,0 +1,20 @@
+[md-dialog-actions].actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+    button {
+        margin-left: 10px;
+    }
+}
+
+textarea.full {
+    width: 100%;
+    border: 1px solid black;
+    min-height: 100px;
+}
+
+[md-dialog-content] form .message {
+    font-style: italic;
+    color: orange;
+    margin-bottom: 10px;
+}

@@ -1,0 +1,48 @@
+<h3 *ngIf="create">Create tournament</h3>
+<h3 *ngIf="!create">Edit {{previousName}}</h3>
+<div md-dialog-content>
+    <form #createForm="ngForm">
+        <div class="message">
+            Be aware that by editing, you will probably lost most of the current data, similar to what will be done with an end of round.
+        </div>
+        <md-input-container>
+            <input name="name" mdInput placeholder="Name" type="string" required [(ngModel)]="data.name">
+        </md-input-container>
+        <br>
+        <md-input-container>
+            <input name="start" mdInput placeholder="Start table number" type="number" required [(ngModel)]="data.start">
+        </md-input-container>
+        <md-input-container>
+            <input name="end" mdInput placeholder="End table number" type="number" required [(ngModel)]="data.end">
+        </md-input-container>
+        <br>
+        <label>Information</label>
+        <textarea class="full" type="text" [(ngModel)]="data.information" name="information"></textarea>
+        <div class="zones">
+            <h4>Zones</h4>
+            <div class="zone" *ngFor="let zone of zones; let i = index;">
+                <md-input-container>
+                    <input name="zone-name-{{i}}" mdInput placeholder="Name" type="string" required [(ngModel)]="zone.name">
+                </md-input-container>
+                <md-input-container>
+                    <input name="zone-leader-{{i}}" mdInput placeholder="LeaderName" type="string" required [(ngModel)]="zone.leader">
+                </md-input-container>
+                <md-input-container>
+                    <input name="zone-start-{{i}}" mdInput placeholder="Start table number" type="number" required [(ngModel)]="zone.start">
+                </md-input-container>
+                <md-input-container>
+                    <input name="zone-end-{{i}}" mdInput placeholder="End table number" type="number" required [(ngModel)]="zone.end">
+                </md-input-container>
+                <button md-raised-button color="primary" (click)="deleteZone(i)" [disabled]="zones.length === 1"><md-icon>&#xE872;</md-icon></button>
+            </div>
+            <button md-raised-button color="primary" (click)="addZone()">Add Zone</button>
+        </div>
+    </form>
+</div>
+<div class="actions" md-dialog-actions>
+    <button md-button color="warning" md-dialog-close>Cancel</button>
+    <button md-button color="primary" md-dialog-close [md-dialog-close]="{zones: zones, tournament: data}" [disabled]="!createForm.form.valid">
+        <span *ngIf="create">Create</span>
+        <span *ngIf="!create">Edit</span>
+    </button>
+</div>

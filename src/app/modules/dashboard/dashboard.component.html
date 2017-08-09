@@ -1,0 +1,52 @@
+<div class="header">
+    <zone-info 
+        *ngFor="let zone of zones$ | async;trackBy:trackByFn"
+        class="zone"
+        (click)="goToZone(zone.$key)"
+        [zone]="zone">
+    </zone-info>
+</div>
+<div class="content">
+    <div class="actions">
+        <button (click)="addOutstandings()" md-raised-button color="primary">Add outstanding</button>
+        <button (click)="addFeatured()" md-raised-button color="primary">Add featured</button>
+        <button (click)="openExtraTimed()" md-raised-button color="primary">Show extra timed</button>
+        <button (click)="endRound()" md-raised-button color="accent">End round</button>
+    </div>
+    <div class="tables">
+        <div *ngIf="(isOnOutstandingsStep$ | async)">
+            <h3>Outstanding</h3>
+            <tables-info [tables]="tables$ | async"></tables-info>
+            <h3>Done</h3>
+            <tables-info [tables]="okTables$ | async"></tables-info>
+        </div>
+    </div>
+</div>
+<ng-template #confirmEnd>
+    <div class="confirmation">
+        <h3>End round?</h3>
+        <div md-dialog-content>
+            Are your sure to end round? All current informations will be erased
+        </div>
+        <div class="actions" md-dialog-actions>
+            <button md-raised-button color="warn" (click)="cancelRestart()">Cancel</button>
+            <button md-raised-button color="primary" (click)="restart()">Restart</button>
+        </div>
+    </div>
+</ng-template>
+<ng-template #extraTimed>
+    <div class="extra-timed">
+        <h3>Extra timed tables</h3>
+        <div md-dialog-content>
+            <ul>
+                <li *ngFor="let table of extraTimedTables$ | async">
+                    <span class="extra-timed-table text" [ngClass]="table.status">Table {{table.$key}}</span>: +{{table.time}}min
+                </li>
+            </ul>
+            <div *ngIf="(extraTimedTables$ | async)?.length === 0">No tables</div>
+        </div>
+        <div class="actions" md-dialog-actions>
+            <button md-raised-button color="primary" (click)="closeExtraTimed()">Closed</button>
+        </div>
+    </div>
+</ng-template>

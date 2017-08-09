@@ -1,0 +1,45 @@
+:host {
+    background: white;
+    border-radius: 10px;
+    padding: 5px 10px;
+    &:active {
+        border: black solid 2px;
+    }
+    &.need-help {
+        border: red solid 2px;
+    }
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+.title {
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: capitalize;
+}
+.subtitle {
+    font-style: italic;
+    text-align: center;
+}
+.status {
+    display: flex;
+    .block {
+        font-size: 14px;
+        margin-right: 5px;
+        margin-left: 5px;
+        width: 30px;
+        height: 30px;
+        border-radius: 25%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    padding-top: 10px;
+    padding-bottom: 10px;
+    justify-content: center;
+    flex: 1;
+}
+
+zone-info {
+    display: block;
+}

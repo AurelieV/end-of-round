@@ -1,0 +1,31 @@
+<md-toolbar color="primary" class="header">
+  <div class="header-content">
+      <span>Administration</span>
+  </div>
+</md-toolbar>
+<div class="content-with-header">
+    <button md-raised-button color="primary" (click)="createTournament()">Create new tournament</button>
+    <md-nav-list>
+        <md-list-item *ngFor="let tournament of tournaments$ | async">
+            <span class="title">{{ tournament.name }}</span>
+            <div class="actions">
+                <button md-mini-fab (click)="view($event, tournament.key)"><md-icon>&#xE417;</md-icon></button>
+                <button md-mini-fab (click)="edit($event, tournament.key)"><md-icon>&#xE254;</md-icon></button>
+                <button md-mini-fab (click)="delete($event, tournament)"><md-icon>&#xE872;</md-icon></button>
+            </div>
+        </md-list-item>
+    </md-nav-list>
+</div>
+
+<ng-template #confirm>
+    <div class="confirmation">
+        <h3>Are you sure</h3>
+        <div md-dialog-content>
+            All data of <strong>{{selectedTournament.name}}</strong> will be lost.
+        </div>
+        <div class="actions" md-dialog-actions>
+            <button md-raised-button color="warn" (click)="cancelDelete()">Cancel</button>
+            <button md-raised-button color="primary" (click)="confirmDelete(selectedTournament.key)">Delete</button>
+        </div>
+    </div>
+</ng-template>

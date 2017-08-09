@@ -1,0 +1,13 @@
+<h3 md-dialog-title>Add time to a table</h3>
+<form md-dialog-content #form="ngForm">
+    <md-input-container>
+      <input name="number" mdInput placeholder="Table number" type="number" required [(ngModel)]="data.tableNumber">
+    </md-input-container>
+    <md-input-container>
+      <input name="time" mdInput placeholder="Time" type="number" required [(ngModel)]="data.time">
+    </md-input-container>
+</form>
+<div class="actions" md-dialog-actions>
+    <button md-raised-button color="warning" md-dialog-close>Cancel</button>
+    <button md-raised-button color="primary" md-dialog-close [md-dialog-close]="data" [disabled]="!form.form.valid">Add</button>
+</div>
