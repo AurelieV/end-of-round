@@ -2,11 +2,13 @@
     background: white;
     border-radius: 10px;
     padding: 5px 10px;
-    &:active {
-        border: black solid 2px;
-    }
-    &.need-help {
-        border: red solid 2px;
+    &.active {
+        &:active {
+            border: black solid 2px;
+        }
+        &.need-help {
+            border: red solid 2px;
+        }
     }
     display: flex;
     flex-direction: column;

@@ -11,4 +11,5 @@
     <div class="block playing">{{(tablesInformation$ | async)?.playing}}</div>
     <div class="block covered">{{(tablesInformation$ | async)?.covered}}</div>
     <div class="block extra-time">{{(tablesInformation$ | async)?.extraTimed}}</div>
+    <zone-message *ngIf="zone" class="block" [zone]="zone"></zone-message>
 </div>

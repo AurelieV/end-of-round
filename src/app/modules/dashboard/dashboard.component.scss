@@ -36,7 +36,9 @@
 
 zone-info {
     margin: 5px 10px;
-    cursor: pointer;
+    &.active {
+        cursor: pointer;
+    }
     min-width: 220px;
 }
 
