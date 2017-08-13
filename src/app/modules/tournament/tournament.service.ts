@@ -29,6 +29,7 @@ export interface Table {
     hasResult?: boolean;
     result?: Result;
     $key: string;
+    assignated?: string;
 }
 
 export interface Result {

@@ -2,6 +2,7 @@ import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MdDialogRef, MdDialog } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/take';
 
 import { AddTablesDialogComponent } from './add-tables.dialog.component';
 import { TournamentService, TournamentZone, Table } from './../tournament/tournament.service';
@@ -17,6 +18,7 @@ export class DashboardComponent implements OnInit {
     isOnOutstandingsStep$: Observable<boolean>;
     okTables$: Observable<Table[]>;
     extraTimedTables$: Observable<Table[]>;
+    isLoading: boolean = true;
     
     @ViewChild('confirmEnd') confirmEnd: TemplateRef<any>;
     confirmation: MdDialogRef<any>;
@@ -33,6 +35,7 @@ export class DashboardComponent implements OnInit {
 
     ngOnInit() {
         this.zones$ = this.tournamentService.getZones();
+        this.zones$.take(1).subscribe(_ => this.isLoading = false);
         this.tables$ = this.tournamentService.getActiveTables();
         this.isOnOutstandingsStep$ = this.tournamentService.isOnOutstandingsStep();
         this.okTables$ = this.tournamentService.getOkTables();

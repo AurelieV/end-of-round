@@ -7,9 +7,10 @@
     <div class="subtitle">(All tables)</div>
 </ng-container>
 
-<div class="status">
+<div class="status" *ngIf="!isLoading">
     <div class="block playing">{{(tablesInformation$ | async)?.playing}}</div>
     <div class="block covered">{{(tablesInformation$ | async)?.covered}}</div>
     <div class="block extra-time">{{(tablesInformation$ | async)?.extraTimed}}</div>
     <zone-message *ngIf="zone" class="block" [zone]="zone"></zone-message>
 </div>
+<loader [isLoading]="isLoading"></loader>

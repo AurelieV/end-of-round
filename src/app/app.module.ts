@@ -1,3 +1,4 @@
+import { SharedModule } from './modules/shared/shared.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
@@ -35,6 +36,7 @@ const appRoutes: Routes = [
     FormsModule,
     HttpModule,
     RouterModule.forRoot(appRoutes),
+    SharedModule,
 
     /* Angular Material */
     MdListModule,

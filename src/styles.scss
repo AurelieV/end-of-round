@@ -29,7 +29,12 @@ md-dialog-container {
     align-items: center;
     align-content: center;
     position: absolute;
+    flex-direction: column;
     top: 0; left: 0; right: 0; bottom: 0;
+}
+
+.loader-text {
+    margin-top: 20px;
 }
 
 .loader {

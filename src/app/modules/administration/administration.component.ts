@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
 import { MdDialog, MdDialogRef } from '@angular/material';
+import 'rxjs/add/operator/take';
 
 import { Tournament, AdministrationService } from './administration.service';
 import { CreateTournamentComponent } from './create-tournament.component';
@@ -16,11 +17,13 @@ export class AdministrationComponent implements OnInit {
     selectedTournament: Tournament;
     @ViewChild('confirm') confirmTemplate: TemplateRef<any>;
     confirmation: MdDialogRef<any>;
+    isLoading: boolean = true;
 
     constructor(private administrationService: AdministrationService, private dialog: MdDialog, private router: Router) {}
 
     ngOnInit() {
         this.tournaments$ = this.administrationService.getTournaments();
+        this.tournaments$.take(1).subscribe(_ => this.isLoading = false);
     }
 
     createTournament() {

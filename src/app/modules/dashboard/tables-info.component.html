@@ -1,6 +1,6 @@
 <div *ngFor="let table of tables" 
     class="table block"
-    [ngClass]="[table.status, table.hasResult ? '' : (table.doneTime | warnAgo)]"
+    [ngClass]="[table.status, table.result || table.hasResult ? '' : (table.doneTime | warnAgo)]"
     [class.no-status]="!table.status">
     <div class="header">
         <div class="title">Table {{table.$key}}</div>

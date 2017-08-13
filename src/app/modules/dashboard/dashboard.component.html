@@ -1,5 +1,6 @@
 <div class="header">
-    <zone-info class="zone"></zone-info>
+    <loader [isLoading]="isLoading"></loader>
+    <zone-info *ngIf="!isLoading" class="zone"></zone-info>
     <zone-info 
         *ngFor="let zone of zones$ | async;trackBy:trackByFn"
         class="zone"

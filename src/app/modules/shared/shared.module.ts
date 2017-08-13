@@ -5,6 +5,8 @@ import { AgoPipe } from './pipes/ago.pipe';
 import { WarnAgoPipe } from './pipes/warn-ago.pipe';
 import { ResultPipe } from './pipes/result.pipe';
 
+import { LoaderComponent } from './components/loader.component';
+
 @NgModule({
     imports: [
         CommonModule
@@ -12,13 +14,15 @@ import { ResultPipe } from './pipes/result.pipe';
     declarations: [
         AgoPipe,
         WarnAgoPipe,
-        ResultPipe
+        ResultPipe,
+        LoaderComponent
     ],
     exports: [
         CommonModule,
         AgoPipe,
         WarnAgoPipe,
-        ResultPipe
+        ResultPipe,
+        LoaderComponent
     ]
 })
 export class SharedModule {}

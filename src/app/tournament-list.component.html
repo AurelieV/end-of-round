@@ -1,14 +1,15 @@
 <md-toolbar color="primary" class="header">
-  <div class="header-content">Choose your tournament</div>
+  <div class="header-content">Choose tournament</div>
     <div class="actions">
         <a routerLink="/administration" md-raised-button color="accent">Admin</a>
     </div>
 </md-toolbar>
 <div class="content-with-header">
+    <loader [isLoading]="isLoading"></loader>
     <md-nav-list>
-        <md-list-item *ngFor="let tournament of tournaments | async" (click)="goToTournament(tournament.$key)">
+        <md-list-item *ngFor="let tournament of tournaments$ | async" (click)="goToTournament(tournament.$key)">
             <span>{{ tournament.name }}</span>
         </md-list-item>
     </md-nav-list>
-    <div class="message" *ngIf="!(hasTournament | async)">No tournament available</div>
+    <div class="message" *ngIf="!isLoading && !(hasTournament$ | async)">No tournament available</div>
 </div>

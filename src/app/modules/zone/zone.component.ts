@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { AngularFireDatabase, FirebaseObjectObservable, FirebaseListObservable } from 'angularfire2/database';
 import { MdDialog, MdDialogRef } from '@angular/material';
+import 'rxjs/add/operator/take';
 
 import { TournamentService, TournamentZone, Table } from './../tournament/tournament.service';
 import { AddResultDialogComponent } from './add-result.dialog.component';
@@ -27,9 +28,14 @@ export class ZoneComponent implements OnInit {
     });
     isOnOutstandingsStep$: Observable<boolean>;
     zoneId: string;
+    isLoading: boolean = true;
 
     @ViewChild('confirm') confirmTemplate: TemplateRef<any>;
     confirmation: MdDialogRef<any>;
+
+    @ViewChild('assignJudges') assignJudgesTemplate: TemplateRef<any>;
+    assignJudges: MdDialogRef<any>;
+    assignData: any = {};
 
     constructor(
         private route: ActivatedRoute,
@@ -61,6 +67,7 @@ export class ZoneComponent implements OnInit {
                 });
             })
         });
+        this.tables$.take(1).subscribe(_ => this.isLoading = false);
         this.isOnOutstandingsStep$ = this.tournamentService.isOnOutstandingsStep();
     }
 
@@ -100,6 +107,10 @@ export class ZoneComponent implements OnInit {
         this.confirmation = this.md.open(this.confirmTemplate);
     }
 
+    assign() {
+        this.assignJudges = this.md.open(this.assignJudgesTemplate);
+    }
+
     confirmAllGreen() {
         this.confirmation.close();
         this.zone$.take(1).subscribe(zone => {
@@ -107,7 +118,7 @@ export class ZoneComponent implements OnInit {
                 .map(tables => tables.filter(t => !t.status))
                 .take(1)
                 .subscribe(tables => {
-                    this.cd.detectChanges();
+                    this.cd.detach();
                     tables.forEach(table => {
                         this.tournamentService.updateTable(table.$key, { status: "done", doneTime: new Date() })
                     });
@@ -116,8 +127,21 @@ export class ZoneComponent implements OnInit {
         });
     }
 
+    confirmAssignJudges() {
+        const judge = this.assignData.judge;
+        const tableIds = this.assignData.tables.match(/(\d+)/g) || [];
+        this.assignData = {};
+        tableIds.forEach(id => {
+            this.tournamentService.updateTable(id, { assignated: judge })
+        })
+    }
+
     cancelAllGreen() {
         this.confirmation.close();
+    }
+
+    cancelAssignJudges() {
+        this.assignJudges.close();
     }
 
     addResult(e: Event, table: any) {

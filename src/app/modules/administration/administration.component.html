@@ -5,6 +5,7 @@
 </md-toolbar>
 <div class="content-with-header">
     <button md-raised-button color="primary" (click)="createTournament()">Create new tournament</button>
+    <loader [isLoading]="isLoading"></loader>
     <md-nav-list>
         <md-list-item *ngFor="let tournament of tournaments$ | async">
             <span class="title">{{ tournament.name }}</span>

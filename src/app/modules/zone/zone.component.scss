@@ -7,20 +7,28 @@
     display: flex;
     align-items: center;
     padding-top: 5px;
-    padding-bottom: 20px;
+    padding-bottom: 5px;
     padding-left: 10px;
     padding-right: 10px;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 60px;
+    background: white;
 
     .actions {
         display: flex;
         justify-content: center;
         align-items: flex-end;
         margin-left: 5px;
-        &.active {
+        button.active {
             color: red;
         }
+        button:not(:last-child), zone-message {
+            margin-right: 15px;
+        }
         zone-message {
-            margin-right: 10px;
+            margin-bottom: 2px;
         }
     }
 }
@@ -42,6 +50,7 @@
     flex-wrap: wrap;
     justify-content: center;
     color: black;
+    padding-top: 50px;
     &.hide-button {
         .table .actions {
             display: none;
@@ -61,9 +70,11 @@
     -webkit-user-select: none;
     -ms-user-select: none;
     cursor: pointer;
+
+    font-size: 16px;
     
-    min-height: 50px;
-    min-width: 50px;
+    min-height: 40px;
+    min-width: 45px;
     
     border: 1px solid black;
     padding: 10px;
@@ -77,7 +88,6 @@
     }
     &.has-time {
         font-weight: bold;
-        font-size: 18px;
     }
     .actions {
         margin-top: 20px;
@@ -90,7 +100,7 @@
     right: 20px;
 }
 
-.confirmation {
+.confirmation, .assign-judges {
     .actions {
         display: flex;
         justify-content: flex-end;
@@ -98,4 +108,16 @@
             margin-left: 5px;
         }
     }
+}
+
+.assign-judges {
+    form {
+        display: flex;
+        flex-direction: column;
+    }
+    textarea {
+        min-height: 100px;
+        margin-top: 10px;
+    }
+
 }
