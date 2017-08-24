@@ -1,4 +1,4 @@
-<div class="header">
+<div class="column1">
     <loader [isLoading]="isLoading"></loader>
     <zone-info *ngIf="!isLoading && (zones$ | async).length > 1" class="zone"></zone-info>
     <zone-info 
@@ -8,7 +8,7 @@
         [zone]="zone">
     </zone-info>
 </div>
-<div class="content">
+<div class="column2">
     <div class="actions">
         <button (click)="addFeatured()" md-raised-button color="primary">Add featured</button>
         <button (click)="openExtraTimed()" md-raised-button color="primary">Show extra timed</button>
