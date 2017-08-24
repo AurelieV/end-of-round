@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router, NavigationEnd, PRIMARY_OUTLET } from '@angular/router';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MdDialog } from '@angular/material';
 
@@ -15,11 +15,14 @@ import { TournamentService, Tournament } from './tournament.service';
 export class TournamentComponent implements OnInit, OnDestroy {
     subscriptions: Subscription[] = [];
     tournament$: Observable<Tournament>;
+    key: string;
+    isOnDashboard: boolean;
 
     constructor(
         private route: ActivatedRoute,
         private tournamentService: TournamentService,
-        private dialog: MdDialog
+        private dialog: MdDialog,
+        private router: Router
     ) {}
 
     ngOnInit() {
@@ -28,10 +31,18 @@ export class TournamentComponent implements OnInit, OnDestroy {
             this.route.paramMap.subscribe(params => {
                 const key = params.get('key');
                 if (key) {
-                    this.tournamentService.setKey(key)
+                    this.tournamentService.setKey(key);
+                    this.key = key;
                 }
             })
         );
+        this.subscriptions.push(
+            this.router.events.subscribe(event => {
+                if (event instanceof NavigationEnd) {
+                    const segments = this.router.parseUrl(event.url).root.children[PRIMARY_OUTLET].segments.map(s => s.path);
+                    this.isOnDashboard = segments.indexOf('dashboard') > -1;
+                }
+        }));
     }
 
     addTime() {
@@ -40,6 +51,14 @@ export class TournamentComponent implements OnInit, OnDestroy {
             if (!data) return;
             this.tournamentService.setTime(data.time, data.tableNumber);
         });
+    }
+
+    edit() {
+        this.router.navigate([ 'administration', 'edit', this.key ]);
+    }
+
+    goToDashboard() {
+        this.router.navigate([ 'tournament', this.key, 'dashboard' ]);
     }
 
     ngOnDestroy() {

@@ -1,8 +1,5 @@
 <md-toolbar color="primary" class="header">
   <div class="header-content">Choose tournament</div>
-    <div class="actions">
-        <a routerLink="/administration" md-raised-button color="accent">Admin</a>
-    </div>
 </md-toolbar>
 <div class="content-with-header">
     <loader [isLoading]="isLoading"></loader>
@@ -12,4 +9,7 @@
         </md-list-item>
     </md-nav-list>
     <div class="message" *ngIf="!isLoading && !(hasTournament$ | async)">No tournament available</div>
+    <div class="actions">
+        <a routerLink="/administration" md-raised-button color="accent">Add a tournament</a>
+    </div>
 </div>

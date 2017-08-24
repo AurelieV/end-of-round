@@ -3,7 +3,9 @@
       <span>{{(tournament$ | async)?.name}}</span>
   </div>
   <div class="actions">
-    <button md-raised-button color="accent" (click)="addTime()">Add <md-icon>&#xE192;</md-icon></button>
+    <button md-mini-fab color="warn" (click)="goToDashboard()" *ngIf="!isOnDashboard"><md-icon>&#xE417;</md-icon></button>
+    <button md-mini-fab color="warn" (click)="edit()" *ngIf="isOnDashboard"><md-icon>&#xE3C9;</md-icon></button>
+    <button md-mini-fab color="accent" (click)="addTime()"><md-icon>&#xE192;</md-icon></button>
   </div>
 </md-toolbar>
 <div class="content-with-header">

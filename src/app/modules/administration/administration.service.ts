@@ -54,11 +54,12 @@ export class AdministrationService {
     }
 
     createTournament(data: TournamentData, zones: ZoneData[]) {
-        this.db.list('tournaments').push(data).then(tournament => {
+        return this.db.list('tournaments').push(data).then(tournament => {
             this.createTables(tournament.key, data.start, data.end);
             zones.forEach(zone => {
                 this.db.list(`zones/${tournament.key}`).push(zone);
             });
+            return tournament;
         });
     }
 

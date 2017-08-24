@@ -1,12 +1,16 @@
-import { Component } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import {  Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/combineLatest';
 
-import { TournamentData, ZoneData } from './administration.service';
+import { TournamentData, ZoneData, AdministrationService } from './administration.service';
 
 @Component({
     selector: 'create-tournament',
-    templateUrl: './create-tournament.component.html'
+    templateUrl: './create-tournament.component.html',
+    styleUrls: ['./create-tournament.component.scss']
 })
-export class CreateTournamentComponent {
+export class CreateTournamentComponent implements OnInit { 
     create: boolean = true;
     previousName: string;
     zones: ZoneData[] = [];
@@ -15,6 +19,24 @@ export class CreateTournamentComponent {
         end: 100,
         name: "",
         information: ""
+    }
+    id: string;
+
+    constructor(
+        private administrationService: AdministrationService,
+        private router: Router,
+        private route: ActivatedRoute) {
+        this.addZone();
+    }
+
+    ngOnInit() {
+        this.route.paramMap.subscribe(params => {
+            const id = params.get('id');
+            if (id) { 
+                this.administrationService.getTournament(id).take(1).subscribe(val => this.current = val);
+                this.id = id;
+            }
+        })
     }
 
     set current(value: { tournament: TournamentData, zones: ZoneData[] }) {
@@ -32,7 +54,21 @@ export class CreateTournamentComponent {
         this.zones = this.zones.filter((zone, i) => i !== index);
     }
 
-    constructor() {
-        this.addZone();
+    cancel() {
+        if (this.create) {
+            this.router.navigate(['']);
+        }
+    }
+
+    addOrEdit() {
+        if (this.create) {
+            this.administrationService.createTournament(this.data, this.zones)
+                .then(tournament => {
+                    this.router.navigate(['tournament', tournament.$key, 'dashboard']);
+                });
+        } else {
+            this.administrationService.editTournament(this.id, this.data, this.zones)
+            this.router.navigate(['tournament', this.id, 'dashboard']);
+        }
     }
 }

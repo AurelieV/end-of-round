@@ -15,7 +15,11 @@ import { AdministrationService } from './administration.service';
 export const routes: Routes = [
     { 
         path: '',
-        component: AdministrationComponent
+        component: AdministrationComponent,
+        children: [
+            { path: '', component: CreateTournamentComponent },
+            { path: 'edit/:id', component: CreateTournamentComponent }
+        ]
     }
 ]
 
@@ -35,9 +39,6 @@ export const routes: Routes = [
     ],
     declarations: [
         AdministrationComponent,
-        CreateTournamentComponent
-    ],
-    entryComponents: [
         CreateTournamentComponent
     ],
     providers: [ AdministrationService ]
