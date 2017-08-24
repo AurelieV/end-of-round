@@ -33,7 +33,7 @@
         <button md-menu-item (click)="allGreen()">Mark all empty as done</button>
     </md-menu>
 </div>
-<div class="tables" [class.hide-button]="(isOnOutstandingsStep$ | async)" [class.show-warn]="(isOnOutstandingsStep$ | async)">
+<div class="tables" [class.hide-button]="!(isOnOutstandingsStep$ | async)" [class.show-warn]="(isOnOutstandingsStep$ | async)">
     <loader [isLoading]="isLoading"></loader>
     <div class="table block" *ngFor="let table of tables$ | async" [ngClass]="[table.status, table.result ? '' : table.doneTime | warnAgo]" [class.has-time]="table.time" (click)="onTableClick(table)">
         <div class="number">{{table.$key}}</div>
