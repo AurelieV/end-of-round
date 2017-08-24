@@ -18,6 +18,9 @@ import { TournamentListComponent } from './tournament-list.component';
 /* Modules */
 import { TournamentModule } from './modules/tournament/tournament.module';
 
+/* Service */
+import { ConnectionService } from './connection.service';
+
 const appRoutes: Routes = [
   { path: '', component: TournamentListComponent, pathMatch: 'full' },
   { path: 'tournament/:key', loadChildren: './modules/tournament/tournament.module#TournamentModule' },
@@ -47,7 +50,7 @@ const appRoutes: Routes = [
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireDatabaseModule
   ],
-  providers: [],
+  providers: [ ConnectionService ],
   bootstrap: [ AppComponent ]
 })
 export class AppModule {}

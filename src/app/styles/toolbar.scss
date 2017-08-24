@@ -8,6 +8,15 @@ md-toolbar.header {
     }
     position: fixed;
     z-index: 10;
+    .connection-status {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: red;
+        &.connected {
+            background: lightgreen;
+        }
+    }
 }
 
 .content-with-header {

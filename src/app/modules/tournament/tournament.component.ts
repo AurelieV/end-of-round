@@ -1,3 +1,4 @@
+import { ConnectionService } from './../../connection.service';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { ActivatedRoute, Router, NavigationEnd, PRIMARY_OUTLET } from '@angular/router';
@@ -22,7 +23,8 @@ export class TournamentComponent implements OnInit, OnDestroy {
         private route: ActivatedRoute,
         private tournamentService: TournamentService,
         private dialog: MdDialog,
-        private router: Router
+        private router: Router,
+        public connectionService: ConnectionService
     ) {}
 
     ngOnInit() {

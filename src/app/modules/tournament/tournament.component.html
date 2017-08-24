@@ -1,4 +1,5 @@
 <md-toolbar color="primary" class="header">
+  <div class="connection-status" [class.connected]="connectionService.isConnected"></div>
   <div class="header-content">
       <span>{{(tournament$ | async)?.name}}</span>
   </div>
