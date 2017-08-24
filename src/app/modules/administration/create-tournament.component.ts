@@ -57,6 +57,8 @@ export class CreateTournamentComponent implements OnInit {
     cancel() {
         if (this.create) {
             this.router.navigate(['']);
+        } else {
+            this.router.navigate(['tournament', this.id, 'dashboard']);
         }
     }
 
