@@ -228,6 +228,10 @@ export class TournamentService {
 
     }
 
+    getTable(tableId: string): Observable<Table | null> {
+        return this.db.object(`/tables/${this.key.getValue()}/${tableId}`).take(1);
+    }
+
     updateTable(tableId: string, update: any) {
         this.db.object(`/tables/${this.key.getValue()}/${tableId}`).update(update);
     }

@@ -48,11 +48,7 @@ export class TournamentComponent implements OnInit, OnDestroy {
     }
 
     addTime() {
-        const dialogRef = this.dialog.open(TimeDialogComponent);
-        dialogRef.afterClosed().subscribe(data => {
-            if (!data) return;
-            this.tournamentService.setTime(data.time, data.tableNumber);
-        });
+        this.dialog.open(TimeDialogComponent);
     }
 
     edit() {
