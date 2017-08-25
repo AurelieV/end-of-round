@@ -127,13 +127,15 @@ export class ZoneComponent implements OnInit {
         });
     }
 
-    confirmAssignJudges() {
+    confirmAssignJudges(form) {
         const judge = this.assignData.judge;
         const tableIds = this.assignData.tables.match(/(\d+)/g) || [];
         this.assignData = {};
+        form.reset();
         tableIds.forEach(id => {
             this.tournamentService.updateTable(id, { assignated: judge })
-        })
+        });
+        this.assignJudges.close();
     }
 
     cancelAllGreen() {

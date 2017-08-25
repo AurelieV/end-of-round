@@ -75,12 +75,12 @@
                 <md-input-container>
                     <input maxLength="4" name="judge" mdInput placeholder="Judge" type="text" required [(ngModel)]="assignData.judge">
                 </md-input-container>
-                <textarea required type="text" [(ngModel)]="assignData.tables" name="tables"></textarea>
+                <textarea required type="text" [(ngModel)]="assignData.tables" name="tables" placeholder="Tables number separated by space or newline"></textarea>
             </form>
         </div>
         <div class="actions" md-dialog-actions>
             <button md-raised-button color="warn" (click)="cancelAssignJudges()">Close</button>
-            <button md-raised-button color="primary" [disabled]="!assignJudgesForm.form.valid" (click)="confirmAssignJudges()">Assign</button>
+            <button md-raised-button color="primary" [disabled]="!assignJudgesForm.form.valid" (click)="confirmAssignJudges(assignJudgesForm)">Assign</button>
         </div>
     </div>
 </ng-template>
