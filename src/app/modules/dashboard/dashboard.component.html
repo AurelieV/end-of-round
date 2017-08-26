@@ -57,12 +57,10 @@
     <div class="remaining-tables">
         <h3>Remaining tables</h3>
         <div md-dialog-content>
-            <ul>
-                <li *ngFor="let table of remainingTables$ | async">
-                    <span class="text" [ngClass]="table.status">Table {{table.$key}}</span>
-                </li>
-            </ul>
-            <div *ngIf="(tables$ | async)?.length === 0">No tables</div>
+            <div *ngFor="let zone of remainingTablesByZone$ | async">
+                <h3>{{zone.name}}</h3>
+                <p><span *ngFor="let table of zone.tables" class="text" [ngClass]="table.status">{{table.$key}}, </span></p>
+            </div>
         </div>
         <div class="actions" md-dialog-actions>
             <button md-raised-button color="primary" (click)="closeRemainingTables()">Closed</button>

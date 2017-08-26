@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { MdDialogRef, MdDialog } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/take';
+import 'rxjs/add/observable/combineLatest';
 
 import { AddTablesDialogComponent } from './add-tables.dialog.component';
 import { TournamentService, TournamentZone, Table } from './../tournament/tournament.service';
@@ -18,6 +19,7 @@ export class DashboardComponent implements OnInit {
     isOnOutstandingsStep$: Observable<boolean>;
     okTables$: Observable<Table[]>;
     remainingTables$: Observable<Table[]>;
+    remainingTablesByZone$: Observable<any>;
     extraTimedTables$: Observable<Table[]>;
     isLoading: boolean = true;
     
@@ -41,7 +43,18 @@ export class DashboardComponent implements OnInit {
         this.zones$ = this.tournamentService.getZones();
         this.zones$.take(1).subscribe(_ => this.isLoading = false);
         this.tables$ = this.tournamentService.getActiveTables();
-        this.remainingTables$ = this.tables$.map(tables => tables.filter(t => t.status !== 'done'))
+        this.remainingTables$ = this.tables$.map(tables => tables.filter(t => t.status !== 'done'));
+        this.remainingTablesByZone$ = Observable.combineLatest(this.remainingTables$, this.zones$)
+            .map(([tables, zones]) => {
+                const result: any[] = [];
+                zones.forEach(zone => {
+                    result.push({
+                        name: zone.name,
+                        tables: tables.filter(t => +t.$key >= zone.start && +t.$key <= zone.end)
+                    });
+                });
+                return result;
+            })
         this.isOnOutstandingsStep$ = this.tournamentService.isOnOutstandingsStep();
         this.okTables$ = this.tournamentService.getOkTables();
         this.extraTimedTables$ = this.tables$
