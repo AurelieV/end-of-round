@@ -11,6 +11,7 @@
     </div>
     <div class="content">
         <div class="time" *ngIf="table.status === 'done' && !table.hasResult">{{table.doneTime | ago}}</div>
+        <div class="assignated" *ngIf="table.assignated">Covered by {{table.assignated}}</div>
         <div class="result" class="result" *ngIf="table.result">
             {{table.result | result}}
         </div>
