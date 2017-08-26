@@ -11,9 +11,14 @@
         (click)="goToZone(zone.$key)"
         [zone]="zone">
     </zone-info>
+    <div class="actions">
+        <button class="show-mobile" (click)="addFeatured()" md-raised-button color="primary">Add featured</button>
+        <button class="show-mobile" (click)="addOutstandings()" md-raised-button color="primary">Add outstanding</button>
+        <button class="show-mobile" (click)="endRound()" md-raised-button color="accent">End round</button>
+    </div>
 </div>
 <div class="column2">
-    <div class="actions">
+    <div class="actions main">
         <button (click)="addFeatured()" md-raised-button color="primary">Add featured</button>
         <button (click)="openExtraTimed()" md-raised-button color="primary">Show extra timed</button>
         <button (click)="openRemainingTables()" md-raised-button color="primary">See remaining</button>

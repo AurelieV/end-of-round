@@ -6,9 +6,6 @@ $mobile: 370px;
     @media screen and (max-width: $mobile) {
         display: none;
     }
-    .actions {
-        background: white;
-    }
 }
 
 .actions {
@@ -16,6 +13,12 @@ $mobile: 370px;
     flex-wrap: wrap;
     justify-content: space-around;
     align-items: center;
+    button, a {
+        margin: 10px;
+    }
+    &.main {
+        background: white;
+    }
 }
 
 .column1 {
@@ -31,7 +34,7 @@ $mobile: 370px;
 }
 
 .tables {
-    padding-top: 50px;
+    padding-top: 10px;
 }
 
 zone-info {
