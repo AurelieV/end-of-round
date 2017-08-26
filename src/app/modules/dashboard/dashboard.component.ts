@@ -4,6 +4,7 @@ import { MdDialogRef, MdDialog } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/take';
 import 'rxjs/add/observable/combineLatest';
+import { handleReturn } from '../shared/handle-return';
 
 import { AddTablesDialogComponent } from './add-tables.dialog.component';
 import { TournamentService, TournamentZone, Table } from './../tournament/tournament.service';
@@ -71,6 +72,7 @@ export class DashboardComponent implements OnInit {
 
     addOutstandings() {
         const dialogRef = this.md.open(AddTablesDialogComponent);
+        handleReturn(dialogRef);
         dialogRef.componentInstance.title = 'Add outstandings tables';
         dialogRef.componentInstance.warning = '/!\\ Be aware that this will delete all others table from the current rond'
         dialogRef.afterClosed().subscribe(val => {
@@ -81,6 +83,7 @@ export class DashboardComponent implements OnInit {
 
     addFeatured() {
         const dialogRef = this.md.open(AddTablesDialogComponent);
+        handleReturn(dialogRef);
         dialogRef.componentInstance.title = 'Add featured tables'
         dialogRef.afterClosed().subscribe(val => {
             if (!val) return;
@@ -99,6 +102,7 @@ export class DashboardComponent implements OnInit {
 
     openExtraTimed() {
         this.extraTimedDialog = this.md.open(this.extraTimedTemplate);
+        handleReturn(this.extraTimedDialog);
     }
 
     closeExtraTimed() {
@@ -107,6 +111,7 @@ export class DashboardComponent implements OnInit {
 
     openRemainingTables() {
         this.remainingTablesDialog = this.md.open(this.remainingTablesTemplate);
+        handleReturn(this.remainingTablesDialog);
     }
 
     closeRemainingTables() {

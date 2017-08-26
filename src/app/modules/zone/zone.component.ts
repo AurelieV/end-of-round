@@ -5,6 +5,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { AngularFireDatabase, FirebaseObjectObservable, FirebaseListObservable } from 'angularfire2/database';
 import { MdDialog, MdDialogRef } from '@angular/material';
 import 'rxjs/add/operator/take';
+import { handleReturn } from '../shared/handle-return';
 
 import { TournamentService, TournamentZone, Table } from './../tournament/tournament.service';
 import { AddResultDialogComponent } from './add-result.dialog.component';
@@ -105,10 +106,12 @@ export class ZoneComponent implements OnInit {
 
     allGreen() {
         this.confirmation = this.md.open(this.confirmTemplate);
+        handleReturn(this.assignJudges);
     }
 
     assign() {
         this.assignJudges = this.md.open(this.assignJudgesTemplate);
+        handleReturn(this.assignJudges);
     }
 
     confirmAllGreen() {
@@ -149,6 +152,7 @@ export class ZoneComponent implements OnInit {
     addResult(e: Event, table: any) {
         e.stopPropagation();
         const dialogRef = this.md.open(AddResultDialogComponent, { width: "90%" });
+        handleReturn(dialogRef);
         if (table.result) {
             dialogRef.componentInstance.result = table.result;
         }

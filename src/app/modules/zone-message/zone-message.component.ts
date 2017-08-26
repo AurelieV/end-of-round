@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { Component, ViewChild, TemplateRef, OnChanges, Input, OnDestroy, HostBinding } from '@angular/core';
 import 'rxjs/add/operator/skip';
 import { Observable } from 'rxjs/Observable';
+import { handleReturn } from '../shared/handle-return';
 
 import { TournamentService, TournamentZone } from './../tournament/tournament.service';
 
@@ -48,6 +49,7 @@ export class ZoneMessageComponent implements OnChanges, OnDestroy {
         this.hasNewMessage = false;
         this.isMessageOpen = true;
         const dialogRef = this.md.open(this.messageTemplate);
+        handleReturn(dialogRef);
         dialogRef.afterClosed().subscribe(_ => {
             this.isMessageOpen = false;
         });

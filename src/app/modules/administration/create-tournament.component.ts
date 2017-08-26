@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import {  Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/combineLatest';
+import { handleReturn } from '../shared/handle-return';
 
 import { TournamentData, ZoneData, AdministrationService } from './administration.service';
 
@@ -80,6 +81,7 @@ export class CreateTournamentComponent implements OnInit {
 
     delete() {
         this.confirmation = this.dialog.open(this.confirmTemplate);
+        handleReturn(this.confirmation);
     }
 
     cancelDelete() {
