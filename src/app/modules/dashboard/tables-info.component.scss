@@ -10,6 +10,7 @@
     width: 120px;
     min-height: 70px;
     border-radius: 20px;
+    cursor: pointer;
     &.no-status {
         border: 1px solid black;
     }
@@ -32,5 +33,11 @@
     .result {
         margin-top: 10px;
         font-weight: bold;
+    }
+    .assignated, .information {
+        margin-top: 5px;
+    }
+    .information {
+        white-space: pre-wrap;
     }
 }

@@ -1,10 +1,12 @@
 <div *ngFor="let table of tables" 
     class="table block"
+    (click)="addInfo(table, $event)"
     [ngClass]="[table.status, table.result || table.hasResult ? '' : (table.doneTime | warnAgo)]"
     [class.no-status]="!table.status">
     <div class="header">
         <div class="title">Table {{table.$key}}</div>
-        <md-checkbox 
+        <md-checkbox
+            (click)="markEvent($event)"
             color="primary"
             [checked]="!!table.hasResult"
             (change)="setHasResult(table.$key, $event.checked)"></md-checkbox>
@@ -12,6 +14,7 @@
     <div class="content">
         <div class="time" *ngIf="table.status === 'done' && !table.hasResult">{{table.doneTime | ago}}</div>
         <div class="assignated" *ngIf="table.assignated">Covered by {{table.assignated}}</div>
+        <div class="information" *ngIf="table.information">{{table.information}}</div>
         <div class="result" class="result" *ngIf="table.result">
             {{table.result | result}}
         </div>
@@ -20,3 +23,14 @@
 <div *ngIf="tables?.length === 0">
     No tables
 </div>
+<ng-template #addInfoTemplate>
+    <h3>Add information</h3>
+    <div md-dialog-content>
+        <form #form="ngForm">
+            <textarea required type="text" [(ngModel)]="information" name="information"></textarea>
+        </form>
+    </div>
+    <div class="actions" md-dialog-actions>
+        <button md-raised-button color="primary" (click)="confirmAddInfo()" [disabled]="!form.form.valid">Add</button>
+    </div>
+</ng-template>

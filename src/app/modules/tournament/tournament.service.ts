@@ -31,6 +31,7 @@ export interface Table {
     result?: Result;
     $key: string;
     assignated?: string;
+    information?: string;
 }
 
 export interface Result {
