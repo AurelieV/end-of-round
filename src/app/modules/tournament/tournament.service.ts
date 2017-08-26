@@ -150,7 +150,7 @@ export class TournamentService {
         return tables$.map(tables => {
             const extraTimeTables = (tables || []).filter(t => t.time > 0 && t.status !== "done");
             return {
-                remaining: tables.filter(t => t.status !== "done").length,
+                remaining: tables.filter(t => t.status && t.status !== "done").length,
                 playing: tables.filter(t => t.status === "playing").length,
                 covered: tables.filter(t => t.status === "covered").length,
                 extraTimed: extraTimeTables.length

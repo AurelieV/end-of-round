@@ -17,6 +17,7 @@
         <div md-menu-item>
             <md-slide-toggle
             color="primary"
+            (click)="doNothing()"
             [checked]="(filter$ | async).onlyPlaying"
             (change)="toggleOnlyPlaying($event.checked)">
             <span>Display only playing</span>
@@ -25,6 +26,7 @@
         <div md-menu-item>
             <md-slide-toggle
             color="primary"
+            (click)="doNothing()"
             [checked]="(filter$ | async).onlyExtraTime"
             (change)="toggleOnlyExtraTime($event.checked)">
             <span>Display only extra time</span>

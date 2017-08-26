@@ -165,4 +165,8 @@ export class ZoneComponent implements OnInit {
             })
         });
     }
+
+    doNothing() {
+        
+    }
 }
