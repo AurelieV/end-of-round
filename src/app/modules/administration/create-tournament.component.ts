@@ -69,8 +69,8 @@ export class CreateTournamentComponent implements OnInit {
     addOrEdit() {
         if (this.create) {
             this.administrationService.createTournament(this.data, this.zones)
-                .then(tournament => {
-                    this.router.navigate(['tournament', tournament.$key, 'dashboard']);
+                .then(tournamentId => {
+                    this.router.navigate(['tournament', tournamentId, 'dashboard']);
                 });
         } else {
             this.administrationService.editTournament(this.id, this.data, this.zones)

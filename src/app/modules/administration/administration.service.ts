@@ -59,7 +59,7 @@ export class AdministrationService {
             zones.forEach(zone => {
                 this.db.list(`zones/${tournament.key}`).push(zone);
             });
-            return tournament;
+            return tournament.key;
         });
     }
 
