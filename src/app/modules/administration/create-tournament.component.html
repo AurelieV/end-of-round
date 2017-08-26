@@ -41,6 +41,7 @@
         </form>
     </div>
     <div class="actions">
+        <button md-raised-button *ngIf="!create" color="warn" (click)="delete()"><md-icon>&#xE872;</md-icon></button>
         <button md-raised-button color="accent" (click)="cancel()">Cancel</button>
         <button md-raised-button color="primary" (click)="addOrEdit()" [disabled]="!createForm.form.valid">
             <span *ngIf="create">Create</span>
@@ -48,3 +49,16 @@
         </button>
     </div>
 </div>
+
+<ng-template #confirm>
+    <div class="confirmation">
+        <h3>Are you sure</h3>
+        <div md-dialog-content>
+            All data of will be lost.
+        </div>
+        <div class="actions" md-dialog-actions>
+            <button md-raised-button color="warn" (click)="cancelDelete()">Cancel</button>
+            <button md-raised-button color="primary" (click)="confirmDelete()">Delete</button>
+        </div>
+    </div>
+</ng-template>

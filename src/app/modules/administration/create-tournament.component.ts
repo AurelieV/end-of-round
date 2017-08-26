@@ -1,5 +1,6 @@
+import { MdDialogRef, MdDialog } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
-import {  Component, OnInit } from '@angular/core';
+import {  Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/combineLatest';
 
@@ -21,11 +22,14 @@ export class CreateTournamentComponent implements OnInit {
         information: ""
     }
     id: string;
+    @ViewChild('confirm') confirmTemplate: TemplateRef<any>;
+    confirmation: MdDialogRef<any>;
 
     constructor(
         private administrationService: AdministrationService,
         private router: Router,
-        private route: ActivatedRoute) {
+        private route: ActivatedRoute,
+        private dialog: MdDialog) {
         this.addZone();
     }
 
@@ -72,5 +76,19 @@ export class CreateTournamentComponent implements OnInit {
             this.administrationService.editTournament(this.id, this.data, this.zones)
             this.router.navigate(['tournament', this.id, 'dashboard']);
         }
+    }
+
+    delete() {
+        this.confirmation = this.dialog.open(this.confirmTemplate);
+    }
+
+    cancelDelete() {
+        this.confirmation.close();
+    }
+
+    confirmDelete() {
+        this.administrationService.deleteTournament(this.id);
+        this.confirmation.close();
+        this.router.navigate(['']);
     }
 }
