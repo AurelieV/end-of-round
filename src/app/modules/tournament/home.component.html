@@ -1,0 +1,5 @@
+<loader [isLoading]="isLoading"></loader>
+<div class="information">{{information | async}}</div>
+<div class="zones">
+    <a [routerLink]="['zone', zone.$key]" md-raised-button color="primary" *ngFor="let zone of zones$ | async">{{zone.name}}</a>
+</div>

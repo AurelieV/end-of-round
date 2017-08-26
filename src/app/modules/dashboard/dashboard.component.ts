@@ -17,6 +17,7 @@ export class DashboardComponent implements OnInit {
     tables$: Observable<Table[]>;
     isOnOutstandingsStep$: Observable<boolean>;
     okTables$: Observable<Table[]>;
+    remainingTables$: Observable<Table[]>;
     extraTimedTables$: Observable<Table[]>;
     isLoading: boolean = true;
     
@@ -25,6 +26,9 @@ export class DashboardComponent implements OnInit {
 
     @ViewChild('extraTimed') extraTimedTemplate: TemplateRef<any>;
     extraTimedDialog: MdDialogRef<any>;
+
+    @ViewChild('remainingTables') remainingTablesTemplate: TemplateRef<any>;
+    remainingTablesDialog: MdDialogRef<any>;
 
     constructor(
         private tournamentService: TournamentService,
@@ -37,6 +41,7 @@ export class DashboardComponent implements OnInit {
         this.zones$ = this.tournamentService.getZones();
         this.zones$.take(1).subscribe(_ => this.isLoading = false);
         this.tables$ = this.tournamentService.getActiveTables();
+        this.remainingTables$ = this.tables$.map(tables => tables.filter(t => t.status !== 'done'))
         this.isOnOutstandingsStep$ = this.tournamentService.isOnOutstandingsStep();
         this.okTables$ = this.tournamentService.getOkTables();
         this.extraTimedTables$ = this.tables$
@@ -85,6 +90,14 @@ export class DashboardComponent implements OnInit {
 
     closeExtraTimed() {
         this.extraTimedDialog.close();
+    }
+
+    openRemainingTables() {
+        this.remainingTablesDialog = this.md.open(this.remainingTablesTemplate);
+    }
+
+    closeRemainingTables() {
+        this.remainingTablesDialog.close();
     }
 
     trackByFn(val: TournamentZone) {

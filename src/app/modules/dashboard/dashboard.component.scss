@@ -32,7 +32,7 @@ zone-info {
     min-width: 220px;
 }
 
-.confirmation, .extra-timed {
+.confirmation, .extra-timed, .remaining-tables {
     .actions {
         display: flex;
         justify-content: flex-end;
@@ -42,11 +42,15 @@ zone-info {
     }
 }
 
-.extra-timed {
+.extra-timed, .remaining-tables {
     ul {
         padding-right: 15px;
     }
     .extra-timed-table {
         font-weight: bold;
     }
+}
+
+.remaining-tables {
+    padding: 20px;
 }
