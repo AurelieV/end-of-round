@@ -7,4 +7,5 @@ import { Component } from '@angular/core';
 export class AddTablesDialogComponent {
     title: string;
     tables: string;
+    warning: string;
 }
