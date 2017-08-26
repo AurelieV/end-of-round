@@ -17,6 +17,9 @@
     &.warn {
         border: 3px solid red;
     }
+    &.extra-timed {
+        border: 3px solid darkblue;
+    }
     .header {
         display: flex;
         align-items: center;
