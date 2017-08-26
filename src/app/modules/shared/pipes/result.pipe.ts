@@ -8,15 +8,15 @@ export class ResultPipe implements PipeTransform {
     transform(value: Result): string {
         if (!value) return "";
         let result = "";
-        if (value.player1.drop) {
-            result += 'X-';
-        }
         result += `${value.player1.score}-${value.player2.score}`;
         if (value.draw > 0) {
-            result += "-d"
+            result += `-${value.draw}`
+        }
+        if (value.player1.drop) {
+            result += ' D1';
         }
         if (value.player2.drop) {
-            result += '-X';
+            result += ' D2';
         }
 
         return result;
