@@ -51,7 +51,7 @@ export class CreateTournamentComponent implements OnInit {
     }
 
     addZone() {
-        this.zones.push({ name: `Zone ${this.zones.length + 1}`, leader: "", message: "", start: 0, end: 0 })
+        this.zones.push({ name: `Zone ${this.zones.length + 1}`, leader: "", message: "", start: 0, end: 0, zoneLeaderPlace: "" })
     }
 
     deleteZone(index: number) {

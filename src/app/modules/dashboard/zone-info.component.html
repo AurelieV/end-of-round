@@ -1,6 +1,7 @@
 <ng-container *ngIf="zone">
     <div class="title">{{zone.name}} - {{zone.leader}}</div>
     <div class="subtitle">({{zone.start}} - {{zone.end}})</div>
+    <div class="subtitle" *ngIf="zone.zoneLeaderPlace">ZL at {{zone?.zoneLeaderPlace}}</div>
 </ng-container>
 <ng-container *ngIf="!zone">
     <div class="title">Total</div>
@@ -8,6 +9,7 @@
 </ng-container>
 
 <div class="status" *ngIf="!isLoading">
+    <div class="block remaining">{{(tablesInformation$ | async)?.remaining}}</div>
     <div class="block playing">{{(tablesInformation$ | async)?.playing}}</div>
     <div class="block covered">{{(tablesInformation$ | async)?.covered}}</div>
     <div class="block extra-time">{{(tablesInformation$ | async)?.extraTimed}}</div>

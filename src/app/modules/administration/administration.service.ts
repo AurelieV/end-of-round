@@ -23,6 +23,7 @@ export interface ZoneData {
     leader: string;
     needHelp?: boolean;
     message: string;
+    zoneLeaderPlace: string;
 }
 
 @Injectable()

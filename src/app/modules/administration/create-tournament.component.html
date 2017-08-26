@@ -34,7 +34,13 @@
                     <md-input-container>
                         <input name="zone-end-{{i}}" mdInput placeholder="End table number" type="number" required [(ngModel)]="zone.end">
                     </md-input-container>
-                    <button type="button" md-button color="primary" (click)="deleteZone(i)" [disabled]="zones.length === 1"><md-icon>&#xE872;</md-icon></button>
+                    <md-input-container>
+                        <input name="zone-leader-place-{{i}}" mdInput placeholder="Zone leader place" type="string" [(ngModel)]="zone.zoneLeaderPlace">
+                    </md-input-container>
+                    <br/>
+                    <div class="zone-actions">
+                        <button type="button" md-button color="primary" (click)="deleteZone(i)" [disabled]="zones.length === 1"><md-icon>&#xE872;</md-icon></button>
+                    </div>
                 </div>
                 <button type="button" md-button color="primary" (click)="addZone()">Add Zone</button>
             </div>
