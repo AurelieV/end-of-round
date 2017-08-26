@@ -1,5 +1,5 @@
 import { FormsModule } from '@angular/forms';
-import { MdIconModule, MdButtonModule, MdMenuModule, MdSlideToggleModule, MdDialogModule, MdInputModule } from '@angular/material';
+import { MdIconModule, MdButtonModule, MdMenuModule, MdSlideToggleModule, MdDialogModule, MdInputModule, MdCheckboxModule } from '@angular/material';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
@@ -25,6 +25,7 @@ const routes: Routes = [
         MdSlideToggleModule,
         MdDialogModule,
         MdInputModule,
+        MdCheckboxModule,
         ZoneMessageModule
     ],
     declarations: [
