@@ -76,8 +76,17 @@ export class DashboardComponent implements OnInit {
         dialogRef.componentInstance.title = 'Add outstandings tables';
         dialogRef.componentInstance.warning = '/!\\ Be aware that this will delete all others table from the current rond'
         dialogRef.afterClosed().subscribe(val => {
+            console.log("val", val);
             if (!val) return;
-            this.tournamentService.addOutstandings(val);
+            if (val.useWalterParsing) {
+                const parsed = window["Papa"].parse(val.tables, {
+                    header: true
+                });
+                const tables = parsed.data.map(d => d["Table"]).join(" ");
+                this.tournamentService.addOutstandings(tables);
+            } else {
+                this.tournamentService.addOutstandings(val.tables);
+            }
         });
     }
 

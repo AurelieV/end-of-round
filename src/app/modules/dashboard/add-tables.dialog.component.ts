@@ -5,7 +5,13 @@ import { Component } from '@angular/core';
     styleUrls: [ './add-tables.dialog.component.scss' ]
 })
 export class AddTablesDialogComponent {
+    data: {
+        tables: string;
+        useWalterParsing: boolean;
+    } = {
+        tables: "",
+        useWalterParsing: false
+    };
     title: string;
-    tables: string;
     warning: string;
 }
