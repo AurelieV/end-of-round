@@ -4,6 +4,9 @@
     <form #form="ngForm">
         <md-checkbox
             color="primary"
+            [(ngModel)]="data.replaceExisting" name="parsing">Replace existing</md-checkbox>
+        <md-checkbox
+            color="primary"
             [(ngModel)]="data.useWalterParsing" name="parsing">Copy from Walter</md-checkbox>
         <p>If you use this option, please copy also the header of the table</p>
         <textarea required type="text" [(ngModel)]="data.tables" name="tables"></textarea>

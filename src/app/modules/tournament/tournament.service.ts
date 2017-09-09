@@ -187,13 +187,12 @@ export class TournamentService {
         return this.getOutstandings().map(out => out.length > 0);
     }
 
-    addOutstandings(tablesString: string) {
+    addOutstandings(tablesString: string, replaceExisting: boolean) {
         if (!tablesString) return;
         const tableIds: string[] = tablesString.match(/(\d+)/g) || [];
         this.getOutstandings().take(1).subscribe(oldTableIds => {
             const hasToResetGreen = oldTableIds.length === 0;
-            const newTableIds = oldTableIds
-                .concat(tableIds)
+            const newTableIds = (replaceExisting ? tableIds : oldTableIds.concat(tableIds))
                 .filter((val, key, tab) => tab.indexOf(val) === key && val)
             ;
             const newTablesString = newTableIds.join(' ');
@@ -202,7 +201,7 @@ export class TournamentService {
         });
     }
 
-    addFeatured(tablesString: string) {
+    addFeatured(tablesString: string, replaceExisting: boolean) {
         if (!tablesString) return;
         const tableIds: string[] = tablesString.match(/(\d+)/g) || [];
         tableIds.forEach(id => this.db.object(`/tables/${this.key.getValue()}/${id}`).update({ status: 'featured'}));

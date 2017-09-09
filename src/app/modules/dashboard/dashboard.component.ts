@@ -76,16 +76,15 @@ export class DashboardComponent implements OnInit {
         dialogRef.componentInstance.title = 'Add outstandings tables';
         dialogRef.componentInstance.warning = '/!\\ Be aware that this will delete all others table from the current rond'
         dialogRef.afterClosed().subscribe(val => {
-            console.log("val", val);
             if (!val) return;
             if (val.useWalterParsing) {
                 const parsed = window["Papa"].parse(val.tables, {
                     header: true
                 });
                 const tables = parsed.data.map(d => d["Table"]).join(" ");
-                this.tournamentService.addOutstandings(tables);
+                this.tournamentService.addOutstandings(tables, val.replaceExisting);
             } else {
-                this.tournamentService.addOutstandings(val.tables);
+                this.tournamentService.addOutstandings(val.tables, val.replaceExisting);
             }
         });
     }
@@ -96,7 +95,7 @@ export class DashboardComponent implements OnInit {
         dialogRef.componentInstance.title = 'Add featured tables'
         dialogRef.afterClosed().subscribe(val => {
             if (!val) return;
-            this.tournamentService.addFeatured(val);
+            this.tournamentService.addFeatured(val.tables, val.replaceExisting);
         });
     }
 

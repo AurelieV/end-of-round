@@ -8,9 +8,11 @@ export class AddTablesDialogComponent {
     data: {
         tables: string;
         useWalterParsing: boolean;
+        replaceExisting: boolean;
     } = {
         tables: "",
-        useWalterParsing: false
+        useWalterParsing: false,
+        replaceExisting: false
     };
     title: string;
     warning: string;
