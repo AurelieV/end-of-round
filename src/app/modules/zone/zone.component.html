@@ -12,6 +12,9 @@
                 *ngIf="!(isOnOutstandingsStep$ | async)">
                 <md-icon>&#xE8B8;</md-icon>
             </button>
+            <button md-icon-button (click)="seeHelp()">
+                <md-icon>&#xE887;</md-icon>
+            </button>
         </div>
     </div>
     <md-menu #params="mdMenu">
@@ -78,6 +81,17 @@
         <div class="actions" md-dialog-actions>
             <button md-raised-button color="warn" (click)="cancelAssignJudges()">Close</button>
             <button md-raised-button color="primary" [disabled]="!assignJudgesForm.form.valid" (click)="confirmAssignJudges(assignJudgesForm)">Assign</button>
+        </div>
+    </div>
+</ng-template>
+<ng-template #help>
+    <div class="help">
+        <h3>Reminder</h3>
+        <div md-dialog-content>
+            <div class="text playing">Playing</div>
+            <div class="text covered">Covered</div>
+            <div class="text done">Done (no body at the table)</div>
+            <div class="text featured">Featured</div>
         </div>
     </div>
 </ng-template>

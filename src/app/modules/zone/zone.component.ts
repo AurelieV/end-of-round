@@ -38,6 +38,8 @@ export class ZoneComponent implements OnInit {
     assignJudges: MdDialogRef<any>;
     assignData: any = {};
 
+    @ViewChild('help') helpTemplate: TemplateRef<any>;
+
     constructor(
         private route: ActivatedRoute,
         private tournamentService: TournamentService,
@@ -164,5 +166,9 @@ export class ZoneComponent implements OnInit {
                 doneTime: table.doneTime  || new Date()
             })
         });
+    }
+
+    seeHelp() {
+        this.md.open(this.helpTemplate);
     }
 }
