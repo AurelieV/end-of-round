@@ -1,3 +1,5 @@
+@import '~../../styles/_color.scss';
+
 :host {
     cursor: pointer;
     &.new {
@@ -6,23 +8,36 @@
 }
 
 .body {
-    text-align: center;
     .sending {
         display: flex;
         input {
-            flex: 1;
+            width: 150px;
         }
         button {
             margin-left: 10px;
         }
         margin-bottom: 20px;
     }
-    .text {
-        white-space: pre-wrap;
-        max-height: 300px;
-        overflow: auto;
-    }
     input {
         border: 1px solid black;
+    }
+}
+
+.messages {
+    max-height: 300px;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.message {
+    display: flex;
+    .login {
+        font-weight: bold;
+        color: $dark_purple;
+    }
+    .text {
+        flex: 1;
+        padding-left: 5px;
     }
 }

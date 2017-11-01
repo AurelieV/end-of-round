@@ -2,7 +2,7 @@ import { Observable } from 'rxjs/Observable';
 import { Component, OnInit } from '@angular/core';
 import 'rxjs/add/operator/take';
 
-import { TournamentService, TournamentZone } from './tournament.service';
+import { TournamentService, Zone } from './tournament.service';
 
 
 @Component({
@@ -13,12 +13,12 @@ import { TournamentService, TournamentZone } from './tournament.service';
 export class HomeComponent implements OnInit {
     information: Observable<string>;
     isLoading: boolean = true;
-    zones$: Observable<TournamentZone[]>
+    zones$: Observable<Zone[]>
     
     constructor(private tournamentService: TournamentService) {}
 
     ngOnInit() {
-        this.information = this.tournamentService.getTournamentInformation();
+        this.information = this.tournamentService.getTournament().map(t => t.information);
         this.information.take(1).subscribe(_ => this.isLoading = false);
         this.zones$ = this.tournamentService.getZones();
     }

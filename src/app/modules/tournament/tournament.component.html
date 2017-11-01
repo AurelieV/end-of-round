@@ -1,14 +1,14 @@
-<md-toolbar color="primary" class="header">
+<mat-toolbar color="primary" class="header">
   <div class="connection-status" [class.connected]="connectionService.isConnected"></div>
   <div class="header-content">
       <span>{{(tournament$ | async)?.name}}</span>
   </div>
   <div class="actions">
-    <button md-mini-fab color="warn" (click)="goToDashboard()" *ngIf="!isOnDashboard"><md-icon>&#xE417;</md-icon></button>
-    <button md-mini-fab color="warn" (click)="edit()" *ngIf="isOnDashboard"><md-icon>&#xE3C9;</md-icon></button>
-    <button md-mini-fab color="accent" (click)="addTime()"><md-icon>&#xE192;</md-icon></button>
+    <button mat-mini-fab color="warn" (click)="goToDashboard()" *ngIf="!isOnDashboard"><mat-icon>&#xE417;</mat-icon></button>
+    <button mat-mini-fab color="warn" (click)="edit()" *ngIf="isOnDashboard"><mat-icon>&#xE3C9;</mat-icon></button>
+    <button mat-mini-fab color="accent" (click)="addTime()"><mat-icon>&#xE192;</mat-icon></button>
   </div>
-</md-toolbar>
+</mat-toolbar>
 <div class="content-with-header">
     <router-outlet></router-outlet>
 </div>

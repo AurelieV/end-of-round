@@ -33,7 +33,7 @@ export class TimeDialogComponent implements OnInit {
             if (!table) return true;
             if (tableId !== 0 && !tableId) return true;
             
-            return table['$key'] !== '' + tableId;
+            return table.number !== '' + tableId;
         });
         this.displayMessage = Observable.combineLatest(this.isLoading, this.currentTable$).map(([isLoading, table]) => {
             return !isLoading && table && table.time > 0;

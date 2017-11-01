@@ -1,13 +1,13 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MdDialogRef, MdDialog } from '@angular/material';
+import { MatDialogRef, MatDialog } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/take';
 import 'rxjs/add/observable/combineLatest';
 import { handleReturn } from '../shared/handle-return';
 
 import { AddTablesDialogComponent } from './add-tables.dialog.component';
-import { TournamentService, TournamentZone, Table } from './../tournament/tournament.service';
+import { TournamentService, Zone, Table } from './../tournament/tournament.service';
 
 @Component({
     selector: 'dashboard',
@@ -15,7 +15,7 @@ import { TournamentService, TournamentZone, Table } from './../tournament/tourna
     templateUrl: 'dashboard.component.html'
 })
 export class DashboardComponent implements OnInit {
-    zones$: Observable<TournamentZone[]>;
+    zones$: Observable<Zone[]>;
     tables$: Observable<Table[]>;
     isOnOutstandingsStep$: Observable<boolean>;
     okTables$: Observable<Table[]>;
@@ -25,18 +25,18 @@ export class DashboardComponent implements OnInit {
     isLoading: boolean = true;
     
     @ViewChild('confirmEnd') confirmEnd: TemplateRef<any>;
-    confirmation: MdDialogRef<any>;
+    confirmation: MatDialogRef<any>;
 
     @ViewChild('extraTimed') extraTimedTemplate: TemplateRef<any>;
-    extraTimedDialog: MdDialogRef<any>;
+    extraTimedDialog: MatDialogRef<any>;
 
     @ViewChild('remainingTables') remainingTablesTemplate: TemplateRef<any>;
-    remainingTablesDialog: MdDialogRef<any>;
+    remainingTablesDialog: MatDialogRef<any>;
 
     constructor(
         private tournamentService: TournamentService,
         private router: Router,
-        private md: MdDialog,
+        private md: MatDialog,
         private route: ActivatedRoute
     ) {}
 
@@ -51,7 +51,7 @@ export class DashboardComponent implements OnInit {
                 zones.forEach(zone => {
                     result.push({
                         name: zone.name,
-                        tables: tables.filter(t => +t.$key >= zone.start && +t.$key <= zone.end)
+                        tables: tables.filter(t => +t.number >= zone.start && +t.number <= zone.end)
                     });
                 });
                 return result;
@@ -62,8 +62,8 @@ export class DashboardComponent implements OnInit {
             .map(tables => tables.filter(t => t.time > 0 && t.status !== 'done').sort((a, b) => b.time - a.time));
     }
 
-    goToZone($key: string) {
-        this.router.navigate(['../../../zone', $key], { relativeTo: this.route });
+    goToZone(key: string) {
+        this.router.navigate(['../../../zone', key], { relativeTo: this.route });
     }
 
     endRound() {
@@ -126,7 +126,7 @@ export class DashboardComponent implements OnInit {
         this.remainingTablesDialog.close();
     }
 
-    trackByFn(val: TournamentZone) {
-        return val.$key;
+    trackByFn(val: Zone) {
+        return val.key;
     }
 }

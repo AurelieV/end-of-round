@@ -1,29 +1,29 @@
 <div class="column1">
     <div class="actions">
-        <button class="show-mobile" (click)="openExtraTimed()" md-raised-button color="primary">Show extra timed</button>
-        <button class="show-mobile" (click)="openRemainingTables()" md-raised-button color="primary">See remaining</button>
+        <button class="show-mobile" (click)="openExtraTimed()" mat-raised-button color="primary">Show extra timed</button>
+        <button class="show-mobile" (click)="openRemainingTables()" mat-raised-button color="primary">See remaining</button>
     </div>
     <loader [isLoading]="isLoading"></loader>
-    <zone-info *ngIf="!isLoading && (zones$ | async).length > 1" class="zone"></zone-info>
+    <zone-info *ngIf="!isLoading && (zones$ | async)?.length > 1" class="zone"></zone-info>
     <zone-info 
         *ngFor="let zone of zones$ | async;trackBy:trackByFn"
         class="zone"
-        (click)="goToZone(zone.$key)"
+        (click)="goToZone(zone.key)"
         [zone]="zone">
     </zone-info>
     <div class="actions">
-        <button class="show-mobile" (click)="addFeatured()" md-raised-button color="primary">Add featured</button>
-        <button class="show-mobile" (click)="addOutstandings()" md-raised-button color="primary">Add outstanding</button>
-        <button class="show-mobile" (click)="endRound()" md-raised-button color="accent">End round</button>
+        <button class="show-mobile" (click)="addFeatured()" mat-raised-button color="primary">Add featured</button>
+        <button class="show-mobile" (click)="addOutstandings()" mat-raised-button color="primary">Add outstanding</button>
+        <button class="show-mobile" (click)="endRound()" mat-raised-button color="accent">End round</button>
     </div>
 </div>
 <div class="column2">
     <div class="actions main">
-        <button (click)="addFeatured()" md-raised-button color="primary">Add featured</button>
-        <button (click)="openExtraTimed()" md-raised-button color="primary">Show extra timed</button>
-        <button (click)="openRemainingTables()" md-raised-button color="primary">See remaining</button>
-        <button (click)="addOutstandings()" md-raised-button color="primary">Add outstanding</button>
-        <button (click)="endRound()" md-raised-button color="accent">End round</button>
+        <button (click)="addFeatured()" mat-raised-button color="primary">Add featured</button>
+        <button (click)="openExtraTimed()" mat-raised-button color="primary">Show extra timed</button>
+        <button (click)="openRemainingTables()" mat-raised-button color="primary">See remaining</button>
+        <button (click)="addOutstandings()" mat-raised-button color="primary">Add outstanding</button>
+        <button (click)="endRound()" mat-raised-button color="accent">End round</button>
     </div>
     <div class="tables">
         <div *ngIf="(isOnOutstandingsStep$ | async)">
@@ -37,42 +37,42 @@
 <ng-template #confirmEnd>
     <div class="confirmation">
         <h3>End round?</h3>
-        <div md-dialog-content>
+        <div mat-dialog-content>
             Are your sure to end round? All current informations will be erased
         </div>
-        <div class="actions" md-dialog-actions>
-            <button md-raised-button color="warn" (click)="cancelRestart()">Cancel</button>
-            <button md-raised-button color="primary" (click)="restart()">Restart</button>
+        <div class="actions" mat-dialog-actions>
+            <button mat-raised-button color="warn" (click)="cancelRestart()">Cancel</button>
+            <button mat-raised-button color="primary" (click)="restart()">Restart</button>
         </div>
     </div>
 </ng-template>
 <ng-template #extraTimed>
     <div class="extra-timed">
         <h3>Extra timed tables</h3>
-        <div md-dialog-content>
+        <div mat-dialog-content>
             <ul>
                 <li *ngFor="let table of extraTimedTables$ | async">
-                    <span class="extra-timed-table text" [ngClass]="table.status">Table {{table.$key}}</span>: +{{table.time}}min
+                    <span class="extra-timed-table text" [ngClass]="table.status">Table {{table.number}}</span>: +{{table.time}}min
                 </li>
             </ul>
             <div *ngIf="(extraTimedTables$ | async)?.length === 0">No tables</div>
         </div>
-        <div class="actions" md-dialog-actions>
-            <button md-raised-button color="primary" (click)="closeExtraTimed()">Closed</button>
+        <div class="actions" mat-dialog-actions>
+            <button mat-raised-button color="primary" (click)="closeExtraTimed()">Closed</button>
         </div>
     </div>
 </ng-template>
 <ng-template #remainingTables>
     <div class="remaining-tables">
         <h3>Remaining tables</h3>
-        <div md-dialog-content>
+        <div mat-dialog-content>
             <div *ngFor="let zone of remainingTablesByZone$ | async">
                 <h3>{{zone.name}}</h3>
-                <p><span *ngFor="let table of zone.tables" class="text" [ngClass]="table.status">{{table.$key}}, </span></p>
+                <p><span *ngFor="let table of zone.tables" class="text" [ngClass]="table.status">{{table.number}}, </span></p>
             </div>
         </div>
-        <div class="actions" md-dialog-actions>
-            <button md-raised-button color="primary" (click)="closeRemainingTables()">Closed</button>
+        <div class="actions" mat-dialog-actions>
+            <button mat-raised-button color="primary" (click)="closeRemainingTables()">Closed</button>
         </div>
     </div>
 </ng-template>

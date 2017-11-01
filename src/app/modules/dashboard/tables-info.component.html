@@ -5,12 +5,12 @@
     [class.no-status]="!table.status"
     [class.extra-timed]="table.time > 0 && table.status !== 'done'">
     <div class="header">
-        <div class="title">Table {{table.$key}}</div>
-        <md-checkbox
+        <div class="title">Table {{table.number}}</div>
+        <mat-checkbox
             (click)="markEvent($event)"
             color="primary"
             [checked]="!!table.hasResult"
-            (change)="setHasResult(table.$key, $event.checked)"></md-checkbox>
+            (change)="setHasResult(table.number, $event.checked)"></mat-checkbox>
     </div>
     <div class="content">
         <div class="extra-time" *ngIf="table.time">+{{table.time}}min</div>
@@ -27,12 +27,12 @@
 </div>
 <ng-template #addInfoTemplate>
     <h3>Add information</h3>
-    <div md-dialog-content>
+    <div mat-dialog-content>
         <form #form="ngForm">
             <textarea required type="text" [(ngModel)]="information" name="information"></textarea>
         </form>
     </div>
-    <div class="actions" md-dialog-actions>
-        <button md-raised-button color="primary" (click)="confirmAddInfo()" [disabled]="!form.form.valid">Add</button>
+    <div class="actions" mat-dialog-actions>
+        <button mat-raised-button color="primary" (click)="confirmAddInfo()" [disabled]="!form.form.valid">Add</button>
     </div>
 </ng-template>

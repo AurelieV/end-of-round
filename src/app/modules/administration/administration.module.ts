@@ -1,5 +1,5 @@
 import { FormsModule } from '@angular/forms';
-import { MdButtonModule, MdToolbarModule, MdIconModule, MdListModule, MdInputModule, MdDialogModule } from '@angular/material';
+import { MatButtonModule, MatToolbarModule, MatIconModule, MatListModule, MatInputModule, MatDialogModule } from '@angular/material';
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 
@@ -30,12 +30,12 @@ export const routes: Routes = [
         FormsModule,
 
         /* Angular material */
-        MdButtonModule,
-        MdToolbarModule,
-        MdIconModule,
-        MdListModule,
-        MdInputModule,
-        MdDialogModule
+        MatButtonModule,
+        MatToolbarModule,
+        MatIconModule,
+        MatListModule,
+        MatInputModule,
+        MatDialogModule
     ],
     declarations: [
         AdministrationComponent,

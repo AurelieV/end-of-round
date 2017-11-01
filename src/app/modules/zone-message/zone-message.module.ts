@@ -1,4 +1,4 @@
-import { MdDialogModule, MdInputModule, MdButtonModule, MdIconModule } from '@angular/material';
+import { MatDialogModule, MatInputModule, MatButtonModule, MatIconModule } from '@angular/material';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 
@@ -13,10 +13,10 @@ import { ZoneMessageComponent } from './zone-message.component';
         FormsModule,
 
         // Angular material
-        MdDialogModule,
-        MdInputModule,
-        MdButtonModule,
-        MdIconModule
+        MatDialogModule,
+        MatInputModule,
+        MatButtonModule,
+        MatIconModule
     ],
     declarations: [
         ZoneMessageComponent

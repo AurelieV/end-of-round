@@ -1,35 +1,21 @@
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase } from 'angularfire2/database';
+import { AngularFireDatabase, AngularFireObject, AngularFireList } from 'angularfire2/database';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/take';
 import 'rxjs/add/observable/combineLatest';
 
-export interface Tournament {
-    information: string;
-    start: number;
-    end: number;
-    name: string;
-};
-
-export interface TournamentZone {
-    $key: string;
-    start: number;
-    end: number;
-    leader: string;
-    needHelp?: boolean;
-    name: string;
-    zoneLeaderPlace: string;
-};
+import { TournamentData, Tournament, Zone, ZoneData, Message } from '../../model';
+export { Tournament, TournamentData, Zone, ZoneData, Message };
 
 export interface Table {
+    number: string;
     status: TableStatus;
     time: number;
     doneTime?: Date;
     hasResult?: boolean;
     result?: Result;
-    $key: string;
     assignated?: string;
     information?: string;
 }
@@ -67,43 +53,45 @@ export class TournamentService {
         this.key.next(key);
     }
 
-    getTournament(): Observable<Tournament | null> {
-        return this.key.switchMap(key => {
-            if (!key) return Observable.of(null);
-            return this.db.object(`/tournaments/${key}`);
-        });
+    private getObject<T>(ref: AngularFireObject<T>, key: string = "key"): Observable<T & { key: string }> {
+        return ref.snapshotChanges()
+            .map(({ payload }) => ({ [key]: payload.key, ...payload.val() }));
     }
 
-    getTournamentInformation(): Observable<string> {
-        return this.getTournament().map(tournament => {
-            if (!tournament) return '';
-            return tournament.information;
+    private getList<T>(ref: AngularFireList<T>, key: string = "key"): Observable<Array<T & { key: string }>> {
+        return ref.snapshotChanges()
+            .map(actions => 
+                actions.map(({ payload }) => ({ [key]: payload.key, ...payload.val() }))
+            );
+    }
+
+    getTournament(): Observable<Tournament> {
+        return this.key.switchMap(key => {
+            if (!key) return Observable.of(null)
+            return this.getObject(this.db.object<TournamentData>(`/tournaments/${key}`))
         });
     }
 
     setTime(time: number, tableNumber: number) {
-        return this.db.object(`tables/${this.key.getValue()}/${tableNumber}`).update({time})
+        return this.db.object(`tables/${this.key.getValue()}/${tableNumber}`).update({ time })
     }
 
-    getZones(): Observable<TournamentZone[]> {
-        return this.key.switchMap(key => {
-            if (!key) return Observable.of([]);
-            return this.db.list(`/zones/${key}`);
-        });
+    getZones(): Observable<Zone[]> {
+        return this.key.switchMap(key =>
+            key ? this.getList(this.db.list(`/zones/${key}`)) : Observable.of([])
+        );
     }
 
-    getZone(zoneId: string): Observable<TournamentZone> {
-        return this.key.switchMap(key => {
-            if (!key) return Observable.of({});
-            return this.db.object(`/zones/${key}/${zoneId}`);
-        });
+    getZone(zoneId: string): Observable<Zone> {
+        return this.key.switchMap(key =>
+            key ? this.getObject(this.db.object(`/zones/${key}/${zoneId}`)) : Observable.of(null)
+        );
     }
 
     getAllTables(): Observable<Table[]> {
-        return this.key.switchMap(key => {
-            if (!key) return Observable.of([]);
-            return this.db.list(`/tables/${key}`);
-        });
+        return this.key.switchMap(key =>
+            key ? this.getList(this.db.list(`/tables/${key}`), "number") : Observable.of([])
+        );
     }
 
     getOutstandingsTables(): Observable<Table[]> {
@@ -111,7 +99,7 @@ export class TournamentService {
             .map(([outstandings, tables]) => {
                 if (outstandings.length === 0) return tables;
 
-                return tables.filter(t => outstandings.indexOf(t.$key) > -1);
+                return tables.filter(t => outstandings.includes(t.number));
             })
     }
 
@@ -123,34 +111,31 @@ export class TournamentService {
         return this.getOutstandingsTables().map(tables => tables.filter(t => t.hasResult));
     }
 
-    getAllTablesByZone(zone: TournamentZone): Observable<Table[]> {
-        return this.key.switchMap(key => {
-            if (!key) return Observable.of({});
-            return this.db.list(`/tables/${key}/`, {
-                query: {
-                    orderByKey: true,
-                    startAt: zone.start + "",
-                    endAt: zone.end + ""
-                }
-            });
-        });
+    getAllTablesByZone(zone: Zone): Observable<Table[]> {
+        return this.key.switchMap(key =>
+            key ?
+            this.getList(this.db.list(
+                `/tables/${key}/`,
+                ref => ref.orderByKey().startAt(zone.start + "").endAt(zone.end + "")
+            ), "number") : Observable.of([])
+        );
     }
 
-    getActiveTablesByZone(zone: TournamentZone): Observable<Table[]> {
+    getActiveTablesByZone(zone: Zone): Observable<Table[]> {
         return Observable.combineLatest(this.getOutstandings(), this.getAllTablesByZone(zone))
             .map(([outstandings, tables]) => {
                 if (outstandings.length === 0) return tables;
 
-                return tables.filter(t => outstandings.indexOf(t.$key) > -1 && !t.hasResult);
+                return tables.filter(t => outstandings.indexOf(t.number) > -1 && !t.hasResult);
             })
     }
 
-    getActiveTablesInformationByZone(zone: TournamentZone): Observable<TablesInformation> {
+    getActiveTablesInformationByZone(zone: Zone | null): Observable<TablesInformation> {
         const tables$ = zone ? this.getActiveTablesByZone(zone) : this.getActiveTables();
         return tables$.map(tables => {
             const extraTimeTables = (tables || []).filter(t => t.time > 0 && t.status !== "done");
             return {
-                remaining: tables.filter(t => t.status && t.status !== "done").length,
+                remaining: tables.filter(t => t.status && t.status !== "done" && t.status !== 'featured').length,
                 playing: tables.filter(t => t.status === "playing").length,
                 covered: tables.filter(t => t.status === "covered").length,
                 extraTimed: extraTimeTables.length
@@ -158,29 +143,30 @@ export class TournamentService {
         })
     }
 
-    getMessages(zoneId: string): Observable<string> {
-        return this.key.switchMap(key => {
-            if (!key) return Observable.of('');
-            return this.db.object(`/messages/${key}/${zoneId}`)
-                .map(m => m.$value)
-            ;
-        });
+    getMessages(zoneId: string): Observable<Message[]> {
+        return this.key.switchMap(key =>
+            key ? 
+                this.db.list<Message>(`/messages/${key}/${zoneId}`, ref => ref.orderByChild('timestamp'))
+                .valueChanges()
+                .map(t => t.reverse())
+            : Observable.of([])
+        );
     }
 
     sendMessage(zoneId: string, message: string) {
-        const messages = this.db.object(`/messages/${this.key.getValue()}/${zoneId}`);
-        messages.take(1).subscribe(old => {
-            messages.set(`${message}\n${old.$value || ''}`);
-        });
+        this.db.list<Message>(`/messages/${this.key.getValue()}/${zoneId}`).push({
+            login: 'Test',
+            message,
+            timestamp: (new Date()).valueOf()
+        })
     }
 
     getOutstandings(): Observable<string[]> {
-        return this.key.switchMap(key => {
-            if (!key) return Observable.of([]);
-            return this.db.object(`/outstandings/${key}`)
-                .map(val => val.$value ? val.$value.split(' ') : [])
-            ;
-        });
+        return this.key.switchMap(key =>
+            key ?
+            this.db.object(`/outstandings/${key}`).valueChanges<string>()
+                .map(val => val ? val.split(' ') : []) : Observable.of([])
+        );
     }
 
     isOnOutstandingsStep(): Observable<boolean> {
@@ -225,14 +211,14 @@ export class TournamentService {
         });
         this.getZones().take(1).subscribe(zones => {
             zones.forEach(zone => {
-                this.db.object(`/messages/${this.key.getValue()}/${zone.$key}`).set("");
+                this.db.object(`/messages/${this.key.getValue()}/${zone.key}`).set("");
             })
         })
 
     }
 
-    getTable(tableId: string): Observable<Table | null> {
-        return this.db.object(`/tables/${this.key.getValue()}/${tableId}`).take(1);
+    getTable(tableId: string): Observable<Table> {
+        return this.getObject(this.db.object<Table>(`/tables/${this.key.getValue()}/${tableId}`), "number").take(1);
     }
 
     updateTable(tableId: string, update: any) {

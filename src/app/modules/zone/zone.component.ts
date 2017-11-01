@@ -2,12 +2,12 @@ import { Component, OnInit, OnDestroy, ViewChild, TemplateRef, ChangeDetectorRef
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { AngularFireDatabase, FirebaseObjectObservable, FirebaseListObservable } from 'angularfire2/database';
-import { MdDialog, MdDialogRef } from '@angular/material';
+import { AngularFireDatabase } from 'angularfire2/database';
+import { MatDialog, MatDialogRef } from '@angular/material';
 import 'rxjs/add/operator/take';
 import { handleReturn } from '../shared/handle-return';
 
-import { TournamentService, TournamentZone, Table } from './../tournament/tournament.service';
+import { TournamentService, Zone, Table } from './../tournament/tournament.service';
 import { AddResultDialogComponent } from './add-result.dialog.component';
 
 interface Filter {
@@ -21,7 +21,7 @@ interface Filter {
     templateUrl: 'zone.component.html' 
 })
 export class ZoneComponent implements OnInit {
-    zone$: Observable<TournamentZone>;
+    zone$: Observable<Zone>;
     tables$: Observable<Table[]>;
     filter$: BehaviorSubject<Filter> = new BehaviorSubject({
         onlyPlaying: false,
@@ -32,10 +32,10 @@ export class ZoneComponent implements OnInit {
     isLoading: boolean = true;
 
     @ViewChild('confirm') confirmTemplate: TemplateRef<any>;
-    confirmation: MdDialogRef<any>;
+    confirmation: MatDialogRef<any>;
 
     @ViewChild('assignJudges') assignJudgesTemplate: TemplateRef<any>;
-    assignJudges: MdDialogRef<any>;
+    assignJudges: MatDialogRef<any>;
     assignData: any = {};
 
     @ViewChild('help') helpTemplate: TemplateRef<any>;
@@ -43,7 +43,7 @@ export class ZoneComponent implements OnInit {
     constructor(
         private route: ActivatedRoute,
         private tournamentService: TournamentService,
-        private md: MdDialog,
+        private md: MatDialog,
         private cd: ChangeDetectorRef
     ) {}
 
@@ -91,7 +91,7 @@ export class ZoneComponent implements OnInit {
                 update = { status: "playing", doneTime: null };
                 break;
         }
-        this.tournamentService.updateTable(table.$key, update);
+        this.tournamentService.updateTable(table.number, update);
     }
 
     callHelp(needHelp: boolean) {
@@ -125,7 +125,7 @@ export class ZoneComponent implements OnInit {
                 .subscribe(tables => {
                     this.cd.detach();
                     tables.forEach(table => {
-                        this.tournamentService.updateTable(table.$key, { status: "done", doneTime: new Date() })
+                        this.tournamentService.updateTable(table.number, { status: "done", doneTime: new Date() })
                     });
                     this.cd.reattach();
                 });
@@ -160,7 +160,7 @@ export class ZoneComponent implements OnInit {
         }
         dialogRef.afterClosed().subscribe(result => {
             if (!result) return;
-            this.tournamentService.updateTable(table.$key, { 
+            this.tournamentService.updateTable(table.number, { 
                 result,
                 status: 'done',
                 doneTime: table.doneTime  || new Date()

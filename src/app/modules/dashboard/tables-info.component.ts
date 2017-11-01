@@ -1,4 +1,4 @@
-import { MdDialog, MdDialogRef } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material';
 import {  Component, Input, ViewChild, TemplateRef } from '@angular/core';
 import { AngularFireDatabase } from 'angularfire2/database';
 
@@ -15,12 +15,12 @@ export class TablesInfoComponent {
     @Input() tables: Table[];
 
     @ViewChild('addInfoTemplate') addInfoTemplate: TemplateRef<any>;
-    addInfoDialog: MdDialogRef<any>;
+    addInfoDialog: MatDialogRef<any>;
 
     selectedTable: Table;
     information: string;
 
-    constructor(private tournamentService: TournamentService, private md: MdDialog) {}
+    constructor(private tournamentService: TournamentService, private md: MatDialog) {}
 
     setHasResult(tableId: string, value: boolean) {
         this.tournamentService.updateTable(tableId, { hasResult: value });
@@ -36,7 +36,7 @@ export class TablesInfoComponent {
 
     confirmAddInfo() {
         this.addInfoDialog.close();
-        this.tournamentService.updateTable(this.selectedTable.$key, { information: this.information });
+        this.tournamentService.updateTable(this.selectedTable.number, { information: this.information });
         this.information = "";
     }
 

@@ -5,9 +5,10 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule, Routes } from '@angular/router';
-import { MdListModule, MdToolbarModule, MdButtonModule } from '@angular/material';
+import { MatListModule, MatToolbarModule, MatButtonModule } from '@angular/material';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
+import { AngularFireAuthModule } from 'angularfire2/auth'
 
 import { environment } from '../environments/environment';
 
@@ -20,6 +21,7 @@ import { TournamentModule } from './modules/tournament/tournament.module';
 
 /* Service */
 import { ConnectionService } from './connection.service';
+import { UserService } from './user.service';
 
 const appRoutes: Routes = [
   { path: '', component: TournamentListComponent, pathMatch: 'full' },
@@ -42,15 +44,16 @@ const appRoutes: Routes = [
     SharedModule,
 
     /* Angular Material */
-    MdListModule,
-    MdToolbarModule,
-    MdButtonModule,
+    MatListModule,
+    MatToolbarModule,
+    MatButtonModule,
 
     /* FireBase */
     AngularFireModule.initializeApp(environment.firebaseConfig),
-    AngularFireDatabaseModule
+    AngularFireDatabaseModule,
+    AngularFireAuthModule
   ],
-  providers: [ ConnectionService ],
+  providers: [ ConnectionService, UserService ],
   bootstrap: [ AppComponent ]
 })
 export class AppModule {}

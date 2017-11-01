@@ -1,4 +1,4 @@
-import { MdDialogRef, MdDialog } from '@angular/material';
+import { MatDialogRef, MatDialog } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
 import {  Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
@@ -24,13 +24,13 @@ export class CreateTournamentComponent implements OnInit {
     }
     id: string;
     @ViewChild('confirm') confirmTemplate: TemplateRef<any>;
-    confirmation: MdDialogRef<any>;
+    confirmation: MatDialogRef<any>;
 
     constructor(
         private administrationService: AdministrationService,
         private router: Router,
         private route: ActivatedRoute,
-        private dialog: MdDialog) {
+        private dialog: MatDialog) {
         this.addZone();
     }
 
@@ -52,7 +52,7 @@ export class CreateTournamentComponent implements OnInit {
     }
 
     addZone() {
-        this.zones.push({ name: `Zone ${this.zones.length + 1}`, leader: "", message: "", start: 0, end: 0, zoneLeaderPlace: "" })
+        this.zones.push({ name: `Zone ${this.zones.length + 1}`, leader: "", start: 0, end: 0, zoneLeaderPlace: "", needHelp: false })
     }
 
     deleteZone(index: number) {

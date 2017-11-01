@@ -1,4 +1,4 @@
-import { MdDialogModule, MdInputModule, MdButtonModule, MdToolbarModule, MdIconModule, MdCheckboxModule } from '@angular/material';
+import { MatDialogModule, MatInputModule, MatButtonModule, MatToolbarModule, MatIconModule, MatCheckboxModule } from '@angular/material';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
@@ -24,11 +24,11 @@ const routes: Routes = [
         ZoneMessageModule,
 
         // Angular material
-        MdDialogModule,
-        MdInputModule,
-        MdButtonModule,
-        MdIconModule,
-        MdCheckboxModule
+        MatDialogModule,
+        MatInputModule,
+        MatButtonModule,
+        MatIconModule,
+        MatCheckboxModule
     ],
     declarations: [
         DashboardComponent,

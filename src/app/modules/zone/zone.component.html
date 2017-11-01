@@ -2,46 +2,46 @@
     <div class="first-line">
         <div class="title">{{(zone$ | async)?.name}}</div>
         <div class="actions">
-            <button md-icon-button (click)="assign()">
-                <md-icon>&#xE851;</md-icon>
+            <button mat-icon-button (click)="assign()">
+                <mat-icon>&#xE851;</mat-icon>
             </button>
             <zone-message [zone]="zone$ | async"></zone-message>
-            <button md-icon-button 
+            <button mat-icon-button 
                 class="menu-button"
-                [mdMenuTriggerFor]="params"
+                [matMenuTriggerFor]="params"
                 *ngIf="!(isOnOutstandingsStep$ | async)">
-                <md-icon>&#xE8B8;</md-icon>
+                <mat-icon>&#xE8B8;</mat-icon>
             </button>
-            <button md-icon-button (click)="seeHelp()">
-                <md-icon>&#xE887;</md-icon>
+            <button mat-icon-button (click)="seeHelp()">
+                <mat-icon>&#xE887;</mat-icon>
             </button>
         </div>
     </div>
-    <md-menu #params="mdMenu">
-        <button md-menu-item (click)="allGreen()">Mark all empty as done</button>
-    </md-menu>
+    <mat-menu #params="matMenu">
+        <button mat-menu-item (click)="allGreen()">Mark all empty as done</button>
+    </mat-menu>
     <div class="filters" *ngIf="!(isOnOutstandingsStep$ | async)">
-        <md-slide-toggle
+        <mat-slide-toggle
             color="primary"
             [checked]="(filter$ | async).onlyPlaying"
             (change)="toggleOnlyPlaying($event.checked)"><span>Display only playing</span>
-        </md-slide-toggle>
-        <md-slide-toggle
+        </mat-slide-toggle>
+        <mat-slide-toggle
             color="primary"
             [checked]="(filter$ | async).onlyExtraTime"
             (change)="toggleOnlyExtraTime($event.checked)"><span>Display only extra time</span>
-        </md-slide-toggle>
+        </mat-slide-toggle>
     </div>
 </div>
 <div class="tables" [class.hide-button]="!(isOnOutstandingsStep$ | async)" [class.show-warn]="(isOnOutstandingsStep$ | async)" [class.high-padding]="!(isOnOutstandingsStep$ | async)">
     <loader [isLoading]="isLoading"></loader>
     <div class="table block" *ngFor="let table of tables$ | async" [ngClass]="[table.status, table.result ? '' : table.doneTime | warnAgo]" [class.has-time]="table.time" (click)="onTableClick(table)">
-        <div class="number">{{table.$key}}</div>
+        <div class="number">{{table.number}}</div>
         <div class="time" *ngIf="table.time">{{table.time}}min</div>
         <div class="result">{{table.result | result }}</div>
         <div class="assignated" *ngIf="table.assignated">{{table.assignated}}</div>
         <div class="actions">
-            <button md-raised-button color="primary" (click)="addResult($event, table)">Add result</button>
+            <button mat-raised-button color="primary" (click)="addResult($event, table)">Add result</button>
         </div>
     </div>
 </div>
@@ -51,18 +51,18 @@
     <span *ngIf="!(isOnOutstandingsStep$ | async)"><br/>If this is not normal, check your filters</span>
 </div>
 
-<button *ngIf="!(zone$ | async)?.needHelp" md-fab color="primary" class="call-help" (click)="callHelp(true)"><md-icon>&#xE91F;</md-icon></button>
-<button *ngIf="(zone$ | async)?.needHelp" md-fab color="warn" class="call-help" (click)="callHelp(false)"><md-icon>&#xE14C;</md-icon></button>
+<button *ngIf="!(zone$ | async)?.needHelp" mat-fab color="primary" class="call-help" (click)="callHelp(true)"><mat-icon>&#xE91F;</mat-icon></button>
+<button *ngIf="(zone$ | async)?.needHelp" mat-fab color="warn" class="call-help" (click)="callHelp(false)"><mat-icon>&#xE14C;</mat-icon></button>
 
 <ng-template #confirm>
     <div class="confirmation">
         <h3>Are you sure</h3>
-        <div md-dialog-content>
+        <div mat-dialog-content>
             All current empty tables (white) will become done (green). Filters will NOT be taken in account.
         </div>
-        <div class="actions" md-dialog-actions>
-            <button md-raised-button color="warn" (click)="cancelAllGreen()">Cancel</button>
-            <button md-raised-button color="primary" (click)="confirmAllGreen()">Go</button>
+        <div class="actions" mat-dialog-actions>
+            <button mat-raised-button color="warn" (click)="cancelAllGreen()">Cancel</button>
+            <button mat-raised-button color="primary" (click)="confirmAllGreen()">Go</button>
         </div>
     </div>
 </ng-template>
@@ -70,24 +70,24 @@
 <ng-template #assignJudges>
     <div class="assign-judges">
         <h3>Assign judge</h3>
-        <div md-dialog-content>
+        <div mat-dialog-content>
             <form #assignJudgesForm="ngForm">
-                <md-input-container>
-                    <input maxLength="4" name="judge" mdInput placeholder="Judge" type="text" required [(ngModel)]="assignData.judge">
-                </md-input-container>
+                <mat-input-container>
+                    <input maxLength="4" name="judge" matInput placeholder="Judge" type="text" required [(ngModel)]="assignData.judge">
+                </mat-input-container>
                 <textarea required type="text" [(ngModel)]="assignData.tables" name="tables" placeholder="Tables number separated by space or newline"></textarea>
             </form>
         </div>
-        <div class="actions" md-dialog-actions>
-            <button md-raised-button color="warn" (click)="cancelAssignJudges()">Close</button>
-            <button md-raised-button color="primary" [disabled]="!assignJudgesForm.form.valid" (click)="confirmAssignJudges(assignJudgesForm)">Assign</button>
+        <div class="actions" mat-dialog-actions>
+            <button mat-raised-button color="warn" (click)="cancelAssignJudges()">Close</button>
+            <button mat-raised-button color="primary" [disabled]="!assignJudgesForm.form.valid" (click)="confirmAssignJudges(assignJudgesForm)">Assign</button>
         </div>
     </div>
 </ng-template>
 <ng-template #help>
     <div class="help">
         <h3>Reminder</h3>
-        <div md-dialog-content>
+        <div mat-dialog-content>
             <div class="text playing">Playing</div>
             <div class="text covered">Covered</div>
             <div class="text done">Done (no body at the table)</div>

@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { ActivatedRoute, Router, NavigationEnd, PRIMARY_OUTLET } from '@angular/router';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { MdDialog } from '@angular/material';
+import { MatDialog } from '@angular/material';
 import { handleReturn } from '../shared/handle-return';
 
 import { TimeDialogComponent } from './time.dialog.component';
@@ -23,7 +23,7 @@ export class TournamentComponent implements OnInit, OnDestroy {
     constructor(
         private route: ActivatedRoute,
         private tournamentService: TournamentService,
-        private dialog: MdDialog,
+        private dialog: MatDialog,
         private router: Router,
         public connectionService: ConnectionService
     ) {}

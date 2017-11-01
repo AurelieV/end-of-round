@@ -2,7 +2,7 @@ import { Component, Input, OnInit, HostBinding } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/take';
 
-import { TournamentService, TournamentZone, Table, TablesInformation } from '../tournament/tournament.service';
+import { TournamentService, Zone, Table, TablesInformation } from '../tournament/tournament.service';
 
 @Component({
     selector: 'zone-info',
@@ -10,7 +10,7 @@ import { TournamentService, TournamentZone, Table, TablesInformation } from '../
     styleUrls: [ './zone-info.component.scss' ]
 })
 export class ZoneInfoComponent implements OnInit {
-    @Input() zone: TournamentZone;
+    @Input() zone: Zone;
     tablesInformation$: Observable<TablesInformation>;
     isLoading: boolean = true;
 

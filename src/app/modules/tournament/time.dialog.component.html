@@ -1,20 +1,20 @@
-<h3 md-dialog-title>Add time to a table</h3>
-<form md-dialog-content #form="ngForm">
-    <md-input-container>
-      <input (ngModelChange)="onTableNumberChange($event)" name="number" mdInput placeholder="Table number" type="number" required [(ngModel)]="data.tableNumber">
-    </md-input-container>
-    <md-input-container>
-      <input name="time" mdInput placeholder="Time" type="number" required [(ngModel)]="data.time">
-    </md-input-container>
+<h3 mat-dialog-title>Add time to a table</h3>
+<form mat-dialog-content #form="ngForm">
+    <mat-input-container>
+      <input (ngModelChange)="onTableNumberChange($event)" name="number" matInput placeholder="Table number" type="number" required [(ngModel)]="data.tableNumber">
+    </mat-input-container>
+    <mat-input-container>
+      <input name="time" matInput placeholder="Time" type="number" required [(ngModel)]="data.time">
+    </mat-input-container>
     <div class="choice" *ngIf="(displayMessage | async)">
       <div class="messages">This table has already a time of extension of {{(currentTable$ | async)?.time}}min</div>
-      <md-radio-group [(ngModel)]="addOrUpdate" name="addOrUpdate" required color="primary">
-        <md-radio-button [value]="'add'">Add time</md-radio-button>
-        <md-radio-button [value]="'update'">Set time</md-radio-button>
-      </md-radio-group>
+      <mat-radio-group [(ngModel)]="addOrUpdate" name="addOrUpdate" required color="primary">
+        <mat-radio-button [value]="'add'">Add time</mat-radio-button>
+        <mat-radio-button [value]="'update'">Set time</mat-radio-button>
+      </mat-radio-group>
     </div>
 </form>
-<div class="actions" md-dialog-actions>
-    <button md-raised-button color="warning" md-dialog-close>Cancel</button>
-    <button md-raised-button color="primary" md-dialog-close (click)="submit()" [disabled]="!form.form.valid || (isLoading | async)">Add</button>
+<div class="actions" mat-dialog-actions>
+    <button mat-raised-button color="warning" mat-dialog-close>Cancel</button>
+    <button mat-raised-button color="primary" mat-dialog-close (click)="submit()" [disabled]="!form.form.valid || (isLoading | async)">Add</button>
 </div>

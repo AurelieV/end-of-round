@@ -1,11 +1,11 @@
-import { MdDialog } from '@angular/material';
+import { MatDialog } from '@angular/material';
 import { Subscription } from 'rxjs/Subscription';
 import { Component, ViewChild, TemplateRef, OnChanges, Input, OnDestroy, HostBinding } from '@angular/core';
 import 'rxjs/add/operator/skip';
 import { Observable } from 'rxjs/Observable';
 import { handleReturn } from '../shared/handle-return';
 
-import { TournamentService, TournamentZone } from './../tournament/tournament.service';
+import { TournamentService, Zone, Message } from './../tournament/tournament.service';
 
 
 @Component({
@@ -14,9 +14,9 @@ import { TournamentService, TournamentZone } from './../tournament/tournament.se
     styleUrls: [ './zone-message.component.scss' ]
 })
 export class ZoneMessageComponent implements OnChanges, OnDestroy {
-    @Input() zone: TournamentZone;
+    @Input() zone: Zone;
     
-    messages$: Observable<string>;
+    messages$: Observable<Message[]>;
 
     isMessageOpen: boolean = false;
 
@@ -27,14 +27,14 @@ export class ZoneMessageComponent implements OnChanges, OnDestroy {
     subscription: Subscription;
     newMessage: string;
 
-    constructor(private md: MdDialog, private tournamentService: TournamentService) {}
+    constructor(private md: MatDialog, private tournamentService: TournamentService) {}
 
     ngOnChanges() {
        if (!this.zone) return;
-       this.messages$ = this.tournamentService.getMessages(this.zone.$key);
+       this.messages$ = this.tournamentService.getMessages(this.zone.key);
        if (this.subscription) this.subscription.unsubscribe();
        this.subscription = this.messages$.skip(1).subscribe(message => {
-            if (!message) {
+            if (!message || message.length === 0) {
                 this.hasNewMessage = false;
                 return;
             }
@@ -56,7 +56,7 @@ export class ZoneMessageComponent implements OnChanges, OnDestroy {
     }
 
     addMessage() {
-        this.tournamentService.sendMessage(this.zone.$key, this.newMessage);
+        this.tournamentService.sendMessage(this.zone.key, this.newMessage);
         this.newMessage = "";
     }
 
