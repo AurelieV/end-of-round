@@ -35,6 +35,9 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        &:not(.remaining) {
+            padding: 1px;
+        }
     }
     padding-top: 10px;
     padding-bottom: 10px;
