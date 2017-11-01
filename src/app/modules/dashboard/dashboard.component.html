@@ -14,6 +14,7 @@
     <div class="actions">
         <button class="show-mobile" (click)="addFeatured()" mat-raised-button color="primary">Add featured</button>
         <button class="show-mobile" (click)="addOutstandings()" mat-raised-button color="primary">Add outstanding</button>
+        <button class="show-mobile" (click)="addTime()" mat-raised-button color="primary">Add time</button>
         <button class="show-mobile" (click)="endRound()" mat-raised-button color="accent">End round</button>
     </div>
 </div>
@@ -24,6 +25,7 @@
         <button (click)="openRemainingTables()" mat-raised-button color="primary">See remaining</button>
         <button (click)="addOutstandings()" mat-raised-button color="primary">Add outstanding</button>
         <button (click)="endRound()" mat-raised-button color="accent">End round</button>
+        <button (click)="addTime()" mat-raised-button color="accent">Add time</button>
     </div>
     <div class="tables">
         <div *ngIf="(isOnOutstandingsStep$ | async)">

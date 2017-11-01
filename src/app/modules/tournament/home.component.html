@@ -1,5 +1,10 @@
 <loader [isLoading]="isLoading"></loader>
+<button mat-raised-button color="accent" (click)="addTime()">
+    <mat-icon>&#xE856;</mat-icon><span> Add time</span>
+</button>
+<hr>
 <div class="information">{{information | async}}</div>
+<hr *ngIf="information | async">
 <div class="zones">
     <a [routerLink]="['zone', zone.key]" mat-raised-button color="primary" *ngFor="let zone of zones$ | async">{{zone.name}}</a>
 </div>

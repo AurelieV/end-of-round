@@ -5,7 +5,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule, Routes } from '@angular/router';
-import { MatListModule, MatToolbarModule, MatButtonModule } from '@angular/material';
+import {  MatListModule, MatToolbarModule, MatButtonModule, MatIconModule } from '@angular/material';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuthModule } from 'angularfire2/auth'
@@ -15,6 +15,7 @@ import { environment } from '../environments/environment';
 /* Components */
 import { AppComponent } from './app.component';
 import { TournamentListComponent } from './tournament-list.component';
+import { DocumentationComponent } from './documentation.component';
 
 /* Modules */
 import { TournamentModule } from './modules/tournament/tournament.module';
@@ -26,13 +27,15 @@ import { UserService } from './user.service';
 const appRoutes: Routes = [
   { path: '', component: TournamentListComponent, pathMatch: 'full' },
   { path: 'tournament/:key', loadChildren: './modules/tournament/tournament.module#TournamentModule' },
-  { path: 'administration', loadChildren: './modules/administration/administration.module#AdministrationModule' }
+  { path: 'administration', loadChildren: './modules/administration/administration.module#AdministrationModule' },
+  { path: 'documentation', component: DocumentationComponent }
 ]
 
 @NgModule({
   declarations: [
     AppComponent,
-    TournamentListComponent
+    TournamentListComponent,
+    DocumentationComponent
   ],
   imports: [
     /* Angular */
@@ -47,6 +50,7 @@ const appRoutes: Routes = [
     MatListModule,
     MatToolbarModule,
     MatButtonModule,
+    MatIconModule,
 
     /* FireBase */
     AngularFireModule.initializeApp(environment.firebaseConfig),

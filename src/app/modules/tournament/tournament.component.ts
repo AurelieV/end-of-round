@@ -3,10 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { ActivatedRoute, Router, NavigationEnd, PRIMARY_OUTLET } from '@angular/router';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { MatDialog } from '@angular/material';
-import { handleReturn } from '../shared/handle-return';
 
-import { TimeDialogComponent } from './time.dialog.component';
 import { TournamentService, Tournament } from './tournament.service';
 
 
@@ -23,7 +20,6 @@ export class TournamentComponent implements OnInit, OnDestroy {
     constructor(
         private route: ActivatedRoute,
         private tournamentService: TournamentService,
-        private dialog: MatDialog,
         private router: Router,
         public connectionService: ConnectionService
     ) {}
@@ -50,19 +46,6 @@ export class TournamentComponent implements OnInit, OnDestroy {
                 }
         }));
         this.isOnDashboard = isOnDashboard(this.router.url);
-    }
-
-    addTime() {
-        const dialogRef = this.dialog.open(TimeDialogComponent);
-        handleReturn(dialogRef);
-    }
-
-    edit() {
-        this.router.navigate([ 'administration', 'edit', this.key ]);
-    }
-
-    goToDashboard() {
-        this.router.navigate([ 'tournament', this.key, 'dashboard' ]);
     }
 
     ngOnDestroy() {

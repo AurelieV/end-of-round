@@ -9,6 +9,7 @@ import { handleReturn } from '../shared/handle-return';
 
 import { TournamentService, Zone, Table } from './../tournament/tournament.service';
 import { AddResultDialogComponent } from './add-result.dialog.component';
+import { TimeDialogComponent } from '../tournament/time.dialog.component';
 
 interface Filter {
     onlyPlaying: boolean;
@@ -44,7 +45,8 @@ export class ZoneComponent implements OnInit {
         private route: ActivatedRoute,
         private tournamentService: TournamentService,
         private md: MatDialog,
-        private cd: ChangeDetectorRef
+        private cd: ChangeDetectorRef,
+        private dialog: MatDialog
     ) {}
 
     ngOnInit() {
@@ -166,6 +168,11 @@ export class ZoneComponent implements OnInit {
                 doneTime: table.doneTime  || new Date()
             })
         });
+    }
+
+    addTime() {
+        const dialogRef = this.dialog.open(TimeDialogComponent);
+        handleReturn(dialogRef);
     }
 
     seeHelp() {

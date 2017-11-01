@@ -7,7 +7,7 @@
       <span>{{(tournament$ | async)?.name}}</span>
   </div>
   <button mat-icon-button [matMenuTriggerFor]="navMenu">
-      <mat-icon>&#xE5D4;</mat-icon>
+      <mat-icon>&#xE5C3;</mat-icon>
   </button>
 </mat-toolbar>
 <div class="content-with-header">
@@ -22,7 +22,11 @@
       <mat-icon>&#xE897;</mat-icon>
       <span>Go to dashboard</span>
     </a>
-    <a mat-menu-item>
+    <a mat-menu-item *ngIf="isOnDashboard" [routerLink]="['/administration', 'edit', key]">
+      <mat-icon>&#xE3C9;</mat-icon>
+      <span>Edit tournament</span>
+    </a>
+    <a mat-menu-item routerLink="/documentation">
       <mat-icon>&#xE887;</mat-icon>
       <span>See documentation</span>
     </a>

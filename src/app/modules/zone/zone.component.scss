@@ -23,18 +23,19 @@
 
     .actions {
         display: flex;
-        justify-content: center;
-        align-items: flex-end;
+        align-items: center;
         margin-left: 5px;
-        button.active {
-            color: red;
-        }
         button:not(:last-child), zone-message {
             margin-right: 15px;
         }
         zone-message {
-            margin-bottom: 2px;
+            display: block;
+            margin-bottom: -9px;
         }
+    }
+
+    .filters {
+        margin-top: 4px;
     }
 }
 

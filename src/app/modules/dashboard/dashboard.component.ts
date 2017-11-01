@@ -7,6 +7,7 @@ import 'rxjs/add/observable/combineLatest';
 import { handleReturn } from '../shared/handle-return';
 
 import { AddTablesDialogComponent } from './add-tables.dialog.component';
+import { TimeDialogComponent } from './../tournament/time.dialog.component';
 import { TournamentService, Zone, Table } from './../tournament/tournament.service';
 
 @Component({
@@ -128,5 +129,10 @@ export class DashboardComponent implements OnInit {
 
     trackByFn(val: Zone) {
         return val.key;
+    }
+
+    addTime() {
+        const dialogRef = this.md.open(TimeDialogComponent);
+        handleReturn(dialogRef);
     }
 }

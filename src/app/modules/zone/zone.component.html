@@ -2,23 +2,31 @@
     <div class="first-line">
         <div class="title">{{(zone$ | async)?.name}}</div>
         <div class="actions">
-            <button mat-icon-button (click)="assign()">
-                <mat-icon>&#xE851;</mat-icon>
-            </button>
             <zone-message [zone]="zone$ | async"></zone-message>
             <button mat-icon-button 
                 class="menu-button"
                 [matMenuTriggerFor]="params"
-                *ngIf="!(isOnOutstandingsStep$ | async)">
-                <mat-icon>&#xE8B8;</mat-icon>
-            </button>
-            <button mat-icon-button (click)="seeHelp()">
-                <mat-icon>&#xE887;</mat-icon>
-            </button>
+                *ngIf="!(isOnOutstandingsStep$ | async)"
+            ><mat-icon>&#xE5D4;</mat-icon></button>
         </div>
     </div>
     <mat-menu #params="matMenu">
-        <button mat-menu-item (click)="allGreen()">Mark all empty as done</button>
+        <button mat-menu-item (click)="addTime()">
+            <mat-icon>&#xE856;</mat-icon>
+            <span>Add time</span>
+        </button>
+        <button mat-menu-item (click)="assign()">
+            <mat-icon>&#xE851;</mat-icon>
+            <span>Assign judge</span>
+        </button>
+        <button mat-menu-item (click)="allGreen()">
+            <mat-icon>&#xE877;</mat-icon>
+            <span>Mark all empty as done</span>
+        </button>
+        <button mat-menu-item (click)="seeHelp()">
+            <mat-icon>&#xE887;</mat-icon>
+            <span>Display help</span>
+        </button>
     </mat-menu>
     <div class="filters" *ngIf="!(isOnOutstandingsStep$ | async)">
         <mat-slide-toggle
