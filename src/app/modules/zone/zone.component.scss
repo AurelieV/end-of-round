@@ -19,6 +19,8 @@
     .first-line {
         display: flex;
         align-items: center;
+        margin-bottom: 4px;
+        margin-top: 4px;
     }
 
     .actions {
@@ -32,10 +34,6 @@
             display: block;
             margin-bottom: -9px;
         }
-    }
-
-    .filters {
-        margin-top: 4px;
     }
 }
 

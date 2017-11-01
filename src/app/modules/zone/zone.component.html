@@ -6,7 +6,6 @@
             <button mat-icon-button 
                 class="menu-button"
                 [matMenuTriggerFor]="params"
-                *ngIf="!(isOnOutstandingsStep$ | async)"
             ><mat-icon>&#xE5D4;</mat-icon></button>
         </div>
     </div>
@@ -19,7 +18,7 @@
             <mat-icon>&#xE851;</mat-icon>
             <span>Assign judge</span>
         </button>
-        <button mat-menu-item (click)="allGreen()">
+        <button mat-menu-item (click)="allGreen()" *ngIf="!(isOnOutstandingsStep$ | async)">
             <mat-icon>&#xE877;</mat-icon>
             <span>Mark all empty as done</span>
         </button>

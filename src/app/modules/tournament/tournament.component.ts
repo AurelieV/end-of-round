@@ -42,7 +42,7 @@ export class TournamentComponent implements OnInit, OnDestroy {
         this.subscriptions.push(
             this.router.events.subscribe(event => {
                 if (event instanceof NavigationEnd) {
-                    this.isOnDashboard = isOnDashboard('dashboard');
+                    this.isOnDashboard = isOnDashboard(event.url);
                 }
         }));
         this.isOnDashboard = isOnDashboard(this.router.url);
