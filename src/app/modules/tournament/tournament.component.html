@@ -1,14 +1,29 @@
 <mat-toolbar color="primary" class="header">
-  <div class="connection-status" [class.connected]="connectionService.isConnected"></div>
+  <div class="connection">
+      <div class="connection-status" [class.connected]="connectionService.isConnected"></div>
+      <mat-icon>&#xE853;</mat-icon>
+  </div>
   <div class="header-content">
       <span>{{(tournament$ | async)?.name}}</span>
   </div>
-  <div class="actions">
-    <button mat-mini-fab color="warn" (click)="goToDashboard()" *ngIf="!isOnDashboard"><mat-icon>&#xE417;</mat-icon></button>
-    <button mat-mini-fab color="warn" (click)="edit()" *ngIf="isOnDashboard"><mat-icon>&#xE3C9;</mat-icon></button>
-    <button mat-mini-fab color="accent" (click)="addTime()"><mat-icon>&#xE192;</mat-icon></button>
-  </div>
+  <button mat-icon-button [matMenuTriggerFor]="navMenu">
+      <mat-icon>&#xE5D4;</mat-icon>
+  </button>
 </mat-toolbar>
 <div class="content-with-header">
     <router-outlet></router-outlet>
 </div>
+<mat-menu #navMenu="matMenu">
+    <a mat-menu-item routerLink="/">
+      <mat-icon>&#xE88A;</mat-icon>
+      <span>Go to homepage</span>
+    </a>
+    <a mat-menu-item *ngIf="!isOnDashboard" routerLink="./dashboard">
+      <mat-icon>&#xE897;</mat-icon>
+      <span>Go to dashboard</span>
+    </a>
+    <a mat-menu-item>
+      <mat-icon>&#xE887;</mat-icon>
+      <span>See documentation</span>
+    </a>
+  </mat-menu>

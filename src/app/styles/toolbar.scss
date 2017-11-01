@@ -8,6 +8,16 @@ mat-toolbar.header {
     }
     position: fixed;
     z-index: 10;
+    .connection {
+        position: relative;
+        width: 40px;
+        height: 40px;
+        mat-icon {
+            width: 40px;
+            height: 40px;
+            font-size: 40px;
+        }
+    }
     .connection-status {
         width: 20px;
         height: 20px;
@@ -16,6 +26,9 @@ mat-toolbar.header {
         &.connected {
             background: lightgreen;
         }
+        position: absolute;
+        bottom: 0;
+        right: -5px;
     }
 }
 

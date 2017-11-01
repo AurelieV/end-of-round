@@ -1,5 +1,5 @@
 import { FormsModule } from '@angular/forms';
-import { MatDialogModule, MatButtonModule, MatInputModule, MatToolbarModule, MatIconModule, MatRadioModule } from '@angular/material';
+import { MatDialogModule, MatButtonModule, MatInputModule, MatToolbarModule, MatIconModule, MatRadioModule, MatMenuModule } from '@angular/material';
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 
@@ -38,7 +38,8 @@ export const routes: Routes = [
         MatInputModule,
         MatToolbarModule,
         MatIconModule,
-        MatRadioModule
+        MatRadioModule,
+        MatMenuModule
     ],
     declarations: [
         TournamentComponent,

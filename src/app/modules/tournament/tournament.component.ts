@@ -39,13 +39,17 @@ export class TournamentComponent implements OnInit, OnDestroy {
                 }
             })
         );
+        const isOnDashboard = (url) => {
+            const segments = this.router.parseUrl(url).root.children[PRIMARY_OUTLET].segments.map(s => s.path);
+            return segments.indexOf('dashboard') > -1;
+        }
         this.subscriptions.push(
             this.router.events.subscribe(event => {
                 if (event instanceof NavigationEnd) {
-                    const segments = this.router.parseUrl(event.url).root.children[PRIMARY_OUTLET].segments.map(s => s.path);
-                    this.isOnDashboard = segments.indexOf('dashboard') > -1;
+                    this.isOnDashboard = isOnDashboard('dashboard');
                 }
         }));
+        this.isOnDashboard = isOnDashboard(this.router.url);
     }
 
     addTime() {
