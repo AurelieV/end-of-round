@@ -155,7 +155,7 @@ export class TournamentService {
 
     sendMessage(zoneId: string, message: string) {
         this.db.list<Message>(`/messages/${this.key.getValue()}/${zoneId}`).push({
-            login: 'Test',
+            login: 'Anonymous',
             message,
             timestamp: (new Date()).valueOf()
         })
