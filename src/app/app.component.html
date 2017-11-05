@@ -1,0 +1,37 @@
+<mat-toolbar color="primary" class="header">
+    <div class="connection">
+        <div class="connection-status" [class.connected]="connectionService.isConnected"></div>
+        <mat-icon>&#xE853;</mat-icon>
+    </div>
+    <div class="header-content">
+        <!-- <span>{{(tournament$ | async)?.name}}</span> -->
+    </div>
+    <button mat-icon-button [matMenuTriggerFor]="navMenu">
+        <mat-icon>&#xE5C3;</mat-icon>
+    </button>
+</mat-toolbar>
+<mat-menu #navMenu="matMenu">
+    <a mat-menu-item routerLink="/" *ngIf="!state.isOnHome">
+      <mat-icon>&#xE88A;</mat-icon>
+      <span>Go to homepage</span>
+    </a>
+    <a mat-menu-item [routerLink]="['tournament', state.tournamentKey]" *ngIf="state.isOnTournament && !state.isOnMainPage">
+        <mat-icon>&#xE88A;</mat-icon>
+        <span>Go to Main page</span>
+      </a>
+    <a mat-menu-item *ngIf="state.isOnTournament && !state.isOnDashboard" [routerLink]="['tournament', state.tournamentKey, 'dashboard']">
+      <mat-icon>&#xE897;</mat-icon>
+      <span>Go to dashboard</span>
+    </a>
+    <a mat-menu-item *ngIf="state.isOnTournament && state.isOnDashboard" [routerLink]="['/administration', 'edit', state.tournamentKey]">
+      <mat-icon>&#xE3C9;</mat-icon>
+      <span>Edit tournament</span>
+    </a>
+    <a mat-menu-item routerLink="/documentation">
+      <mat-icon>&#xE887;</mat-icon>
+      <span>See documentation</span>
+    </a>
+</mat-menu>
+<div class="content-with-header">
+    <router-outlet></router-outlet>
+</div>

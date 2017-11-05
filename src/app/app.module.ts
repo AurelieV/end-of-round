@@ -5,7 +5,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule, Routes } from '@angular/router';
-import {  MatListModule, MatToolbarModule, MatButtonModule, MatIconModule } from '@angular/material';
+import {  MatListModule, MatToolbarModule, MatButtonModule, MatIconModule, MatMenuModule } from '@angular/material';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuthModule } from 'angularfire2/auth'
@@ -51,6 +51,7 @@ const appRoutes: Routes = [
     MatToolbarModule,
     MatButtonModule,
     MatIconModule,
+    MatMenuModule,
 
     /* FireBase */
     AngularFireModule.initializeApp(environment.firebaseConfig),

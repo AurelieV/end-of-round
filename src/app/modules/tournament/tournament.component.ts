@@ -8,20 +8,17 @@ import { TournamentService, Tournament } from './tournament.service';
 
 
 @Component({
-    templateUrl: './tournament.component.html',
+    template: '<router-outlet></router-outlet>',
     selector: 'tournament'
 })
 export class TournamentComponent implements OnInit, OnDestroy {
     subscriptions: Subscription[] = [];
     tournament$: Observable<Tournament>;
     key: string;
-    isOnDashboard: boolean;
 
     constructor(
         private route: ActivatedRoute,
-        private tournamentService: TournamentService,
-        private router: Router,
-        public connectionService: ConnectionService
+        private tournamentService: TournamentService
     ) {}
 
     ngOnInit() {
@@ -35,17 +32,6 @@ export class TournamentComponent implements OnInit, OnDestroy {
                 }
             })
         );
-        const isOnDashboard = (url) => {
-            const segments = this.router.parseUrl(url).root.children[PRIMARY_OUTLET].segments.map(s => s.path);
-            return segments.indexOf('dashboard') > -1;
-        }
-        this.subscriptions.push(
-            this.router.events.subscribe(event => {
-                if (event instanceof NavigationEnd) {
-                    this.isOnDashboard = isOnDashboard(event.url);
-                }
-        }));
-        this.isOnDashboard = isOnDashboard(this.router.url);
     }
 
     ngOnDestroy() {

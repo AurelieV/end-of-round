@@ -1,19 +1,10 @@
-<mat-toolbar color="primary" class="header">
-  <div class="header-content">Choose tournament</div>
-</mat-toolbar>
-<div class="content-with-header">
-    <loader [isLoading]="isLoading"></loader>
-    <mat-nav-list>
-        <mat-list-item *ngFor="let tournament of tournaments$ | async" (click)="goToTournament(tournament.key)">
-            <span>{{ tournament.name }}</span>
-        </mat-list-item>
-    </mat-nav-list>
-    <div class="message" *ngIf="!isLoading && !(hasTournament$ | async)">No tournament available</div>
-    <div class="actions">
-        <a routerLink="/administration" mat-raised-button color="accent">Add a tournament</a>
-    </div>
-
-    <a class="help" routerLink="/documentation" mat-raised-button color="primary">
-        <mat-icon>&#xE887;</mat-icon><span> See documentation</span>
-    </a>
+<loader [isLoading]="isLoading"></loader>
+<mat-nav-list>
+    <mat-list-item *ngFor="let tournament of tournaments$ | async" (click)="goToTournament(tournament.key)">
+        <span>{{ tournament.name }}</span>
+    </mat-list-item>
+</mat-nav-list>
+<div class="message" *ngIf="!isLoading && !(hasTournament$ | async)">No tournament available</div>
+<div class="actions">
+    <a routerLink="/administration" mat-raised-button color="accent">Add a tournament</a>
 </div>
