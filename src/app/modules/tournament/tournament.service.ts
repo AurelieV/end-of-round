@@ -144,17 +144,37 @@ export class TournamentService {
     }
 
     getMessages(zoneId: string): Observable<Message[]> {
-        return this.key.switchMap(key =>
-            key ? 
-                this.db.list<Message>(`/messages/${key}/${zoneId}`, ref => ref.orderByChild('timestamp'))
-                .valueChanges()
-                .map(t => t.reverse())
-            : Observable.of([])
-        );
+        return this.key.switchMap(key => {
+            if (!key) {
+                return Observable.of([]);
+            } else {
+                if (!zoneId) {
+                    return this.db.list<Message>(`/messages/${key}/for_all`, ref => ref.orderByChild('timestamp'))
+                        .valueChanges()
+                        .map(t => t.reverse())
+                } else {
+                    const zoneMessages = this.db.list<Message>(
+                        `/messages/${key}/${zoneId}`,
+                        ref => ref.orderByChild('timestamp')
+                    ).valueChanges().map(t => t.reverse());
+                    const allMessages = this.db.list<Message>(
+                        `/messages/${key}/for_all`,
+                        ref => ref.orderByChild('timestamp')
+                    ).valueChanges().map(t => t.reverse());
+
+                    return Observable.combineLatest(zoneMessages, allMessages)
+                        .map(([zoneMessages, allMessages]) => {
+                            return zoneMessages.concat(allMessages).sort((m: Message) => - m.timestamp)
+                        })
+                    ;
+                }
+                
+            }
+        });
     }
 
     sendMessage(zoneId: string, message: string) {
-        this.db.list<Message>(`/messages/${this.key.getValue()}/${zoneId}`).push({
+        this.db.list<Message>(`/messages/${this.key.getValue()}/${zoneId || 'for_all'}`).push({
             login: 'Anonymous',
             message,
             timestamp: (new Date()).valueOf()

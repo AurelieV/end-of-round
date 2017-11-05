@@ -14,7 +14,7 @@ import { TournamentService, Zone, Message } from './../tournament/tournament.ser
     styleUrls: [ './zone-message.component.scss' ]
 })
 export class ZoneMessageComponent implements OnChanges, OnDestroy {
-    @Input() zone: Zone;
+    @Input() zone: Zone | null;
     
     messages$: Observable<Message[]>;
 
@@ -30,8 +30,7 @@ export class ZoneMessageComponent implements OnChanges, OnDestroy {
     constructor(private md: MatDialog, private tournamentService: TournamentService) {}
 
     ngOnChanges() {
-       if (!this.zone) return;
-       this.messages$ = this.tournamentService.getMessages(this.zone.key);
+       this.messages$ = this.tournamentService.getMessages(this.zone ? this.zone.key : '');
        if (this.subscription) this.subscription.unsubscribe();
        this.subscription = this.messages$.skip(1).subscribe(message => {
             if (!message || message.length === 0) {
@@ -56,7 +55,7 @@ export class ZoneMessageComponent implements OnChanges, OnDestroy {
     }
 
     addMessage() {
-        this.tournamentService.sendMessage(this.zone.key, this.newMessage);
+        this.tournamentService.sendMessage(this.zone ? this.zone.key : "", this.newMessage);
         this.newMessage = "";
     }
 
