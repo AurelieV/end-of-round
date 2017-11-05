@@ -4,4 +4,6 @@ import { Component } from '@angular/core';
     selector: 'administration',
     template: '<router-outlet></router-outlet>'
 })
-export class AdministrationComponent {}
+export class AdministrationComponent {
+    name: 'AdministrationComponent'
+}

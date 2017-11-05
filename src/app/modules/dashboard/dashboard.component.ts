@@ -16,6 +16,8 @@ import { TournamentService, Zone, Table } from './../tournament/tournament.servi
     templateUrl: 'dashboard.component.html'
 })
 export class DashboardComponent implements OnInit {
+    name: 'DashboardComponent';
+    
     zones$: Observable<Zone[]>;
     tables$: Observable<Table[]>;
     isOnOutstandingsStep$: Observable<boolean>;

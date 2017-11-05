@@ -12,7 +12,8 @@ import { TournamentData, ZoneData, AdministrationService } from './administratio
     templateUrl: './create-tournament.component.html',
     styleUrls: ['./create-tournament.component.scss']
 })
-export class CreateTournamentComponent implements OnInit { 
+export class CreateTournamentComponent implements OnInit {
+    name: 'CreateTournamentComponent';
     create: boolean = true;
     previousName: string;
     zones: ZoneData[] = [];

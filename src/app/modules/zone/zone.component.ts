@@ -22,6 +22,8 @@ interface Filter {
     templateUrl: 'zone.component.html' 
 })
 export class ZoneComponent implements OnInit {
+    name: 'ZoneComponent';
+    
     zone$: Observable<Zone>;
     tables$: Observable<Table[]>;
     filter$: BehaviorSubject<Filter> = new BehaviorSubject({

@@ -14,6 +14,8 @@ import { TimeDialogComponent } from './time.dialog.component';
     styleUrls: [ './home.component.scss' ]
 })
 export class HomeComponent implements OnInit {
+    name: 'HomeComponent';
+    
     information: Observable<string>;
     isLoading: boolean = true;
     zones$: Observable<Zone[]>
