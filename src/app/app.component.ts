@@ -1,3 +1,6 @@
+import { TournamentData } from './model';
+import { AngularFireDatabase } from 'angularfire2/database';
+import { Observable } from 'rxjs/Observable';
 import { ConnectionService } from './connection.service';
 import { Router, PRIMARY_OUTLET, NavigationEnd } from '@angular/router';
 import { UserService } from './user.service';
@@ -27,18 +30,22 @@ export class AppComponent {
     isOnMainPage: false
   }
   subscriptions: Subscription[] = [];
+  title$: Observable<string>;
 
   constructor(
     private userService: UserService,
     private router: Router,
-    public connectionService: ConnectionService
+    public connectionService: ConnectionService,
+    private db: AngularFireDatabase
   ) {
     this.subscriptions.push(
         this.router.events.subscribe(event => {
             if (event instanceof NavigationEnd) {
                 this.state = this.analyseState();
+                this.setTitle();
             }
     }));
+    this.title$ = Observable.of('');
   }
 
   private analyseState(): State {
@@ -64,6 +71,20 @@ export class AppComponent {
       isOnHome: componentNames.includes('TournamentListComponent'),
       isOnMainPage: componentNames.includes('HomeComponent'),
       tournamentKey: isOnEdit ? params.id : params.key
+    }
+  }
+
+  private setTitle() {
+    if (this.state.isOnTournament) {
+      this.title$ = this.db.object<TournamentData>(`/tournaments/${this.state.tournamentKey}`)
+        .valueChanges<TournamentData>()
+        .map(tournament => tournament.name)
+    } else if (this.state.isOnHome) {
+      this.title$ = Observable.of('Select a tournament')
+    } else if (this.state.isOnAdministration) {
+      this.title$ = Observable.of('Administration')
+    } else {
+      this.title$ = Observable.of('')
     }
   }
 
