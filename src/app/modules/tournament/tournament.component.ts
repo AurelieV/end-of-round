@@ -12,8 +12,6 @@ import { TournamentService, Tournament } from './tournament.service';
     selector: 'tournament'
 })
 export class TournamentComponent implements OnInit, OnDestroy {
-    name: 'TournamentComponent';
-    
     subscriptions: Subscription[] = [];
     tournament$: Observable<Tournament>;
     key: string;

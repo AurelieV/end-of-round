@@ -18,7 +18,7 @@ export const routes: Routes = [
         component: AdministrationComponent,
         children: [
             { path: '', component: CreateTournamentComponent },
-            { path: 'edit/:id', component: CreateTournamentComponent }
+            { path: 'edit/:id', component: CreateTournamentComponent, data: { section: 'Edition' } }
         ]
     }
 ]

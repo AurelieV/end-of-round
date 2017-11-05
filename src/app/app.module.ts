@@ -25,10 +25,10 @@ import { ConnectionService } from './connection.service';
 import { UserService } from './user.service';
 
 const appRoutes: Routes = [
-  { path: '', component: TournamentListComponent, pathMatch: 'full' },
-  { path: 'tournament/:key', loadChildren: './modules/tournament/tournament.module#TournamentModule' },
-  { path: 'administration', loadChildren: './modules/administration/administration.module#AdministrationModule' },
-  { path: 'documentation', component: DocumentationComponent }
+  { path: '', component: TournamentListComponent, pathMatch: 'full', data: { section: 'TournamentList' } },
+  { path: 'tournament/:key', loadChildren: './modules/tournament/tournament.module#TournamentModule', data: { section: 'Tournament' } },
+  { path: 'administration', loadChildren: './modules/administration/administration.module#AdministrationModule', data: { section: 'Administration' } },
+  { path: 'documentation', component: DocumentationComponent, data: { section: 'Documentation' } }
 ]
 
 @NgModule({

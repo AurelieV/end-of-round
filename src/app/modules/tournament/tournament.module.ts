@@ -17,10 +17,10 @@ export const routes: Routes = [
         path: '',
         component: TournamentComponent,
         children: [
-            { path: '', component: HomeComponent, pathMatch: 'full' },
+            { path: '', component: HomeComponent, pathMatch: 'full', data: { section: 'Home' } },
             { path: '', component: MainComponent, children: [
-                { path: 'dashboard', loadChildren: '../dashboard/dashboard.module#DashboardModule' },
-                { path: 'zone/:id', loadChildren: '../zone/zone.module#ZoneModule' }
+                { path: 'dashboard', loadChildren: '../dashboard/dashboard.module#DashboardModule', data: { section: 'Dashboard' } },
+                { path: 'zone/:id', loadChildren: '../zone/zone.module#ZoneModule', data: { section: 'Zone' } }
             ]}
         ]
     }

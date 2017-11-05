@@ -12,7 +12,6 @@ import { Tournament, TournamentData } from './model'
     styleUrls: [ './tournament-list.component.scss' ]
 })
 export class TournamentListComponent implements OnInit {
-    name: 'TournamentListComponent';
     tournaments$: Observable<Tournament[]>;
     hasTournament$: Observable<boolean>;
     isLoading: boolean = true;

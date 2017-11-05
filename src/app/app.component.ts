@@ -52,25 +52,25 @@ export class AppComponent {
   private analyseState(): State {
     let state = this.router.routerState.snapshot.root;
     let params: any = {};
-    const componentNames: string[] = [];
-    if (state.component) {
-      componentNames.push(state.component['name'])
+    const sections: string[] = [];
+    if (state.data.section) {
+      sections.push(state.data.section)
     }
     while (state.children.length > 0 ) {
       state = state.children[0];
-      if (state.component) {
-        componentNames.push(state.component['name'])
+      if (state.data.section) {
+        sections.push(state.data.section)
       }
       params = Object.assign(params, state.params);
     }
-    const isOnEdit = componentNames.includes('CreateTournamentComponent') && params.id;
+    const isOnEdit = sections.includes('Edition');
 
     return {
-      isOnDashboard: componentNames.includes('DashboardComponent'),
-      isOnAdministration: componentNames.includes('AdministrationComponent'),
-      isOnTournament: componentNames.includes('TournamentComponent') || isOnEdit,
-      isOnHome: componentNames.includes('TournamentListComponent'),
-      isOnMainPage: componentNames.includes('HomeComponent'),
+      isOnDashboard: sections.includes('Dashboard'),
+      isOnAdministration: sections.includes('Administration'),
+      isOnTournament: sections.includes('Tournament') || isOnEdit,
+      isOnHome: sections.includes('TournamentList'),
+      isOnMainPage: sections.includes('Home'),
       tournamentKey: isOnEdit ? params.id : params.key
     }
   }

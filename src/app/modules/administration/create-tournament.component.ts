@@ -13,7 +13,6 @@ import { TournamentData, ZoneData, AdministrationService } from './administratio
     styleUrls: ['./create-tournament.component.scss']
 })
 export class CreateTournamentComponent implements OnInit {
-    name: 'CreateTournamentComponent';
     create: boolean = true;
     previousName: string;
     zones: ZoneData[] = [];
