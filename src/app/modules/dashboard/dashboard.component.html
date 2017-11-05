@@ -4,7 +4,11 @@
         <button class="show-mobile" (click)="openRemainingTables()" mat-raised-button color="primary">See remaining</button>
     </div>
     <loader [isLoading]="isLoading"></loader>
-    <zone-info *ngIf="!isLoading && (zones$ | async)?.length > 1" class="zone"></zone-info>
+    <zone-info 
+        *ngIf="!isLoading && (zones$ | async)?.length > 1"
+        class="zone"
+        (click)="goToZone('all')">
+    </zone-info>
     <zone-info 
         *ngFor="let zone of zones$ | async;trackBy:trackByFn"
         class="zone"

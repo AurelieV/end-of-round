@@ -18,10 +18,6 @@ export class ZoneInfoComponent implements OnInit {
         return this.zone && this.zone.needHelp;
     }
 
-    @HostBinding("class.active") get isActive() {
-        return !!this.zone;
-    }
-
     constructor(private tournamentService: TournamentService) {}
 
     ngOnInit() {

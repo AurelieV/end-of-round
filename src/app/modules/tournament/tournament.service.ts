@@ -83,8 +83,24 @@ export class TournamentService {
     }
 
     getZone(zoneId: string): Observable<Zone> {
-        return this.key.switchMap(key =>
-            key ? this.getObject(this.db.object(`/zones/${key}/${zoneId}`)) : Observable.of(null)
+        return this.key.switchMap(key => {
+            if (!key) {
+                return Observable.of(null)
+            } else if (zoneId) {
+                return this.getObject(this.db.object(`/zones/${key}/${zoneId}`))
+            } else {
+                return this.getTournament().map(tournament => {
+                    return {
+                        key: "",
+                        name: "All",
+                        start: tournament.start,
+                        end: tournament.end,
+                        leader: "",
+                        needHelp: false
+                    }
+                })
+            }
+        }
         );
     }
 
@@ -112,6 +128,7 @@ export class TournamentService {
     }
 
     getAllTablesByZone(zone: Zone): Observable<Table[]> {
+        if (!zone) return this.getAllTables();
         return this.key.switchMap(key =>
             key ?
             this.getList(this.db.list(
@@ -233,8 +250,8 @@ export class TournamentService {
             zones.forEach(zone => {
                 this.db.object(`/messages/${this.key.getValue()}/${zone.key}`).set("");
             })
+            this.db.object(`/messages/${this.key.getValue()}/for_all`).set("");
         })
-
     }
 
     getTable(tableId: string): Observable<Table> {

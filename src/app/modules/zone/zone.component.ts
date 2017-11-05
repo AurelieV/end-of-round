@@ -53,8 +53,8 @@ export class ZoneComponent implements OnInit {
         this.zone$ = this.route.params
             .map(params => params.id)
             .switchMap(id => {
-                this.zoneId = id;
-                return this.tournamentService.getZone(id)
+                this.zoneId = id === 'all' ? '' : id;
+                return this.tournamentService.getZone(this.zoneId)
             })
         ;
         this.tables$ = this.zone$.switchMap(zone => {
