@@ -14,5 +14,6 @@
     <div class="block covered">{{(tablesInformation$ | async)?.covered}}</div>
     <div class="block extra-time">{{(tablesInformation$ | async)?.extraTimed}}</div>
     <zone-message class="block" [zone]="zone"></zone-message>
+    <button (click)="onView.emit($event)" mat-icon-button class="view-button"><mat-icon>&#xE5C8;</mat-icon></button>
 </div>
 <loader [isLoading]="isLoading"></loader>

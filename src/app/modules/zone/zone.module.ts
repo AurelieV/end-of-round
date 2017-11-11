@@ -17,7 +17,6 @@ const routes: Routes = [
 @NgModule({
     imports: [
         SharedModule,
-        RouterModule.forChild(routes),
         FormsModule,
         MatIconModule,
         MatButtonModule,
@@ -32,8 +31,19 @@ const routes: Routes = [
         ZoneComponent,
         AddResultDialogComponent
     ],
+    exports: [
+        ZoneComponent
+    ],
     entryComponents: [
         AddResultDialogComponent
     ]
 })
 export class ZoneModule {}
+
+@NgModule({
+    imports: [
+        ZoneModule,
+        RouterModule.forChild(routes)
+    ]
+})
+export class ZoneWithRouteModule {}

@@ -1,4 +1,5 @@
-import { Component, Input, OnInit, HostBinding } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { Component, Input, OnInit, HostBinding, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/take';
 
@@ -11,6 +12,8 @@ import { TournamentService, Zone, Table, TablesInformation } from '../tournament
 })
 export class ZoneInfoComponent implements OnInit {
     @Input() zone: Zone;
+    @Output() onView = new EventEmitter()
+    
     tablesInformation$: Observable<TablesInformation>;
     isLoading: boolean = true;
 
@@ -18,7 +21,7 @@ export class ZoneInfoComponent implements OnInit {
         return this.zone && this.zone.needHelp;
     }
 
-    constructor(private tournamentService: TournamentService) {}
+    constructor(private tournamentService: TournamentService, private router: Router, private route: ActivatedRoute) {}
 
     ngOnInit() {
         this.tablesInformation$ = this.tournamentService.getActiveTablesInformationByZone(this.zone);

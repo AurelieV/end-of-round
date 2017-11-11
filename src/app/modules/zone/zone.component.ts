@@ -1,11 +1,25 @@
-import { Component, OnInit, OnDestroy, ViewChild, TemplateRef, ChangeDetectorRef } from '@angular/core';
+import { 
+    Component,
+    OnInit,
+    OnDestroy,
+    ViewChild,
+    TemplateRef,
+    ChangeDetectorRef,
+    Input,
+    SimpleChanges,
+    OnChanges,
+    Output,
+    EventEmitter
+} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import 'rxjs/add/operator/take';
+import 'rxjs/add/operator/do';
 import { handleReturn } from '../shared/handle-return';
+import { Subscription } from 'rxjs/Subscription';
 
 import { TournamentService, Zone, Table } from './../tournament/tournament.service';
 import { AddResultDialogComponent } from './add-result.dialog.component';
@@ -21,7 +35,12 @@ interface Filter {
     styleUrls: [ 'zone.component.scss' ],
     templateUrl: 'zone.component.html' 
 })
-export class ZoneComponent implements OnInit {
+export class ZoneComponent implements OnInit, OnChanges, OnDestroy { 
+    @Input() zoneId: string;
+    @Output() onClose = new EventEmitter();
+
+    private subscription: Subscription;
+
     zone$: Observable<Zone>;
     tables$: Observable<Table[]>;
     filter$: BehaviorSubject<Filter> = new BehaviorSubject({
@@ -29,7 +48,6 @@ export class ZoneComponent implements OnInit {
         onlyExtraTime: false
     });
     isOnOutstandingsStep$: Observable<boolean>;
-    zoneId: string;
     isLoading: boolean = true;
 
     @ViewChild('confirm') confirmTemplate: TemplateRef<any>;
@@ -50,13 +68,26 @@ export class ZoneComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        this.zone$ = this.route.params
+        this.subscription = this.route.params
             .map(params => params.id)
-            .switchMap(id => {
-                this.zoneId = id === 'all' ? '' : id;
-                return this.tournamentService.getZone(this.zoneId)
+            .subscribe(id => {
+                if (!id) return;
+                this.setZone(id);
+                this.cd.detectChanges();
             })
         ;
+        this.isOnOutstandingsStep$ = this.tournamentService.isOnOutstandingsStep();
+    }
+
+    ngOnChanges(changes: SimpleChanges) {
+        if (changes.zoneId) {
+            this.setZone(changes.zoneId.currentValue)
+        }
+    }
+
+    setZone(zoneId: string) {
+        this.zoneId = zoneId === 'all' ? '' : zoneId;
+        this.zone$ = this.tournamentService.getZone(this.zoneId);
         this.tables$ = this.zone$.switchMap(zone => {
             return Observable.combineLatest(
                 this.tournamentService.getActiveTablesByZone(zone),
@@ -65,15 +96,14 @@ export class ZoneComponent implements OnInit {
             ).map(([tables, filters, isOnOutstandingsStep]) => {
                 if (isOnOutstandingsStep) return tables;
                 return tables.filter(t => {
-                        if (filters.onlyExtraTime && !t.time) return false;
-                        if (filters.onlyPlaying && t.status !== 'playing' && t.status !== 'covered') return false;
+                    if (filters.onlyExtraTime && !t.time) return false;
+                    if (filters.onlyPlaying && t.status !== 'playing' && t.status !== 'covered') return false;
 
-                        return true;
+                    return true;
                 });
             })
         });
         this.tables$.take(1).subscribe(_ => this.isLoading = false);
-        this.isOnOutstandingsStep$ = this.tournamentService.isOnOutstandingsStep();
     }
 
     onTableClick(table: Table) {
@@ -177,5 +207,9 @@ export class ZoneComponent implements OnInit {
 
     seeHelp() {
         this.md.open(this.helpTemplate);
+    }
+
+    ngOnDestroy() {
+        if (this.subscription) this.subscription.unsubscribe();
     }
 }

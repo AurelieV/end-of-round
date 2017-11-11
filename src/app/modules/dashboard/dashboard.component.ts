@@ -24,6 +24,7 @@ export class DashboardComponent implements OnInit {
     remainingTablesByZone$: Observable<any>;
     extraTimedTables$: Observable<Table[]>;
     isLoading: boolean = true;
+    displayZoneId: string = "";
     
     @ViewChild('confirmEnd') confirmEnd: TemplateRef<any>;
     confirmation: MatDialogRef<any>;
@@ -65,6 +66,10 @@ export class DashboardComponent implements OnInit {
 
     goToZone(key: string) {
         this.router.navigate(['../../../zone', key], { relativeTo: this.route });
+    }
+
+    displayZone(key: string) {
+        this.displayZoneId = key;
     }
 
     endRound() {

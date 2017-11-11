@@ -7,12 +7,14 @@
     <zone-info 
         *ngIf="!isLoading && (zones$ | async)?.length > 1"
         class="zone"
-        (click)="goToZone('all')">
+        (onView)="$event.stopPropagation(); goToZone('all')"
+        (click)="displayZone('all')">
     </zone-info>
     <zone-info 
         *ngFor="let zone of zones$ | async;trackBy:trackByFn"
         class="zone"
-        (click)="goToZone(zone.key)"
+        (onView)="$event.stopPropagation(); goToZone(zone.key)"
+        (click)="displayZone(zone.key)"
         [zone]="zone">
     </zone-info>
     <div class="actions">
@@ -40,6 +42,7 @@
             <tables-info [tables]="okTables$ | async"></tables-info>
         </div>
     </div>
+    <zone class="inserted" (onClose)="displayZoneId = ''" [zoneId]="displayZoneId" *ngIf="displayZoneId"></zone>
 </div>
 <ng-template #confirmEnd>
     <div class="confirmation">

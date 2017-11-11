@@ -1,8 +1,9 @@
+<button (click)="onClose.emit({})"mat-icon-button class="close-button"><mat-icon>&#xE5CD;</mat-icon></button>
 <div class="header">
     <div class="first-line">
         <div class="title">{{(zone$ | async)?.name}}</div>
         <div class="actions">
-            <zone-message [zone]="zone$ | async"></zone-message>
+            <zone-message [zone]="(zone$ | async)"></zone-message>
             <button mat-icon-button 
                 class="menu-button"
                 [matMenuTriggerFor]="params"

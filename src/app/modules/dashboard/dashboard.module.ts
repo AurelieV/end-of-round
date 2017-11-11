@@ -5,6 +5,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { SharedModule } from '../shared/shared.module';
 import { ZoneMessageModule } from './../zone-message/zone-message.module';
+import { ZoneModule } from '../zone/zone.module';
 
 /* Components */
 import { DashboardComponent } from './dashboard.component';
@@ -22,6 +23,7 @@ const routes: Routes = [
         FormsModule,
         RouterModule.forChild(routes),
         ZoneMessageModule,
+        ZoneModule,
 
         // Angular material
         MatDialogModule,

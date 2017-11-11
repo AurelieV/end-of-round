@@ -20,7 +20,7 @@ export const routes: Routes = [
             { path: '', component: HomeComponent, pathMatch: 'full', data: { section: 'Home' } },
             { path: '', component: MainComponent, children: [
                 { path: 'dashboard', loadChildren: '../dashboard/dashboard.module#DashboardModule', data: { section: 'Dashboard' } },
-                { path: 'zone/:id', loadChildren: '../zone/zone.module#ZoneModule', data: { section: 'Zone' } }
+                { path: 'zone/:id', loadChildren: '../zone/zone.module#ZoneWithRouteModule', data: { section: 'Zone' } }
             ]}
         ]
     }
