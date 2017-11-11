@@ -170,7 +170,7 @@ export class ZoneComponent implements OnInit, OnChanges, OnDestroy {
         this.assignData = {};
         form.reset();
         tableIds.forEach(id => {
-            this.tournamentService.updateTable(id, { assignated: judge })
+            this.tournamentService.updateTable(id, { assignated: judge, status: 'covered' })
         });
         this.assignJudges.close();
     }
