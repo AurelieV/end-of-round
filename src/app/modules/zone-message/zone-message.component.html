@@ -7,10 +7,12 @@
             <input type="text" name="message" [(ngModel)]="newMessage">
             <button type="submit" mat-mini-fab color="primary" (click)="addMessage()"><mat-icon>&#xE163;</mat-icon></button>
         </form>
-        <div class="messages">
-            <div class="message" *ngFor="let message of messages$ | async">
-                <span class="login">{{message.login}}:</span>
-                <span class="text">{{message.message}}</span> 
+        <div class="messages-container">
+            <div class="messages">
+                <div class="message" *ngFor="let message of messages$ | async">
+                    <span class="login">{{message.login}}:</span>
+                    <span class="text">{{message.message}}</span> 
+                </div>
             </div>
         </div>
     </div>

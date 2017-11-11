@@ -23,9 +23,11 @@
     }
 }
 
-.messages {
+.messages-container {
     max-height: 300px;
     overflow: auto;
+}
+.messages {
     display: flex;
     flex-direction: column;
 }
