@@ -16,4 +16,19 @@ export class AddTablesDialogComponent {
     };
     title: string;
     warning: string;
+    displayOptions: boolean = true;
+
+    formatData(data) {
+        let tables = data.tables;
+        if (data.useWalterParsing) {
+            const parsed = window["Papa"].parse(data.tables, {
+                header: true
+            });
+            tables = parsed.data.map(d => d["Table"]).join(" ");
+        }
+        return {
+            tables: tables.match(/(\d+)/g) || [],
+            replaceExisting: data.replaceExisting
+        };
+    }
 }

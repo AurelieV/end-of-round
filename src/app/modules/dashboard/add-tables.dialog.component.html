@@ -2,23 +2,24 @@
 <div mat-dialog-content>
     <div class="warning">{{warning}}</div>
     <form #form="ngForm">
-        <div>
-            <mat-checkbox
-            color="primary"
-            [(ngModel)]="data.replaceExisting" name="parsing">Replace existing</mat-checkbox>
-        </div>
-        <div>
-            <mat-checkbox
-            color="primary"
-            [(ngModel)]="data.useWalterParsing" name="parsing">Copy from Walter</mat-checkbox>
-        </div>
-        <div>
-            <p>If you use the Walter options, please also copy the header of the table</p>
-        </div>
-        
+        <ng-template [ngIf]="displayOptions">
+            <div>
+                <mat-checkbox
+                color="primary"
+                [(ngModel)]="data.replaceExisting" name="parsing">Replace existing</mat-checkbox>
+            </div>
+            <div>
+                <mat-checkbox
+                color="primary"
+                [(ngModel)]="data.useWalterParsing" name="parsing">Copy from Walter</mat-checkbox>
+            </div>
+            <div>
+                <p>If you use the Walter options, please also copy the header of the table</p>
+            </div>
+        </ng-template>
         <textarea required type="text" [(ngModel)]="data.tables" name="tables"></textarea>
     </form>
 </div>
 <div class="actions" mat-dialog-actions>
-    <button mat-raised-button color="primary" mat-dialog-close [mat-dialog-close]="data" [disabled]="!form.form.valid">Add</button>
+    <button mat-raised-button color="primary" mat-dialog-close [mat-dialog-close]="formatData(data)" [disabled]="!form.form.valid">Add</button>
 </div>
