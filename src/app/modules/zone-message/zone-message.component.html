@@ -3,6 +3,7 @@
 <ng-template class="message-modal" #message>
     <h3>{{zone ? zone.name : 'All zones' }}</h3>
     <div class="body">
+        <input class="null">
         <form class="sending">
             <input type="text" name="message" [(ngModel)]="newMessage">
             <button type="submit" mat-mini-fab color="primary" (click)="addMessage()"><mat-icon>&#xE163;</mat-icon></button>

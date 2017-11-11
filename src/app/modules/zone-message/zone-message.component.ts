@@ -17,7 +17,6 @@ export class ZoneMessageComponent implements OnChanges, OnDestroy {
     @Input() zone: Zone | null;
     
     messages$: Observable<Message[]>;
-
     isMessageOpen: boolean = false;
 
     @HostBinding("class.new")
