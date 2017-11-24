@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 
 import { TournamentService, CoveredTable, CoveredDataTable } from './tournament.service';
 import { AddResultDialogComponent } from '../zone/add-result.dialog.component';
+import { FormControl } from '@angular/forms';
 
 @Component({
     selector: 'admin-coverage',
@@ -23,15 +24,18 @@ export class AdminCoverageComponent implements OnInit {
     }
     importTables: string = '';
     tables$: Observable<CoveredTable[]>;
+    isLoading: boolean = true;
 
     private dialogRef: MatDialogRef<any>;
 
     @ViewChild('import') importTemplate: TemplateRef<any>;
+    @ViewChild('form') form; 
 
     constructor(private md: MatDialog, private tournamentService: TournamentService) {}
 
     ngOnInit() {
         this.tables$ = this.tournamentService.getCoverageTables();
+        this.tables$.take(1).subscribe(tables => this.isLoading = false);
     }
 
     addTable(table: CoveredDataTable = null) {
@@ -46,6 +50,7 @@ export class AdminCoverageComponent implements OnInit {
             },
             number: ''
         }
+        this.form.reset();
     }
 
     openImport() {
