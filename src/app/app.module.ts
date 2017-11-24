@@ -5,7 +5,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule, Routes, PreloadAllModules } from '@angular/router';
-import {  MatListModule, MatToolbarModule, MatButtonModule, MatIconModule, MatMenuModule } from '@angular/material';
+import { MatListModule, MatToolbarModule, MatButtonModule, MatIconModule, MatMenuModule, MatSnackBarModule } from '@angular/material';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuthModule } from 'angularfire2/auth'
@@ -18,11 +18,10 @@ import { TournamentListComponent } from './tournament-list.component';
 import { DocumentationComponent } from './documentation.component';
 
 /* Modules */
-import { TournamentModule } from './modules/tournament/tournament.module';
+import { UserModule } from './modules/user/user.module';
 
 /* Service */
-import { ConnectionService } from './connection.service';
-import { UserService } from './user.service';
+import { NotificationService } from './notification.service';
 
 const appRoutes: Routes = [
   { path: '', component: TournamentListComponent, pathMatch: 'full', data: { section: 'TournamentList' } },
@@ -52,13 +51,17 @@ const appRoutes: Routes = [
     MatButtonModule,
     MatIconModule,
     MatMenuModule,
+    MatSnackBarModule,
 
     /* FireBase */
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireDatabaseModule,
-    AngularFireAuthModule
+    AngularFireAuthModule,
+
+    /* Custom */
+    UserModule
   ],
-  providers: [ ConnectionService, UserService ],
+  providers: [ NotificationService ],
   bootstrap: [ AppComponent ]
 })
 export class AppModule {}

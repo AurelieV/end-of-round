@@ -14,6 +14,8 @@ import { MainComponent } from './main.component';
 /* Modules */
 import { ZoneModule } from '../zone/zone.module';
 import { TimeModule } from './../time/time.module';
+// Guards
+import { HasLoginGuard } from '../user/auth-gards.service';
 
 export const routes: Routes = [
     { 
@@ -21,7 +23,7 @@ export const routes: Routes = [
         component: TournamentComponent,
         children: [
             { path: '', component: HomeComponent, pathMatch: 'full', data: { section: 'Home' } },
-            { path: '', component: MainComponent, children: [
+            { path: '', component: MainComponent, canActivate: [ HasLoginGuard ], children: [
                 { path: 'dashboard', loadChildren: '../dashboard/dashboard.module#DashboardModule', data: { section: 'Dashboard' } },
                 { path: 'zone/:id', loadChildren: '../zone/zone.module#ZoneWithRouteModule', data: { section: 'Zone' } },
                 { path: 'coverage', loadChildren: '../coverage/coverage.module#CoverageModule' }

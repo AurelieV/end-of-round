@@ -1,4 +1,4 @@
-import { ConnectionService } from './../../connection.service';
+import { ConnectionService } from '../user/connection.service';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { ActivatedRoute, Router, NavigationEnd, PRIMARY_OUTLET } from '@angular/router';
