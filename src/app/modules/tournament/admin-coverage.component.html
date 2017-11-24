@@ -1,0 +1,63 @@
+<h3>Current tables for coverage</h3>
+<div class="tables">
+    <div class="table block" [ngClass]="table.status" *ngFor="let table of tables$ | async">
+        <div class="number">Table {{table.number}}</div>
+        <div class="player"
+            [ngClass]="{ win: table.result && table.result.player1.score > table.result.player2.score}">
+            {{table.coverage.player1}} ({{table.coverage.player1Score}})
+        </div>
+        <div class="separator">vs</div>
+        <div class="player"
+            [ngClass]="{ win: table.result && table.result.player1.score < table.result.player2.score}">
+            {{table.coverage.player2}} ({{table.coverage.player2Score}})
+        </div>
+        <div class="result">
+            <span *ngIf="table.result">{{table.result | result}}</span>
+            <span *ngIf="table.hasResult && !table.result">Result at judge station, but not entered</span>
+            <span *ngIf="!table.hasResult && !table.result">Waiting result</span>
+        </div>
+        <div class="actions">
+            <button mat-raised-button color="primary" (click)="addResult(table)">Result</button>
+        </div>
+    </div>
+</div>
+<h3>Add a table to coverage</h3>
+<button mat-raised-button color="primary" (click)="openImport()">Import</button>
+<form #form="ngForm">
+    <div>
+        <mat-form-field>
+            <input name="number" matInput placeholder="Table number" type="string" required [(ngModel)]="data.number">
+        </mat-form-field>
+    </div>
+    <div>
+        <mat-form-field>
+            <input name="player1" matInput placeholder="Player1" type="string" required [(ngModel)]="data.coverage.player1">
+        </mat-form-field>
+        <mat-form-field>
+            <input name="player1Score" matInput placeholder="Player1 current score" type="number" [(ngModel)]="data.coverage.player1Score">
+        </mat-form-field>
+    </div>
+    <div>
+        <mat-form-field>
+            <input name="player2" matInput placeholder="Player2" type="string" required [(ngModel)]="data.coverage.player2">
+        </mat-form-field>
+        <mat-form-field>
+            <input name="player2Score" matInput placeholder="Player2 current score" type="number" [(ngModel)]="data.coverage.player2Score">
+        </mat-form-field>
+    </div>
+    <div class="actions">
+        <button mat-raised-button color="primary" [disabled]="form.form.invalid" (click)="addTable()">Add</button>
+    </div>
+</form>
+
+<ng-template #import>
+    <h3>Import coverage tables from Walter</h3>
+    <div>
+        <form #importForm="ngForm">
+            <textarea required type="text" [(ngModel)]="importTables" name="importTables"></textarea>
+        </form>
+    </div>
+    <div class="import-actions">
+        <button mat-raised-button color="primary" (click)="doImport()" [disabled]="!importForm.form.valid">Import</button>
+    </div>
+</ng-template>

@@ -13,6 +13,8 @@ interface State {
   isOnTournament: boolean;
   isOnHome: boolean;
   isOnMainPage: boolean;
+  isOnCoverage: boolean;
+  isOnAdminCoverage: boolean;
   tournamentKey: string;
 }
 
@@ -28,7 +30,9 @@ export class AppComponent {
     isOnTournament: false,
     isOnHome: false,
     isOnDashboard: false,
-    isOnMainPage: false
+    isOnMainPage: false,
+    isOnCoverage: false,
+    isOnAdminCoverage: false
   }
   subscriptions: Subscription[] = [];
   title$: Observable<string>;
@@ -71,6 +75,8 @@ export class AppComponent {
       isOnTournament: sections.includes('Tournament') || isOnEdit,
       isOnHome: sections.includes('TournamentList'),
       isOnMainPage: sections.includes('Home'),
+      isOnCoverage: sections.includes('Coverage'),
+      isOnAdminCoverage: sections.includes('AdminCoverage'),
       tournamentKey: isOnEdit ? params.id : params.key
     }
   }

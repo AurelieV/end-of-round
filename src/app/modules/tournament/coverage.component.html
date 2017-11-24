@@ -1,0 +1,21 @@
+<h3>Top table result</h3>
+<loader [isLoading]="isLoading"></loader>
+<div class="tables">
+    <div class="table block" [ngClass]="table.status" *ngFor="let table of tables$ | async">
+        <div class="number">Table {{table.number}}</div>
+        <div class="player"
+            [ngClass]="{ win: table.result && table.result.player1.score > table.result.player2.score}">
+            {{table.coverage.player1}} ({{table.coverage.player1Score}})
+        </div>
+        <div class="separator">vs</div>
+        <div class="player"
+            [ngClass]="{ win: table.result && table.result.player1.score < table.result.player2.score}">
+            {{table.coverage.player2}} ({{table.coverage.player2Score}})
+        </div>
+        <div class="result">
+            <span *ngIf="table.result">{{table.result | result}}</span>
+            <span *ngIf="table.hasResult && !table.result">Result at judge station, but not entered</span>
+            <span *ngIf="!table.hasResult && !table.result">Waiting result</span>
+        </div>
+    </div>
+</div>

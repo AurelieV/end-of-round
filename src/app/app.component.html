@@ -18,7 +18,7 @@
     <a mat-menu-item [routerLink]="['tournament', state.tournamentKey]" *ngIf="state.isOnTournament && !state.isOnMainPage">
         <mat-icon>&#xE88A;</mat-icon>
         <span>Go to Main page</span>
-      </a>
+    </a>
     <a mat-menu-item *ngIf="state.isOnTournament && !state.isOnDashboard" [routerLink]="['tournament', state.tournamentKey, 'dashboard']">
       <mat-icon>&#xE897;</mat-icon>
       <span>Go to dashboard</span>
@@ -26,6 +26,14 @@
     <a mat-menu-item *ngIf="state.isOnTournament && state.isOnDashboard" [routerLink]="['/administration', 'edit', state.tournamentKey]">
       <mat-icon>&#xE3C9;</mat-icon>
       <span>Edit tournament</span>
+    </a>
+    <a mat-menu-item *ngIf="state.isOnTournament && !state.isOnCoverage" [routerLink]="['tournament', state.tournamentKey, 'coverage']">
+        <mat-icon>&#xE02C;</mat-icon>
+        <span>Go to coverage page</span>
+    </a>
+    <a mat-menu-item *ngIf="state.isOnTournament && !state.isOnAdminCoverage" [routerLink]="['tournament', state.tournamentKey, 'admin-coverage']">
+        <mat-icon>&#xE02C;</mat-icon>
+        <span>Edit coverage page</span>
     </a>
     <a mat-menu-item routerLink="/documentation">
       <mat-icon>&#xE887;</mat-icon>

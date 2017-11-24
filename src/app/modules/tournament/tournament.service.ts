@@ -1,3 +1,4 @@
+import { CoveredTable } from './tournament.service';
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase, AngularFireObject, AngularFireList } from 'angularfire2/database';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
@@ -18,6 +19,26 @@ export interface Table {
     result?: Result;
     assignated?: string;
     information?: string;
+    isCovered?: boolean;
+}
+
+export interface CoveredTable extends Table {
+    coverage: {
+        player1: string;
+        player2: string;
+        player1Score: number;
+        player2Score: number;
+    }
+}
+
+export interface CoveredDataTable {
+    coverage: {
+        player1: string;
+        player2: string;
+        player1Score: number,
+        player2Score: number
+    },
+    number: string
 }
 
 export interface Result {
@@ -260,5 +281,24 @@ export class TournamentService {
 
     updateZone(zoneId: string, update: any) {
         this.db.object(`/zones/${this.key.getValue()}/${zoneId}`).update(update);
+    }
+
+
+    getCoverageTables(): Observable<CoveredTable[]> {
+        return this.key.switchMap(key => {
+            const tables$ = this.getList<Table>(
+                this.db.list(
+                    `/tables/${key}/`,
+                    ref => ref.orderByChild('isCovered').equalTo(true)
+                ), 
+                "number"
+            ).map(tables => tables.sort((a, b) => Number(a.number) < Number(b.number) ? -1 : 1))
+
+            return key ? tables$ : Observable.of([])
+        });
+    }
+
+    addCoverageTable(data: CoveredDataTable) {
+        this.updateTable(data.number, { coverage: data.coverage, isCovered: true })
     }
 }
