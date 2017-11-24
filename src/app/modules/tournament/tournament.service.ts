@@ -6,6 +6,7 @@ import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/take';
 import 'rxjs/add/observable/combineLatest';
 
+import { UserService } from './../user/user.service';
 import { TournamentData, Tournament, Zone, ZoneData, Message } from '../../model';
 export { Tournament, TournamentData, Zone, ZoneData, Message };
 import { DatabaseAccessor } from './../../utils/database-accessor';
@@ -67,7 +68,7 @@ export interface TablesInformation {
 @Injectable()
 export class TournamentService extends DatabaseAccessor {
     
-    constructor(db: AngularFireDatabase, zone: NgZone) {
+    constructor(db: AngularFireDatabase, zone: NgZone, private userService: UserService) {
         super(db, zone);
     }
 
@@ -242,7 +243,7 @@ export class TournamentService extends DatabaseAccessor {
 
     sendMessage(zoneId: string, message: string) {
         this.db.list<Message>(`/messages/${this.key}/${zoneId}`).push({
-            login: 'Anonymous',
+            login: this.userService.login || 'Anonymous',
             message,
             timestamp: (new Date()).valueOf()
         })

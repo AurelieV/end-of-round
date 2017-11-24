@@ -1,9 +1,9 @@
 import { TournamentData } from './model';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { Observable } from 'rxjs/Observable';
-import { ConnectionService } from './connection.service';
+import { ConnectionService } from './modules/user/connection.service';
 import { Router, PRIMARY_OUTLET, NavigationEnd } from '@angular/router';
-import { UserService } from './user.service';
+import { UserService } from './modules/user/user.service';
 import { Component } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
