@@ -37,6 +37,15 @@ export class AdminCoverageComponent implements OnInit {
     addTable(table: CoveredDataTable = null) {
         if (!table) table = this.data;
         this.tournamentService.addCoverageTable(table);
+        this.data = {
+            coverage: {
+                player1: '',
+                player2: '',
+                player1Score: null,
+                player2Score: null
+            },
+            number: ''
+        }
     }
 
     openImport() {
