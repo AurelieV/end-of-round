@@ -1,4 +1,4 @@
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material';
 import { Component, ViewChild, TemplateRef, OnInit } from '@angular/core';
 import { handleReturn } from '../shared/handle-return';
 import { Observable } from 'rxjs/Observable';
@@ -24,6 +24,8 @@ export class AdminCoverageComponent implements OnInit {
     importTables: string = '';
     tables$: Observable<CoveredTable[]>;
 
+    private dialogRef: MatDialogRef<any>;
+
     @ViewChild('import') importTemplate: TemplateRef<any>;
 
     constructor(private md: MatDialog, private tournamentService: TournamentService) {}
@@ -40,6 +42,7 @@ export class AdminCoverageComponent implements OnInit {
     openImport() {
         const dialogRef = this.md.open(this.importTemplate);
         handleReturn(dialogRef);
+        this.dialogRef = dialogRef;
     }
 
     doImport() {
@@ -65,6 +68,9 @@ export class AdminCoverageComponent implements OnInit {
         }).forEach(table => {
             this.addTable(table);
         })
+        if (this.dialogRef) {
+            this.dialogRef.close();
+        }
         this.importTables = "";
     }
 

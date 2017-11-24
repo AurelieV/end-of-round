@@ -1,7 +1,7 @@
 <h3>Current tables for coverage</h3>
 <div class="tables">
     <div class="table block" [ngClass]="table.status" *ngFor="let table of tables$ | async">
-        <div class="number">Table {{table.number}}</div>
+        <div class="number">{{table.number}}</div>
         <div class="player"
             [ngClass]="{ win: table.result && table.result.player1.score > table.result.player2.score}">
             {{table.coverage.player1}} ({{table.coverage.player1Score}})
@@ -13,11 +13,14 @@
         </div>
         <div class="result">
             <span *ngIf="table.result">{{table.result | result}}</span>
-            <span *ngIf="table.hasResult && !table.result">Result at judge station, but not entered</span>
+            <span *ngIf="table.hasResult && !table.result">Judge station for result</span>
             <span *ngIf="!table.hasResult && !table.result">Waiting result</span>
         </div>
         <div class="actions">
-            <button mat-raised-button color="primary" (click)="addResult(table)">Result</button>
+            <button class="display-large" mat-raised-button color="primary" (click)="addResult(table)">Result</button>
+            <button class="display-small" mat-mini-fab color="primary" (click)="addResult(table)">
+                <mat-icon>&#xE3C9;</mat-icon>
+            </button>
         </div>
     </div>
 </div>
