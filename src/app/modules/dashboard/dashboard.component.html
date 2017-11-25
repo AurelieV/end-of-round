@@ -48,11 +48,14 @@
     <div class="confirmation">
         <h3>End round?</h3>
         <div mat-dialog-content>
-            Are your sure to end round? All current informations will be erased
+            <div class="warning">Are your sure to end round? All current informations will be erased</div>
+            <form #confirmEndForm="ngForm">
+                <mat-checkbox [(ngModel)]="agreed" required name="agreed">I understand the consequences of my act, and I am aware that this action can be really disruptive for all judges</mat-checkbox>
+            </form>
         </div>
         <div class="actions" mat-dialog-actions>
             <button mat-raised-button color="warn" (click)="cancelRestart()">Cancel</button>
-            <button mat-raised-button color="primary" (click)="restart()">Restart</button>
+            <button mat-raised-button color="primary" [disabled]="confirmEndForm.form.invalid" (click)="restart()">Restart</button>
         </div>
     </div>
 </ng-template>

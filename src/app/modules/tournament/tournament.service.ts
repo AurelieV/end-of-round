@@ -255,6 +255,14 @@ export class TournamentService {
         this.db.object(`/outstandings/${this.key.getValue()}`).set('');
         this.getTournament().take(1).subscribe(tournament => {
             if (!tournament) return;
+            this.getAllTables().take(1).subscribe(tables => {
+                const val = {};
+                tables.forEach(t => val[t.number] = t);
+                this.db.object(`tables-archives/${this.key.getValue()}`).set(val);
+            })
+            this.db.object(`/outstandings/${this.key.getValue()}`).valueChanges().take(1).subscribe(out => {
+                this.db.object(`outstandings-archives/${this.key.getValue()}`).set(out);
+            })
             const tables: { [id: string]: any } = {};
             for (let i = tournament.start; i <= tournament.end; i++ ) {
                 tables[i] = {
@@ -304,5 +312,17 @@ export class TournamentService {
 
     addCoverageTable(data: CoveredDataTable) {
         this.updateTable(data.number, { coverage: data.coverage, isCovered: true })
+    }
+
+    hasArchives(): Observable<boolean> {
+        return this.key.switchMap(key =>
+            key ?
+                this.db.object(`/tables-archives/${key}`).valueChanges().map(val => !!val)
+                : Observable.of(false)    
+        )
+    }
+
+    restoreArchives() {
+
     }
 }
