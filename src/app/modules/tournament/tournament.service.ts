@@ -74,6 +74,10 @@ export class TournamentService {
         this.key.next(key);
     }
 
+    getKey() {
+        return this.key.getValue();
+    }
+
     private getObject<T>(ref: AngularFireObject<T>, key: string = "key"): Observable<T & { key: string }> {
         return ref.snapshotChanges()
             .map(({ payload }) => ({ [key]: payload.key, ...payload.val() }));

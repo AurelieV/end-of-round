@@ -11,7 +11,7 @@ import {
     Output,
     EventEmitter
 } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { AngularFireDatabase } from 'angularfire2/database';
@@ -42,6 +42,7 @@ export class ZoneComponent implements OnInit, OnChanges, OnDestroy {
     private subscription: Subscription;
 
     zone$: Observable<Zone>;
+    otherZones$: Observable<Zone[]>;
     tables$: Observable<Table[]>;
     filter$: BehaviorSubject<Filter> = new BehaviorSubject({
         onlyPlaying: false,
@@ -49,6 +50,7 @@ export class ZoneComponent implements OnInit, OnChanges, OnDestroy {
     });
     isOnOutstandingsStep$: Observable<boolean>;
     isLoading: boolean = true;
+    otherNeedHelp$: Observable<boolean>;
 
     @ViewChild('confirm') confirmTemplate: TemplateRef<any>;
     confirmation: MatDialogRef<any>;
@@ -64,7 +66,8 @@ export class ZoneComponent implements OnInit, OnChanges, OnDestroy {
         private tournamentService: TournamentService,
         private md: MatDialog,
         private cd: ChangeDetectorRef,
-        private dialog: MatDialog
+        private dialog: MatDialog,
+        private router: Router
     ) {}
 
     ngOnInit() {
@@ -104,6 +107,8 @@ export class ZoneComponent implements OnInit, OnChanges, OnDestroy {
             })
         });
         this.tables$.take(1).subscribe(_ => this.isLoading = false);
+        this.otherZones$ = this.tournamentService.getZones().map(zones => zones.filter(z => z.key !== this.zoneId));
+        this.otherNeedHelp$ = this.otherZones$.map(zones => zones.filter(z => z.needHelp).length > 0);
     }
 
     onTableClick(table: Table) {
@@ -221,6 +226,10 @@ export class ZoneComponent implements OnInit, OnChanges, OnDestroy {
 
     seeHelp() {
         this.md.open(this.helpTemplate);
+    }
+
+    goToZone(key: string) {
+        this.router.navigate(['/tournament', this.tournamentService.getKey(), 'zone', key])
     }
 
     ngOnDestroy() {

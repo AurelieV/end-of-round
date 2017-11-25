@@ -85,10 +85,16 @@
 }
 .title {
     flex: 1;
-    font-style: italic;
-    font-weight: bold;
-    font-size: 15px;
-    text-transform: uppercase;
+    .name {
+        font-style: italic;
+        font-weight: bold;
+        font-size: 15px;
+        text-transform: uppercase;
+        margin-right: 5px;
+    }
+    display: flex;
+    align-items: center;
+    cursor: pointer;
 }
 
 .tables {
@@ -143,6 +149,9 @@
     position: fixed;
     bottom: 20px;
     right: 20px;
+    &.other-need-help {
+        border: 3px solid red;
+    }
 }
 
 .confirmation, .assign-judges {
@@ -165,4 +174,8 @@
         margin-top: 10px;
     }
 
+}
+
+span.need-help {
+    color: red;
 }

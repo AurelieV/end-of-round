@@ -1,7 +1,16 @@
 <button (click)="onClose.emit({})"mat-icon-button class="close-button"><mat-icon>&#xE5CD;</mat-icon></button>
 <div class="header">
     <div class="first-line">
-        <div class="title">{{(zone$ | async)?.name}}</div>
+        <div [matMenuTriggerFor]="otherZones" class="title">
+            <span class="name">{{(zone$ | async)?.name}}</span>
+            <mat-icon>&#xE313;</mat-icon>
+        </div>
+        <mat-menu #otherZones="matMenu">
+            <button mat-menu-item *ngFor="let zone of otherZones$ | async" (click)="goToZone(zone.key)">
+                <span [class.need-help]="zone.needHelp">Go to {{zone.name}}</span>
+                <span *ngIf="zone.zoneLeaderPlace">(ZL at {{zone.zoneLeaderPlace}})</span>
+            </button>
+        </mat-menu>
         <div class="actions">
             <zone-message [zone]="(zone$ | async)"></zone-message>
             <button mat-icon-button 
@@ -63,8 +72,19 @@
     <span *ngIf="!(isOnOutstandingsStep$ | async)"><br/>If this is not normal, check your filters</span>
 </div>
 
-<button *ngIf="zoneId && !(zone$ | async)?.needHelp" mat-fab color="primary" class="call-help" (click)="callHelp(true)"><mat-icon>&#xE91F;</mat-icon></button>
-<button *ngIf="zoneId && (zone$ | async)?.needHelp" mat-fab color="warn" class="call-help" (click)="callHelp(false)"><mat-icon>&#xE14C;</mat-icon></button>
+<button 
+    *ngIf="zoneId && !(zone$ | async)?.needHelp"
+    mat-fab
+    color="primary"
+    class="call-help"
+    [class.other-need-help]="otherNeedHelp$ | async"
+    (click)="callHelp(true)"><mat-icon>&#xE91F;</mat-icon></button>
+<button 
+    *ngIf="zoneId && (zone$ | async)?.needHelp"
+    mat-fab
+    color="warn"
+    class="call-help"
+    (click)="callHelp(false)"><mat-icon>&#xE14C;</mat-icon></button>
 
 <ng-template #confirm>
     <div class="confirmation">

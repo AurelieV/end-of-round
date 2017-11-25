@@ -25,7 +25,8 @@ const routes: Routes = [
         MatDialogModule,
         MatInputModule,
         MatCheckboxModule,
-        ZoneMessageModule
+        ZoneMessageModule,
+        RouterModule
     ],
     declarations: [
         ZoneComponent,
