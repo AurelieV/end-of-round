@@ -25,6 +25,7 @@ export class DashboardComponent implements OnInit {
     extraTimedTables$: Observable<Table[]>;
     isLoading: boolean = true;
     displayZoneId: string = "";
+    agreedToRestart: boolean = false;
     
     @ViewChild('confirmEnd') confirmEnd: TemplateRef<any>;
     confirmation: MatDialogRef<any>;
@@ -74,6 +75,9 @@ export class DashboardComponent implements OnInit {
 
     endRound() {
         this.confirmation = this.md.open(this.confirmEnd);
+        this.confirmation.afterClosed().subscribe(val => {
+            this.agreedToRestart = false;
+        })
     }
 
     addOutstandings() {
