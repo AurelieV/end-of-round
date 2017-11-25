@@ -19,6 +19,10 @@
             <mat-icon>&#xE851;</mat-icon>
             <span>Assign judge</span>
         </button>
+        <button mat-menu-item (click)="addResultToTable()">
+                <mat-icon>&#xE862;</mat-icon>
+                <span>Add result</span>
+        </button>
         <button mat-menu-item (click)="allGreen()" *ngIf="!(isOnOutstandingsStep$ | async)">
             <mat-icon>&#xE877;</mat-icon>
             <span>Mark all empty as done</span>

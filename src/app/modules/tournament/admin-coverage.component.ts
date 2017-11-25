@@ -34,7 +34,8 @@ export class AdminCoverageComponent implements OnInit {
     constructor(private md: MatDialog, private tournamentService: TournamentService) {}
 
     ngOnInit() {
-        this.tables$ = this.tournamentService.getCoverageTables();
+        this.tables$ = this.tournamentService.getCoverageTables()
+            .map(tables => tables.sort((a, b) => a.result ? 1 : -1));
         this.tables$.take(1).subscribe(tables => this.isLoading = false);
     }
 
@@ -90,12 +91,11 @@ export class AdminCoverageComponent implements OnInit {
 
     addResult(table: CoveredTable) {
         const dialogRef = this.md.open(AddResultDialogComponent, { width: "90%" });
-        handleReturn(dialogRef);
         if (table.result) {
             dialogRef.componentInstance.result = table.result;
         }
-        dialogRef.componentInstance.tableId = table.number;
-        dialogRef.afterClosed().subscribe(result => {
+        dialogRef.componentInstance.setTableId(table.number);
+        dialogRef.afterClosed().subscribe(({result = ""}) => {
             if (!result) return;
             this.tournamentService.updateTable(table.number, { 
                 result,

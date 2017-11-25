@@ -190,13 +190,26 @@ export class ZoneComponent implements OnInit, OnChanges, OnDestroy {
         if (table.result) {
             dialogRef.componentInstance.result = table.result;
         }
-        dialogRef.componentInstance.tableId = table.number;
-        dialogRef.afterClosed().subscribe(result => {
+        dialogRef.componentInstance.setTableId(table.number);
+        dialogRef.afterClosed().subscribe(({result = ""}) => {
             if (!result) return;
             this.tournamentService.updateTable(table.number, { 
                 result,
                 status: 'done',
                 doneTime: table.doneTime  || new Date()
+            })
+        });
+    }
+
+    addResultToTable() {
+        const dialogRef = this.md.open(AddResultDialogComponent, { width: "90%" });
+        handleReturn(dialogRef);
+        dialogRef.afterClosed().subscribe(({number = "", result = ""}) => {
+            if (!result) return;
+            this.tournamentService.updateTable(number, { 
+                result,
+                status: 'done',
+                doneTime: new Date()
             })
         });
     }

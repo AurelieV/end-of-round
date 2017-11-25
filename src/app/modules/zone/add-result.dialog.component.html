@@ -1,4 +1,9 @@
-<h3>Add result for table {{tableId}}</h3>
+<h3>Add result<span *ngIf="!displayTable"> for table {{tableId}}</span></h3>
+<div *ngIf="displayTable">
+    <mat-form-field>
+        <input type="texte" matInput [(ngModel)]="tableId" id="table" placeholder="Table number">
+    </mat-form-field>
+</div>
 <div mat-dialog-content>
     <div class="row">
         <div class="player">P1</div>
@@ -33,5 +38,5 @@
     </div>
 </div>
 <div class="actions" mat-dialog-actions>
-    <button mat-raised-button color="primary" mat-dialog-close [mat-dialog-close]="result">Add</button>
+    <button mat-raised-button color="primary" mat-dialog-close [mat-dialog-close]="{ result: result, number: tableId }">Add</button>
 </div>
