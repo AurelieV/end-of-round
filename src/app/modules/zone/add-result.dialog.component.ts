@@ -18,6 +18,7 @@ export class AddResultDialogComponent {
         },
         draw: 0
     };
+    tableId: string;
 
     incrementScore(id: 2 | 1) {
         this.result[`player${id}`].score++;
