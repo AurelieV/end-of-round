@@ -34,8 +34,7 @@ export class AdminCoverageComponent implements OnInit {
     constructor(private md: MatDialog, private tournamentService: TournamentService) {}
 
     ngOnInit() {
-        this.tables$ = this.tournamentService.getCoverageTables()
-            .map(tables => tables.sort((a, b) => a.result ? 1 : -1));
+        this.tables$ = this.tournamentService.getCoverageTables(true);
         this.tables$.take(1).subscribe(tables => this.isLoading = false);
     }
 

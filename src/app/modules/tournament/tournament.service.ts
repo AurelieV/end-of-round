@@ -296,7 +296,7 @@ export class TournamentService {
     }
 
 
-    getCoverageTables(): Observable<CoveredTable[]> {
+    getCoverageTables(resultLast?: boolean): Observable<CoveredTable[]> {
         return this.key.switchMap(key => {
             const tables$ = this.getList<Table>(
                 this.db.list(
@@ -304,7 +304,21 @@ export class TournamentService {
                     ref => ref.orderByChild('isCovered').equalTo(true)
                 ), 
                 "number"
-            ).map(tables => tables.sort((a, b) => Number(a.number) < Number(b.number) ? -1 : 1))
+            ).map(tables => 
+                tables.sort((a, b) => {
+                    if (!resultLast || (a.result && b.result) || (!a.result && !b.result)) {
+                        return Number(a.number) < Number(b.number) ? -1 : 1;
+                    }
+                    if (a.result && !b.result) {
+                        return 1;
+                    }
+                    if (!a.result && b.result) {
+                        return -1;
+                    }
+
+                    return 0;
+                })
+            )
 
             return key ? tables$ : Observable.of([])
         });
