@@ -48,9 +48,10 @@
     <div class="confirmation">
         <h3>End round?</h3>
         <div mat-dialog-content>
-            <div class="warning">Are your sure to end round? All current informations will be erased</div>
+            <div class="warning">Are your sure you want this? All current informations will be erased</div>
             <form #confirmEndForm="ngForm">
-                <mat-checkbox [(ngModel)]="agreedToRestart" required name="agreed">I understand the consequences of my act, and I am aware that this action can be really disruptive for all judges</mat-checkbox>
+                <mat-checkbox [(ngModel)]="agreedToRestart" required name="agreed"></mat-checkbox>
+                <p>I understand the consequences of my act, and I am aware that this action can be really disruptive for all judges</p>
             </form>
         </div>
         <div class="actions" mat-dialog-actions>

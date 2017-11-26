@@ -53,6 +53,16 @@ zone-info {
     }
 }
 
+.confirmation {
+    form {
+        display: flex;
+        align-items: center;
+        p {
+            margin-left: 20px;
+        }
+    }
+}
+
 .extra-timed, .remaining-tables {
     ul {
         padding-right: 15px;
