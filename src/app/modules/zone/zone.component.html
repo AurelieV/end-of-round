@@ -62,7 +62,12 @@
         <div class="result">{{table.result | result }}</div>
         <div class="assignated" *ngIf="table.assignated">{{table.assignated}}</div>
         <div class="actions">
-            <button mat-raised-button color="primary" (click)="addResult($event, table)">Add result</button>
+            <button mat-mini-fab color="primary" (click)="assign(table.number, $event)">
+                <mat-icon>&#xE851;</mat-icon>
+            </button>
+            <button mat-mini-fab color="primary" (click)="addResult($event, table)">
+                    <mat-icon>&#xE862;</mat-icon>
+            </button>
         </div>
     </div>
 </div>
@@ -104,7 +109,10 @@
         <h3>Assign judge</h3>
         <div mat-dialog-content>
             <form #assignJudgesForm="ngForm">
-                <textarea required type="text" [(ngModel)]="assignData.tables" name="tables" placeholder="Tables number separated by space or newline"></textarea>
+                <mat-input-container *ngIf="assignData.displayTableInput">
+                    <input matInput required type="text" [(ngModel)]="assignData.table" name="table" placeholder="Table number">
+                </mat-input-container>
+                <div *ngIf="!assignData.displayTableInput">Table {{assignData.table}}</div>
                 <mat-input-container>
                     <input maxLength="4" name="judge" matInput placeholder="Judge" type="text" required [(ngModel)]="assignData.judge">
                 </mat-input-container>

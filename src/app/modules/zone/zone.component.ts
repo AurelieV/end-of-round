@@ -57,7 +57,9 @@ export class ZoneComponent implements OnInit, OnChanges, OnDestroy {
 
     @ViewChild('assignJudges') assignJudgesTemplate: TemplateRef<any>;
     assignJudges: MatDialogRef<any>;
-    assignData: any = {};
+    assignData: any = {
+        displayTableInput: true
+    };
 
     @ViewChild('help') helpTemplate: TemplateRef<any>;
 
@@ -148,8 +150,11 @@ export class ZoneComponent implements OnInit, OnChanges, OnDestroy {
         handleReturn(this.assignJudges);
     }
 
-    assign() {
+    assign(tableId?: number, $event?) {
         this.assignJudges = this.md.open(this.assignJudgesTemplate);
+        this.assignData.displayTableInput = !tableId;
+        if (tableId) this.assignData.table = tableId;
+        if ($event) $event.stopPropagation();
         handleReturn(this.assignJudges);
     }
 
@@ -171,12 +176,10 @@ export class ZoneComponent implements OnInit, OnChanges, OnDestroy {
 
     confirmAssignJudges(form) {
         const judge = this.assignData.judge;
-        const tableIds = this.assignData.tables.match(/(\d+)/g) || [];
+        const tableId = this.assignData.table;
         this.assignData = {};
         form.reset();
-        tableIds.forEach(id => {
-            this.tournamentService.updateTable(id, { assignated: judge, status: 'covered' })
-        });
+        this.tournamentService.updateTable(tableId, { assignated: judge, status: 'covered' });
         this.assignJudges.close();
     }
 
