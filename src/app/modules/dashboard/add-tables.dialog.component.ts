@@ -24,7 +24,10 @@ export class AddTablesDialogComponent {
             const parsed = window["Papa"].parse(data.tables, {
                 header: true
             });
-            tables = parsed.data.map(d => d["Table"]).join(" ");
+            tables = parsed.data
+                .map(d => d["Table"])
+                .filter(t => !isNaN(Number(t)))
+                .join(" ");
         }
         return {
             tables: tables.match(/(\d+)/g) || [],
