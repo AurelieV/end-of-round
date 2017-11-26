@@ -68,7 +68,7 @@ export class AdminCoverageComponent implements OnInit {
         header = header.replace(/Points/, 'player1Score');
         header = header.replace(/Points/, 'player2Score');
         const format = [header, ...body].join("\n");
-        const parsed = window["Papa"].parse(format, {
+        window["Papa"].parse(format, {
             header: true
         }).data.map(table => {
             return {
@@ -80,7 +80,9 @@ export class AdminCoverageComponent implements OnInit {
                     player2Score: table.player2Score === "undefined" ? 0 : Number(table.player2Score)
                 }
             }
-        }).forEach(table => {
+        })
+        .filter(t => !isNaN(t.number))
+        .forEach(table => {
             this.addTable(table);
         })
         if (this.dialogRef) {
