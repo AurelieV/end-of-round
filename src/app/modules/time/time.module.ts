@@ -1,4 +1,4 @@
-import { MatInputModule, MatRadioModule, MatButtonModule } from '@angular/material';
+import { MatInputModule, MatRadioModule, MatButtonModule, MatSelectModule } from '@angular/material';
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
@@ -17,6 +17,7 @@ import { TimeService } from './time.service';
         MatInputModule,
         MatRadioModule,
         MatButtonModule,
+        MatSelectModule,
         SharedModule,
         FormsModule
     ],
