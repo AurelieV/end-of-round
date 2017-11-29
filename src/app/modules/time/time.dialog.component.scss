@@ -1,0 +1,15 @@
+.choice {
+    .messages {
+        margin-top: 10px;
+        margin-bottom: 10px;
+        font-style: italic;
+    }
+}
+
+.actions {
+    display: flex;
+    justify-content: flex-end;
+    button:not(:last-child) {
+        margin-right: 10px;
+    }
+}

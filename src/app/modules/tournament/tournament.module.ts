@@ -1,5 +1,5 @@
 import { FormsModule } from '@angular/forms';
-import { MatDialogModule, MatButtonModule, MatInputModule, MatToolbarModule, MatIconModule, MatRadioModule, MatMenuModule } from '@angular/material';
+import { MatDialogModule, MatButtonModule, MatInputModule, MatToolbarModule, MatIconModule, MatRadioModule, MatMenuModule, MatSelectModule } from '@angular/material';
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 
@@ -9,11 +9,13 @@ import { TournamentService } from './tournament.service';
 /* Components */
 import { TournamentComponent } from './tournament.component';
 import { HomeComponent } from './home.component';
-import { TimeDialogComponent } from './time.dialog.component';
 import { MainComponent } from './main.component';
 import { CoverageComponent } from './coverage.component';
 import { AdminCoverageComponent } from './admin-coverage.component';
+
+/* Modules */
 import { ZoneModule } from '../zone/zone.module';
+import { TimeModule } from './../time/time.module';
 
 export const routes: Routes = [
     { 
@@ -45,19 +47,17 @@ export const routes: Routes = [
         MatIconModule,
         MatRadioModule,
         MatMenuModule,
+        MatSelectModule,
 
-        ZoneModule
+        ZoneModule,
+        TimeModule.forRoot()
     ],
     declarations: [
         TournamentComponent,
         HomeComponent,
-        TimeDialogComponent,
         MainComponent,
         CoverageComponent,
         AdminCoverageComponent
-    ],
-    entryComponents: [
-        TimeDialogComponent
     ],
     providers: [ TournamentService ]
 })

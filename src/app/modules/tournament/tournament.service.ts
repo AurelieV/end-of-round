@@ -13,7 +13,7 @@ export { Tournament, TournamentData, Zone, ZoneData, Message };
 export interface Table {
     number: string;
     status: TableStatus;
-    time: number;
+    time: number | { A?: number; B?: number; C: number };
     doneTime?: Date;
     hasResult?: boolean;
     result?: Result;
@@ -97,8 +97,13 @@ export class TournamentService {
         });
     }
 
-    setTime(time: number, tableNumber: number) {
-        return this.db.object(`tables/${this.key.getValue()}/${tableNumber}`).update({ time })
+    setTime(time: number, tableId: string, seat?: string) {
+        if (seat) {
+            return this.db.object(`tables/${this.key.getValue()}/${tableId}/time/${seat}`).set(time);
+        } else {
+            return this.db.object(`tables/${this.key.getValue()}/${tableId}`).update({ time });
+        }
+        
     }
 
     getZones(): Observable<Zone[]> {
@@ -174,15 +179,26 @@ export class TournamentService {
 
     getActiveTablesInformationByZone(zone: Zone | null): Observable<TablesInformation> {
         const tables$ = zone ? this.getActiveTablesByZone(zone) : this.getActiveTables();
-        return tables$.map(tables => {
-            const extraTimeTables = (tables || []).filter(t => t.time > 0 && t.status !== "done");
-            return {
-                remaining: tables.filter(t => t.status && t.status !== "done" && t.status !== 'featured').length,
-                playing: tables.filter(t => t.status === "playing").length,
-                covered: tables.filter(t => t.status === "covered").length,
-                extraTimed: extraTimeTables.length
-            };
-        })
+        return Observable.combineLatest(tables$, this.getTournament().map(t => t.isTeam))
+            .map(([tables, isTeam]) => {
+                const extraTimeTables = (tables || [])
+                    .filter(t => {
+                        if (isTeam) {
+                            const time = t.time as any;
+                            return (time.A > 0 || time.B > 0 || time.C > 0)
+                                && t.status !== 'done'
+                        } else {
+                            const time = t.time as number;
+                            return time > 0 && t.status !== 'done'
+                        }
+                    })
+                return {
+                    remaining: tables.filter(t => t.status && t.status !== "done" && t.status !== 'featured').length,
+                    playing: tables.filter(t => t.status === "playing").length,
+                    covered: tables.filter(t => t.status === "covered").length,
+                    extraTimed: extraTimeTables.length
+                };
+            })
     }
 
     getMessages(zoneId: string): Observable<Message[]> {

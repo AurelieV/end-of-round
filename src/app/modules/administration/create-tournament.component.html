@@ -17,6 +17,8 @@
                 <input name="end" matInput placeholder="End table number" type="number" required [(ngModel)]="data.end">
             </mat-form-field>
             <br>
+            <mat-checkbox [(ngModel)]="data.isTeam" name="isTeam">Is a team event?</mat-checkbox>
+            <br><br>
             <label>Information</label>
             <textarea class="full" type="text" [(ngModel)]="data.information" name="information"></textarea>
             <div class="zones">

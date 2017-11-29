@@ -54,11 +54,15 @@
         </mat-slide-toggle>
     </div>
 </div>
-<div class="tables" [class.hide-button]="!(isOnOutstandingsStep$ | async)" [class.show-warn]="(isOnOutstandingsStep$ | async)" [class.high-padding]="!(isOnOutstandingsStep$ | async)">
+<div class="tables" 
+    [class.hide-button]="!(isOnOutstandingsStep$ | async)"
+    [class.show-warn]="(isOnOutstandingsStep$ | async)"
+    [class.high-padding]="!(isOnOutstandingsStep$ | async)"
+    [class.is-team]="isTeam$ | async">
     <loader [isLoading]="isLoading"></loader>
     <div class="table block" *ngFor="let table of tables$ | async" [ngClass]="[table.status, table.result ? '' : table.doneTime | warnAgo]" [class.has-time]="table.time" (click)="onTableClick(table)">
         <div class="number">{{table.number}}</div>
-        <div class="time" *ngIf="table.time">{{table.time}}min</div>
+        <div class="time" *ngIf="table.time"><display-time [time]="table.time"></display-time></div>
         <div class="result">{{table.result | result }}</div>
         <div class="assignated" *ngIf="table.assignated">{{table.assignated}}</div>
         <div class="actions">

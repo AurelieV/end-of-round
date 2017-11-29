@@ -1,11 +1,9 @@
-import { MatDialog } from '@angular/material';
+import { TimeService } from './../time/time.service';
 import { Observable } from 'rxjs/Observable';
 import { Component, OnInit } from '@angular/core';
 import 'rxjs/add/operator/take';
 
 import { TournamentService, Zone } from './tournament.service';
-import { handleReturn } from '../shared/handle-return';
-import { TimeDialogComponent } from './time.dialog.component';
 
 
 @Component({
@@ -18,7 +16,7 @@ export class HomeComponent implements OnInit {
     isLoading: boolean = true;
     zones$: Observable<Zone[]>
     
-    constructor(private tournamentService: TournamentService, private dialog: MatDialog) {}
+    constructor(private tournamentService: TournamentService, private timeService: TimeService) {}
 
     ngOnInit() {
         this.information = this.tournamentService.getTournament().map(t => t.information);
@@ -27,7 +25,6 @@ export class HomeComponent implements OnInit {
     }
 
     addTime() {
-        const dialogRef = this.dialog.open(TimeDialogComponent);
-        handleReturn(dialogRef);
+        this.timeService.openDialog();
     }
 }

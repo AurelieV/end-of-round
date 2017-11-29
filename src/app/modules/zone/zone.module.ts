@@ -5,6 +5,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { SharedModule } from '../shared/shared.module';
 import { ZoneMessageModule } from './../zone-message/zone-message.module';
+import { TimeModule } from './../time/time.module';
 
 /* Components */
 import { ZoneComponent } from './zone.component';
@@ -26,7 +27,8 @@ const routes: Routes = [
         MatInputModule,
         MatCheckboxModule,
         ZoneMessageModule,
-        RouterModule
+        RouterModule,
+        TimeModule
     ],
     declarations: [
         ZoneComponent,

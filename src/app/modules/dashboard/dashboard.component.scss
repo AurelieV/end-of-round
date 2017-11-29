@@ -66,9 +66,25 @@ zone-info {
 .extra-timed, .remaining-tables {
     ul {
         padding-right: 15px;
+        padding-left: 15px;
     }
     .extra-timed-table {
         font-weight: bold;
+    }
+}
+
+.extra-timed {
+    li {
+        display: flex;
+        flex-direction: row;
+        display-time {
+            margin-left: 10px;
+        }
+    }
+    .is-team {
+        li {
+            flex-direction: column;
+        }
     }
 }
 

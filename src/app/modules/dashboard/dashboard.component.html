@@ -63,10 +63,11 @@
 <ng-template #extraTimed>
     <div class="extra-timed">
         <h3>Extra timed tables</h3>
-        <div mat-dialog-content>
+        <div mat-dialog-content [class.is-team]="isTeam$ | async">
             <ul>
                 <li *ngFor="let table of extraTimedTables$ | async">
-                    <span class="extra-timed-table text" [ngClass]="table.status">Table {{table.number}}</span>: +{{table.time}}min
+                    <div class="extra-timed-table text" [ngClass]="table.status">Table {{table.number}}:</div>
+                    <display-time [time]="table.time"></display-time>
                 </li>
             </ul>
             <div *ngIf="(extraTimedTables$ | async)?.length === 0">No tables</div>

@@ -7,7 +7,7 @@ import 'rxjs/add/observable/combineLatest';
 import { handleReturn } from '../shared/handle-return';
 
 import { AddTablesDialogComponent } from './add-tables.dialog.component';
-import { TimeDialogComponent } from './../tournament/time.dialog.component';
+import { TimeService } from './../time/time.service';
 import { TournamentService, Zone, Table } from './../tournament/tournament.service';
 
 @Component({
@@ -26,6 +26,7 @@ export class DashboardComponent implements OnInit {
     isLoading: boolean = true;
     displayZoneId: string = "";
     agreedToRestart: boolean = false;
+    isTeam$: Observable<boolean>;
     
     @ViewChild('confirmEnd') confirmEnd: TemplateRef<any>;
     confirmation: MatDialogRef<any>;
@@ -40,7 +41,8 @@ export class DashboardComponent implements OnInit {
         private tournamentService: TournamentService,
         private router: Router,
         private md: MatDialog,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        private timeService: TimeService
     ) {}
 
     ngOnInit() {
@@ -61,8 +63,33 @@ export class DashboardComponent implements OnInit {
             })
         this.isOnOutstandingsStep$ = this.tournamentService.isOnOutstandingsStep();
         this.okTables$ = this.tournamentService.getOkTables();
-        this.extraTimedTables$ = this.tables$
-            .map(tables => tables.filter(t => t.time > 0 && t.status !== 'done').sort((a, b) => b.time - a.time));
+        this.extraTimedTables$ = Observable.combineLatest(
+                this.tables$,
+                this.tournamentService.getTournament().map(t => t.isTeam)
+            )
+            .map(([tables, isTeam]) => {
+                return tables.filter(t => {
+                    if (isTeam) {
+                        const time = t.time as any;
+                        return (time.A > 0 || time.B > 0 || time.C > 0)
+                            && t.status !== 'done'
+                    } else {
+                        const time = t.time as number;
+                        return time > 0 && t.status !== 'done'
+                    }
+                    
+                }).sort((a, b) => {
+                    const aTime = a.time as any;
+                    const bTime = b.time as any;
+                    if (isTeam) {
+                        Math.max(bTime.A, bTime.B, bTime.C) -
+                        Math.max(aTime.A, aTime.B, aTime.C)
+                    } else {
+                        return bTime - aTime;
+                    }
+                })
+            });
+        this.isTeam$ = this.tournamentService.getTournament().map(t => t.isTeam);
     }
 
     goToZone(key: string) {
@@ -146,7 +173,6 @@ export class DashboardComponent implements OnInit {
     }
 
     addTime() {
-        const dialogRef = this.md.open(TimeDialogComponent);
-        handleReturn(dialogRef);
+        this.timeService.openDialog();
     }
 }

@@ -23,7 +23,7 @@ import { Subscription } from 'rxjs/Subscription';
 
 import { TournamentService, Zone, Table } from './../tournament/tournament.service';
 import { AddResultDialogComponent } from './add-result.dialog.component';
-import { TimeDialogComponent } from '../tournament/time.dialog.component';
+import { TimeService } from '../time/time.service';
 
 interface Filter {
     onlyPlaying: boolean;
@@ -51,6 +51,7 @@ export class ZoneComponent implements OnInit, OnChanges, OnDestroy {
     isOnOutstandingsStep$: Observable<boolean>;
     isLoading: boolean = true;
     otherNeedHelp$: Observable<boolean>;
+    isTeam$: Observable<boolean>;
 
     @ViewChild('confirm') confirmTemplate: TemplateRef<any>;
     confirmation: MatDialogRef<any>;
@@ -69,7 +70,8 @@ export class ZoneComponent implements OnInit, OnChanges, OnDestroy {
         private md: MatDialog,
         private cd: ChangeDetectorRef,
         private dialog: MatDialog,
-        private router: Router
+        private router: Router,
+        private timeService: TimeService
     ) {}
 
     ngOnInit() {
@@ -82,6 +84,7 @@ export class ZoneComponent implements OnInit, OnChanges, OnDestroy {
             })
         ;
         this.isOnOutstandingsStep$ = this.tournamentService.isOnOutstandingsStep();
+        this.isTeam$ = this.tournamentService.getTournament().map(t => t.isTeam);
     }
 
     ngOnChanges(changes: SimpleChanges) {
@@ -223,8 +226,7 @@ export class ZoneComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     addTime() {
-        const dialogRef = this.dialog.open(TimeDialogComponent);
-        handleReturn(dialogRef);
+        this.timeService.openDialog();
     }
 
     seeHelp() {

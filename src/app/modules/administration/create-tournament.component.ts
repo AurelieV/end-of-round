@@ -20,7 +20,8 @@ export class CreateTournamentComponent implements OnInit {
         start: 1,
         end: 100,
         name: "",
-        information: ""
+        information: "",
+        isTeam: false
     }
     id: string;
     @ViewChild('confirm') confirmTemplate: TemplateRef<any>;

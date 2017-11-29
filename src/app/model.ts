@@ -3,6 +3,7 @@ export interface TournamentData {
     start: number;
     end: number;
     information: string;
+    isTeam: boolean;
 }
 
 export interface Tournament extends TournamentData {

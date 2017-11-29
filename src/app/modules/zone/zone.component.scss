@@ -123,7 +123,6 @@
     cursor: pointer;
 
     font-size: 16px;
-    
     min-height: 40px;
     min-width: 45px;
     
@@ -148,6 +147,13 @@
         button:not(:last-child) {
             margin-right: 10px;
         }
+    }
+}
+
+.tables.is-team {
+    .table {
+        font-size: 13px;
+        min-width: 55px;
     }
 }
 
