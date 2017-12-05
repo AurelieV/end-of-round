@@ -1,0 +1,23 @@
+<h3>Define a login</h3>
+<div mat-dialog-content>
+    <p class="error" *ngIf="displayError">Une erreur est survenue</p>
+    <p>You enter a privileged zone.</p>
+    <form #form="ngForm">
+        <ng-template [ngIf]="askLogin">
+            <p>You need to choose a login. This will be use through the application to identify you, your actions and your connection status for Team leader</p>
+            <mat-form-field>
+                <input [disabled]="loading" type="text" minlength="3" maxlength="20" name="login" [(ngModel)]="login" required matInput placeholder="Choose a login">
+            </mat-form-field>
+        </ng-template>
+        <ng-template [ngIf]="askPassword">
+            <p>You need to provide the password for this event. If you don't know it, ask your EoR Team leader or your Zone leader</p>
+            <mat-form-field>
+                <input [disabled]="loading" type="password" name="password" [(ngModel)]="password" required matInput placeholder="Password">
+            </mat-form-field>
+        </ng-template>
+    </form>
+</div>
+<div class="actions" mat-dialog-actions>
+    <button mat-raised-button color="warn" (click)="close()">Cancel</button>
+    <button mat-raised-button color="primary" (click)="submit()" [disabled]="loading && !form.form.valid">Access</button>
+</div>

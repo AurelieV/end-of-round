@@ -17,6 +17,10 @@
                 <input name="end" matInput placeholder="End table number" type="number" required [(ngModel)]="data.end">
             </mat-form-field>
             <br>
+            <mat-form-field *ngIf="create">
+                <input name="password" matInput placeholder="Password" type="text" required [(ngModel)]="password">
+            </mat-form-field>
+            <br>
             <mat-checkbox [(ngModel)]="data.isTeam" name="isTeam">Is a team event?</mat-checkbox>
             <br><br>
             <label>Information</label>
@@ -31,7 +35,7 @@
                         <input name="zone-name-{{i}}" matInput placeholder="Name" type="string" required [(ngModel)]="zone.name">
                     </mat-form-field>
                     <mat-form-field>
-                        <input name="zone-leader-{{i}}" matInput placeholder="LeaderName" type="string" required [(ngModel)]="zone.leader">
+                        <input name="zone-leader-{{i}}" matInput placeholder="LeaderName" type="string" [(ngModel)]="zone.leader">
                     </mat-form-field>
                     <mat-form-field>
                         <input name="zone-leader-place-{{i}}" matInput placeholder="Zone leader place" type="string" [(ngModel)]="zone.zoneLeaderPlace">

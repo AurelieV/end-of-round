@@ -25,47 +25,46 @@ export class AdministrationService {
     }
 
     private createZonesAndTables(key: string, start: number, end: number, zones: ZoneData[]) {
-        this.db.list(`zones`).remove(key)
-            .then(_ => {
-                return Promise.all(zones.map(z => 
-                    this.db.list(`zones/${key}`)
-                        .push(z)
-                        .then(data => {
-                            return Object.assign({ key: data.key }, z)
-                        })
-                ))
+        return Promise.all(zones.map(z => 
+            this.db.list(`zones/${key}`)
+                .push(z)
+                .then(data => {
+                    return Object.assign({ key: data.key }, z)
+                })
+        ))
+        .then(zones => {
+            const tables: { [id: string]: any } = {};
+            for (let i = start; i <= end; i++ ) {
+                tables[i] = {
+                    time: 0,
+                    status: "",
+                    doneTime: null,
+                    hasResult: false,
+                    result: null,
+                    isFeatured: false
+                };
+            }
+            zones.forEach(z => {
+                (z.tables || []).forEach(section => {
+                    for (let i = section.start; i <= section.end; i++) {
+                        tables[i].zoneId = z.key;
+                    }
+                })
             })
-            .then(zones => {
-                const tables: { [id: string]: any } = {};
-                for (let i = start; i <= end; i++ ) {
-                    tables[i] = {
-                        time: 0,
-                        status: "",
-                        doneTime: null,
-                        hasResult: false,
-                        result: null,
-                        isFeatured: false
-                    };
-                }
-                zones.forEach(z => {
-                    (z.tables || []).forEach(section => {
-                        for (let i = section.start; i <= section.end; i++) {
-                            tables[i].zoneId = z.key;
-                        }
-                    })
-                })
-                this.db.object(`tables/${key}`).set(tables)
-                this.db.object(`zones/${key}/feature`).set({
-                    name: 'Feature',
-                    needHelp: false
-                })
-            });
+            this.db.object(`tables/${key}`).set(tables)
+            this.db.object(`zones/${key}/feature`).set({
+                name: 'Feature',
+                needHelp: false
+            })
+        });
     }
 
-    createTournament(data: TournamentData, zones: ZoneData[]) {
-        return this.db.list<TournamentData>('tournaments').push(data).then(tournament => {
+    createTournament(data: TournamentData, zones: ZoneData[], password: string) {
+        return this.db.list<TournamentData>('tournaments').push(data)
+        .then(tournament => {
             this.createZonesAndTables(tournament.key, data.start, data.end, zones);
-            return tournament.key;
+            return this.db.object(`passwords/${tournament.key}`).set(password)
+                .then(pass => tournament.key);
         });
     }
 
@@ -80,6 +79,6 @@ export class AdministrationService {
             .subscribe(tournament => {
                 this.db.object(`tournaments/${key}`).update(data);
         })
-        this.createZonesAndTables(key, data.start, data.end, zones);
+        this.db.list(`zones`).remove(key).then(_ => this.createZonesAndTables(key, data.start, data.end, zones));
     }
 }

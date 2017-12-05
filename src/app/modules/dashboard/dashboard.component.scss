@@ -43,16 +43,6 @@ zone-info {
     min-width: 220px;
 }
 
-.confirmation, .extra-timed, .remaining-tables {
-    .actions {
-        display: flex;
-        justify-content: flex-end;
-        button {
-            margin-left: 5px;
-        }
-    }
-}
-
 .confirmation {
     form {
         display: flex;

@@ -23,6 +23,7 @@ export class CreateTournamentComponent implements OnInit {
         information: "",
         isTeam: false
     }
+    password: string;
     id: string;
     @ViewChild('confirm') confirmTemplate: TemplateRef<any>;
     confirmation: MatDialogRef<any>;
@@ -78,9 +79,9 @@ export class CreateTournamentComponent implements OnInit {
 
     addOrEdit() {
         if (this.create) {
-            this.administrationService.createTournament(this.data, this.zones)
+            this.administrationService.createTournament(this.data, this.zones, this.password)
                 .then(tournamentId => {
-                    this.router.navigate(['tournament', tournamentId, 'dashboard']);
+                    this.router.navigate(['/']);
                 });
         } else {
             this.administrationService.editTournament(this.id, this.data, this.zones)
