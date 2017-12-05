@@ -13,15 +13,15 @@
 <mat-menu #navMenu="matMenu">
     <a mat-menu-item routerLink="/" *ngIf="!state.isOnHome">
       <mat-icon>&#xE88A;</mat-icon>
-      <span>Go to homepage</span>
+      <span>Go to Homepage</span>
     </a>
     <a mat-menu-item [routerLink]="['tournament', state.tournamentKey]" *ngIf="state.isOnTournament && !state.isOnMainPage">
         <mat-icon>&#xE88A;</mat-icon>
-        <span>Go to Main page</span>
+        <span>Go to Tournament page</span>
     </a>
     <a mat-menu-item *ngIf="state.isOnTournament && !state.isOnDashboard" [routerLink]="['tournament', state.tournamentKey, 'dashboard']">
       <mat-icon>&#xE897;</mat-icon>
-      <span>Go to dashboard</span>
+      <span>Go to Team lead page</span>
     </a>
     <a mat-menu-item *ngIf="state.isOnTournament && state.isOnDashboard" [routerLink]="['/administration', 'edit', state.tournamentKey]">
       <mat-icon>&#xE3C9;</mat-icon>
