@@ -9,7 +9,8 @@ import {
     SimpleChanges,
     OnChanges,
     Output,
-    EventEmitter
+    EventEmitter,
+    NgZone
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
@@ -24,6 +25,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { TournamentService, Zone, Table } from './../tournament/tournament.service';
 import { AddResultDialogComponent } from './add-result.dialog.component';
 import { TimeService } from '../time/time.service';
+import { ZoneService } from './zone.service';
 
 interface Filter {
     onlyPlaying: boolean;
@@ -33,7 +35,10 @@ interface Filter {
 @Component({
     selector: "zone",
     styleUrls: [ 'zone.component.scss' ],
-    templateUrl: 'zone.component.html' 
+    templateUrl: 'zone.component.html',
+    providers: [
+        ZoneService
+    ]
 })
 export class ZoneComponent implements OnInit, OnChanges, OnDestroy { 
     @Input() zoneId: string;
@@ -71,7 +76,9 @@ export class ZoneComponent implements OnInit, OnChanges, OnDestroy {
         private cd: ChangeDetectorRef,
         private dialog: MatDialog,
         private router: Router,
-        private timeService: TimeService
+        private timeService: TimeService,
+        private zoneService: ZoneService,
+        private zone: NgZone
     ) {}
 
     ngOnInit() {
@@ -79,46 +86,44 @@ export class ZoneComponent implements OnInit, OnChanges, OnDestroy {
             .map(params => params.id)
             .subscribe(id => {
                 if (!id) return;
-                this.setZone(id);
-                this.cd.detectChanges();
+                this.zoneService.key = id;
+                this.zoneId = id;
             })
         ;
         this.isOnOutstandingsStep$ = this.tournamentService.isOnOutstandingsStep();
-        this.isTeam$ = this.tournamentService.getTournament().map(t => t.isTeam);
+        this.zone$ = this.zoneService.getZone();
+        this.tables$ = Observable.combineLatest(
+            this.zoneService.getTables(),
+            this.filter$,
+            this.isOnOutstandingsStep$
+        ).map(([tables, filters, isOnOutstandingsStep]) => {
+            if (isOnOutstandingsStep) return tables;
+            return tables.filter(t => {
+                if (filters.onlyExtraTime && !t.time) return false;
+                if (filters.onlyPlaying && t.status !== 'playing' && t.status !== 'covered') return false;
+
+                return true;
+            });
+        })
+        this.tables$.take(1).subscribe(_ => this.isLoading = false);
+        this.isTeam$ = this.tournamentService.isTeam();
+        this.otherZones$ = this.zoneService.getOtherZones();
+        this.otherNeedHelp$ = this.otherZones$.map(zones => zones.filter(z => z.needHelp).length > 0);
     }
 
     ngOnChanges(changes: SimpleChanges) {
         if (changes.zoneId) {
-            this.setZone(changes.zoneId.currentValue)
+            this.zoneService.key = changes.zoneId.currentValue;
         }
     }
 
-    setZone(zoneId: string) {
-        this.zoneId = zoneId === 'all' ? '' : zoneId;
-        this.zone$ = this.tournamentService.getZone(this.zoneId);
-        this.tables$ = this.zone$.switchMap(zone => {
-            return Observable.combineLatest(
-                this.tournamentService.getActiveTablesByZone(zone),
-                this.filter$,
-                this.isOnOutstandingsStep$
-            ).map(([tables, filters, isOnOutstandingsStep]) => {
-                if (isOnOutstandingsStep) return tables;
-                return tables.filter(t => {
-                    if (filters.onlyExtraTime && !t.time) return false;
-                    if (filters.onlyPlaying && t.status !== 'playing' && t.status !== 'covered') return false;
-
-                    return true;
-                });
-            })
-        });
-        this.tables$.take(1).subscribe(_ => this.isLoading = false);
-        this.otherZones$ = this.tournamentService.getZones().map(zones => zones.filter(z => z.key !== this.zoneId));
-        this.otherNeedHelp$ = this.otherZones$.map(zones => zones.filter(z => z.needHelp).length > 0);
+    trackByFn(table: Table) {
+        return table.number;
     }
 
     onTableClick(table: Table) {
         let update = {};
-        if (table.status === "featured") return;
+        if (table.isFeatured && this.zoneId !== 'feature') return;
         switch (table.status) {
             case "":
                 update = { status: "playing" };
@@ -163,17 +168,15 @@ export class ZoneComponent implements OnInit, OnChanges, OnDestroy {
 
     confirmAllGreen() {
         this.confirmation.close();
-        this.zone$.take(1).subscribe(zone => {
-            this.tournamentService.getAllTablesByZone(zone)
-                .map(tables => tables.filter(t => !t.status))
-                .take(1)
-                .subscribe(tables => {
-                    this.cd.detach();
-                    tables.forEach(table => {
-                        this.tournamentService.updateTable(table.number, { status: "done", doneTime: new Date() })
-                    });
-                    this.cd.reattach();
+        this.tournamentService.getAllTablesByZone(this.zoneService.key)
+            .map(tables => tables.filter(t => !t.status))
+            .take(1)
+            .subscribe(tables => {
+                this.cd.detach();
+                tables.forEach(table => {
+                    this.tournamentService.updateTable(table.number, { status: "done", doneTime: new Date() })
                 });
+                this.cd.reattach();
         });
     }
 
@@ -234,7 +237,7 @@ export class ZoneComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     goToZone(key: string) {
-        this.router.navigate(['/tournament', this.tournamentService.getKey(), 'zone', key])
+        this.router.navigate(['/tournament', this.tournamentService.key, 'zone', key])
     }
 
     ngOnDestroy() {

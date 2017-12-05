@@ -1,7 +1,7 @@
 <mat-icon [class.new]="hasNewMessage" (click)="seeMessage($event)">&#xE0C9;</mat-icon>
 
 <ng-template class="message-modal" #message>
-    <h3>{{zone ? zone.name : 'All zones' }}</h3>
+    <h3>{{zone && zone.name}}</h3>
     <div class="body">
         <input class="null">
         <form class="sending">

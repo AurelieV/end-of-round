@@ -12,11 +12,13 @@ export interface Tournament extends TournamentData {
 
 export interface ZoneData {
     name: string;
-    start: number;
-    end: number;
-    leader: string;
-    needHelp: boolean;
+    leader?: string;
+    needHelp?: boolean;
     zoneLeaderPlace?: string;
+    tables?: {
+        start: number,
+        end: number
+    }[]
 }
 
 export interface Zone extends ZoneData {

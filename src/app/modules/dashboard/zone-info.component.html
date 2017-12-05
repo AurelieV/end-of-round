@@ -1,12 +1,6 @@
-<ng-container *ngIf="zone">
-    <div class="title">{{zone.name}} - {{zone.leader}}</div>
-    <div class="subtitle">({{zone.start}} - {{zone.end}})</div>
-    <div class="subtitle" *ngIf="zone.zoneLeaderPlace">ZL at {{zone?.zoneLeaderPlace}}</div>
-</ng-container>
-<ng-container *ngIf="!zone">
-    <div class="title">Total</div>
-    <div class="subtitle">(All tables)</div>
-</ng-container>
+<div class="title">{{zone.name}} <span *ngIf="zone.leader">- {{zone.leader}}</span></div>
+<div class="subtitle">({{subtitle}})</div>
+<div class="subtitle" *ngIf="zone.zoneLeaderPlace">ZL at {{zone?.zoneLeaderPlace}}</div>
 
 <div class="status" *ngIf="!isLoading">
     <div class="block remaining">{{(tablesInformation$ | async)?.remaining}}</div>

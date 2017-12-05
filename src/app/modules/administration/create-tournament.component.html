@@ -24,6 +24,9 @@
             <div class="zones">
                 <h4>Zones</h4>
                 <div class="zone" *ngFor="let zone of zones; let i = index;">
+                    <div class="zone-actions">
+                        <button type="button" mat-button color="primary" (click)="deleteZone(i)" [disabled]="zones.length === 1"><mat-icon>&#xE872;</mat-icon></button>
+                    </div>
                     <mat-form-field>
                         <input name="zone-name-{{i}}" matInput placeholder="Name" type="string" required [(ngModel)]="zone.name">
                     </mat-form-field>
@@ -31,20 +34,26 @@
                         <input name="zone-leader-{{i}}" matInput placeholder="LeaderName" type="string" required [(ngModel)]="zone.leader">
                     </mat-form-field>
                     <mat-form-field>
-                        <input name="zone-start-{{i}}" matInput placeholder="Start table number" type="number" required [(ngModel)]="zone.start">
-                    </mat-form-field>
-                    <mat-form-field>
-                        <input name="zone-end-{{i}}" matInput placeholder="End table number" type="number" required [(ngModel)]="zone.end">
-                    </mat-form-field>
-                    <mat-form-field>
                         <input name="zone-leader-place-{{i}}" matInput placeholder="Zone leader place" type="string" [(ngModel)]="zone.zoneLeaderPlace">
                     </mat-form-field>
-                    <br/>
-                    <div class="zone-actions">
-                        <button type="button" mat-button color="primary" (click)="deleteZone(i)" [disabled]="zones.length === 1"><mat-icon>&#xE872;</mat-icon></button>
+                    <h5>Sections</h5>
+                    <div class="sections">
+                        <div *ngFor="let section of zone.tables; let j = index" class="section">
+                            <mat-form-field>
+                                <input name="zone-{{i}}-start-{{j}}" matInput placeholder="Start table number" type="number" required [(ngModel)]="section.start">
+                            </mat-form-field>
+                            <mat-form-field>
+                                <input name="zone-{{i}}-end-{{j}}" matInput placeholder="End table number" type="number" required [(ngModel)]="section.end">
+                            </mat-form-field>
+                            <button type="button" mat-button color="primary" (click)="deleteSection(i, j)" [disabled]="zone.tables.length === 1"><mat-icon>&#xE872;</mat-icon></button>
+                        </div>
+                        <div class="section-actions">
+                            <button type="button" mat-button color="primary" (click)="addSection(i)">Add section</button>
+                        </div>
                     </div>
+                    <br/>
                 </div>
-                <button type="button" mat-button color="primary" (click)="addZone()">Add Zone</button>
+                <button type="button" mat-raised-button color="primary" (click)="addZone()">Add Zone</button>
             </div>
         </form>
     </div>

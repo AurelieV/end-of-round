@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { TournamentService, CoveredTable } from './tournament.service';
+import { TournamentService, CoveredTable } from '../tournament/tournament.service';
 import { Observable } from 'rxjs/Observable';
 
 @Component({
@@ -17,5 +17,9 @@ export class CoverageComponent implements OnInit {
     ngOnInit() {
         this.tables$ = this.tournamentService.getCoverageTables();
         this.tables$.take(1).subscribe(tables => this.isLoading = false);
+    }
+
+    trackByFn(table: CoveredTable) {
+        return table.number;
     }
 }

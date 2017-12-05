@@ -53,11 +53,19 @@ export class CreateTournamentComponent implements OnInit {
     }
 
     addZone() {
-        this.zones.push({ name: `Zone ${this.zones.length + 1}`, leader: "", start: 0, end: 0, zoneLeaderPlace: "", needHelp: false })
+        this.zones = (this.zones || []).concat({ name: `Zone ${this.zones.length + 1}`, leader: "", tables: [{start: 0, end: 0 }], zoneLeaderPlace: "", needHelp: false })
+    }
+
+    addSection(zoneIndex: number) {
+        this.zones[zoneIndex].tables = (this.zones[zoneIndex].tables || []).concat({start: 0, end: 0 })
     }
 
     deleteZone(index: number) {
         this.zones = this.zones.filter((zone, i) => i !== index);
+    }
+
+    deleteSection(zoneIndex: number, sectionIndex: number) {
+        this.zones[zoneIndex].tables = this.zones[zoneIndex].tables.filter((s, i) => i !== sectionIndex);
     }
 
     cancel() {
