@@ -77,18 +77,17 @@ export class DashboardComponent implements OnInit {
                 this.tournamentService.isTeam()
             )
             .map(([tables, isTeam]) => {
-                return tables.filter(t => {
-                    return this.tournamentService.filterExtraTimedTable(tables, isTeam)
-                }).sort((a, b) => {
-                    const aTime = a.time as any;
-                    const bTime = b.time as any;
-                    if (isTeam) {
-                        Math.max(bTime.A, bTime.B, bTime.C) -
-                        Math.max(aTime.A, aTime.B, aTime.C)
-                    } else {
-                        return bTime - aTime;
-                    }
-                })
+                return this.tournamentService.filterExtraTimedTable(tables, isTeam)
+                    .sort((a, b) => {
+                        const aTime = a.time as any;
+                        const bTime = b.time as any;
+                        if (isTeam) {
+                            Math.max(bTime.A, bTime.B, bTime.C) -
+                            Math.max(aTime.A, aTime.B, aTime.C)
+                        } else {
+                            return bTime - aTime;
+                        }
+                    })
             });
         this.isTeam$ = this.tournamentService.isTeam();
     }
