@@ -6,6 +6,7 @@ export const environment = {
     databaseURL: "https://end-of-round.firebaseio.com",
     projectId: "end-of-round",
     storageBucket: "end-of-round.appspot.com",
-    messagingSenderId: "569384953582"
+    messagingSenderId: "569384953582",
+    accessUrl: "https://us-central1-end-of-round.cloudfunctions.net/app/addAccess"
   }
 };

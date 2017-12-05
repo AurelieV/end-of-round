@@ -5,11 +5,3 @@
         font-style: italic;
     }
 }
-
-.actions {
-    display: flex;
-    justify-content: flex-end;
-    button:not(:last-child) {
-        margin-right: 10px;
-    }
-}

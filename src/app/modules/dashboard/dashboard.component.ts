@@ -78,8 +78,7 @@ export class DashboardComponent implements OnInit {
             )
             .map(([tables, isTeam]) => {
                 return tables.filter(t => {
-                    this.tournamentService.filterExtraTimedTable(tables, isTeam)
-                    
+                    return this.tournamentService.filterExtraTimedTable(tables, isTeam)
                 }).sort((a, b) => {
                     const aTime = a.time as any;
                     const bTime = b.time as any;

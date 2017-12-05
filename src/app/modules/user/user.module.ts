@@ -5,20 +5,24 @@ import { NgModule } from '@angular/core';
 import { UserService } from './user.service';
 import { HasLoginGuard } from './auth-gards.service';
 import { ConnectionService } from './connection.service';
-import { SetLoginComponent } from './set-login.component';
+import { AccessInfoComponent } from './access-info.component';
+import { SharedModule } from '../shared/shared.module';
+import { HttpModule } from '@angular/http';
 
 @NgModule({
     imports: [
         MatDialogModule,
         MatButtonModule,
         MatInputModule,
-        FormsModule
+        FormsModule,
+        SharedModule,
+        HttpModule
     ],
     declarations: [
-        SetLoginComponent
+        AccessInfoComponent
     ],
     entryComponents: [
-        SetLoginComponent
+        AccessInfoComponent
     ],
     providers: [ ConnectionService, UserService, HasLoginGuard ]
 })

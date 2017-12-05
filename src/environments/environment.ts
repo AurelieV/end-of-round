@@ -12,5 +12,6 @@ export const environment = {
     projectId: "end-of-round-dev",
     storageBucket: "",
     messagingSenderId: "525436489918"
-  }
+  },
+  accessUrl: "https://us-central1-end-of-round-dev.cloudfunctions.net/app/addAccess"
 };
