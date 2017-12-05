@@ -155,7 +155,7 @@ export class ZoneComponent implements OnInit, OnChanges, OnDestroy {
 
     allGreen() {
         this.confirmation = this.md.open(this.confirmTemplate);
-        handleReturn(this.assignJudges);
+        handleReturn(this.confirmation);
     }
 
     assign(tableId?: number, $event?) {
