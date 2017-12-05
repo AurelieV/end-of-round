@@ -1,7 +1,8 @@
-<div *ngFor="let table of tables" 
+<div *ngFor="let table of tables; trackBy: trackByFn" 
     class="table block"
     (click)="setHasResult(table.number, !table.hasResult)"
     [ngClass]="[table.status, table.result || table.hasResult ? '' : (table.doneTime | warnAgo)]"
+    [class.featured]="table.isFeatured"
     [class.no-status]="!table.status"
     [class.extra-timed]="
         (table.time > 0 || table.time.A > 0 || table.time.B > 0 || table.time.C > 0)

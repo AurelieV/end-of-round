@@ -14,7 +14,6 @@ import { TournamentService, Tournament } from './tournament.service';
 export class TournamentComponent implements OnInit, OnDestroy {
     subscriptions: Subscription[] = [];
     tournament$: Observable<Tournament>;
-    key: string;
 
     constructor(
         private route: ActivatedRoute,
@@ -27,8 +26,7 @@ export class TournamentComponent implements OnInit, OnDestroy {
             this.route.paramMap.subscribe(params => {
                 const key = params.get('key');
                 if (key) {
-                    this.tournamentService.setKey(key);
-                    this.key = key;
+                    this.tournamentService.key = key;
                 }
             })
         );

@@ -43,4 +43,8 @@ export class TablesInfoComponent {
     markEvent(event) {
         event.hasToBeStopped = true;
     }
+
+    trackByFn(table: Table) {
+        return table.number;
+    }
 }

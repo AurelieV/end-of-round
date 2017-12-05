@@ -60,16 +60,21 @@
     [class.high-padding]="!(isOnOutstandingsStep$ | async)"
     [class.is-team]="isTeam$ | async">
     <loader [isLoading]="isLoading"></loader>
-    <div class="table block" *ngFor="let table of tables$ | async" [ngClass]="[table.status, table.result ? '' : table.doneTime | warnAgo]" [class.has-time]="table.time" (click)="onTableClick(table)">
+    <div class="table block" 
+        *ngFor="let table of tables$ | async; trackBy: trackByFn"
+        [ngClass]="[table.status, table.result ? '' : table.doneTime | warnAgo]"
+        [class.featured]="(zoneId !== 'feature' && table.isFeatured)"
+        [class.has-time]="table.time"
+        (click)="onTableClick(table)">
         <div class="number">{{table.number}}</div>
         <div class="time" *ngIf="table.time"><display-time [time]="table.time"></display-time></div>
         <div class="result">{{table.result | result }}</div>
         <div class="assignated" *ngIf="table.assignated">{{table.assignated}}</div>
         <div class="actions">
-            <button mat-mini-fab color="primary" (click)="assign(table.number, $event)">
+            <button mat-button color="primary" (click)="assign(table.number, $event)">
                 <mat-icon>&#xE851;</mat-icon>
             </button>
-            <button mat-mini-fab color="primary" (click)="addResult($event, table)">
+            <button mat-button color="primary" (click)="addResult($event, table)">
                     <mat-icon>&#xE862;</mat-icon>
             </button>
         </div>

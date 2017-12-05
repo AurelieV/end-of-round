@@ -5,12 +5,6 @@
     </div>
     <loader [isLoading]="isLoading"></loader>
     <zone-info 
-        *ngIf="!isLoading && (zones$ | async)?.length > 1"
-        class="zone"
-        (onView)="$event.stopPropagation(); goToZone('all')"
-        (click)="displayZone('all')">
-    </zone-info>
-    <zone-info 
         *ngFor="let zone of zones$ | async;trackBy:trackByFn"
         class="zone"
         (onView)="$event.stopPropagation(); goToZone(zone.key)"
@@ -65,8 +59,8 @@
         <h3>Extra timed tables</h3>
         <div mat-dialog-content [class.is-team]="isTeam$ | async">
             <ul>
-                <li *ngFor="let table of extraTimedTables$ | async">
-                    <div class="extra-timed-table text" [ngClass]="table.status">Table {{table.number}}:</div>
+                <li *ngFor="let table of extraTimedTables$ | async; trackBy: trackByTableFn">
+                    <div class="extra-timed-table text" [ngClass]="table.status" [class.featured]="table.isFeatured">Table {{table.number}}:</div>
                     <display-time [time]="table.time"></display-time>
                 </li>
             </ul>

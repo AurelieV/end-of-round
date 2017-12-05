@@ -46,7 +46,7 @@ export class DashboardComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        this.zones$ = this.tournamentService.getZones();
+        this.zones$ = this.tournamentService.getAllZones();
         this.zones$.take(1).subscribe(_ => this.isLoading = false);
         this.tables$ = this.tournamentService.getActiveTables();
         this.remainingTables$ = this.tables$.map(tables => tables.filter(t => t.status !== 'done'));
@@ -54,10 +54,19 @@ export class DashboardComponent implements OnInit {
             .map(([tables, zones]) => {
                 const result: any[] = [];
                 zones.forEach(zone => {
-                    result.push({
-                        name: zone.name,
-                        tables: tables.filter(t => +t.number >= zone.start && +t.number <= zone.end)
-                    });
+                    if (zone.key === 'all') return;
+                    if (zone.key === 'feature') {
+                        result.push({
+                            name: zone.name,
+                            tables: tables.filter(t => t.isFeatured)
+                        });
+                    } else {
+                        result.push({
+                            name: zone.name,
+                            tables: tables.filter(t => zone.key === t.zoneId && !t.isFeatured)
+                        });
+                    }
+                    
                 });
                 return result;
             })
@@ -65,18 +74,11 @@ export class DashboardComponent implements OnInit {
         this.okTables$ = this.tournamentService.getOkTables();
         this.extraTimedTables$ = Observable.combineLatest(
                 this.tables$,
-                this.tournamentService.getTournament().map(t => t.isTeam)
+                this.tournamentService.isTeam()
             )
             .map(([tables, isTeam]) => {
                 return tables.filter(t => {
-                    if (isTeam) {
-                        const time = t.time as any;
-                        return (time.A > 0 || time.B > 0 || time.C > 0)
-                            && t.status !== 'done'
-                    } else {
-                        const time = t.time as number;
-                        return time > 0 && t.status !== 'done'
-                    }
+                    this.tournamentService.filterExtraTimedTable(tables, isTeam)
                     
                 }).sort((a, b) => {
                     const aTime = a.time as any;
@@ -89,11 +91,11 @@ export class DashboardComponent implements OnInit {
                     }
                 })
             });
-        this.isTeam$ = this.tournamentService.getTournament().map(t => t.isTeam);
+        this.isTeam$ = this.tournamentService.isTeam();
     }
 
     goToZone(key: string) {
-        this.router.navigate(['../../../zone', key], { relativeTo: this.route });
+        this.router.navigate(['/tournament', this.tournamentService.key, 'zone', key]);
     }
 
     displayZone(key: string) {
@@ -170,6 +172,10 @@ export class DashboardComponent implements OnInit {
 
     trackByFn(val: Zone) {
         return val.key;
+    }
+
+    trackByTableFn(table: Table) {
+        return table.number;
     }
 
     addTime() {

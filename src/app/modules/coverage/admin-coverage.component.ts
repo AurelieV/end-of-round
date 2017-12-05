@@ -3,7 +3,7 @@ import { Component, ViewChild, TemplateRef, OnInit } from '@angular/core';
 import { handleReturn } from '../shared/handle-return';
 import { Observable } from 'rxjs/Observable';
 
-import { TournamentService, CoveredTable, CoveredDataTable } from './tournament.service';
+import { TournamentService, CoveredTable, CoveredDataTable } from '../tournament/tournament.service';
 import { AddResultDialogComponent } from '../zone/add-result.dialog.component';
 import { FormControl } from '@angular/forms';
 
@@ -104,5 +104,9 @@ export class AdminCoverageComponent implements OnInit {
                 doneTime: table.doneTime  || new Date()
             })
         });
+    }
+
+    trackByFn(table: CoveredTable) {
+        return table.number;
     }
 }

@@ -1,5 +1,4 @@
-import { CoveredTable } from './tournament.service';
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { AngularFireDatabase, AngularFireObject, AngularFireList } from 'angularfire2/database';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
@@ -9,17 +8,20 @@ import 'rxjs/add/observable/combineLatest';
 
 import { TournamentData, Tournament, Zone, ZoneData, Message } from '../../model';
 export { Tournament, TournamentData, Zone, ZoneData, Message };
+import { DatabaseAccessor } from './../../utils/database-accessor';
 
 export interface Table {
     number: string;
     status: TableStatus;
-    time: number | { A?: number; B?: number; C: number };
     doneTime?: Date;
     hasResult?: boolean;
     result?: Result;
     assignated?: string;
     information?: string;
-    isCovered?: boolean;
+    isTop?: boolean;
+    isFeatured?: boolean;
+    zoneId: string;
+    time: number | { A?: number; B?: number; C?: number } 
 }
 
 export interface CoveredTable extends Table {
@@ -53,7 +55,7 @@ export interface Result {
     draw: number;
 }
 
-export type TableStatus = "playing" | "covered" | "featured" | "done" | "";
+export type TableStatus = "playing" | "covered" | "done" | "";
 
 export interface TablesInformation {
     playing: number;
@@ -63,81 +65,52 @@ export interface TablesInformation {
 }
 
 @Injectable()
-export class TournamentService {
-    private key: BehaviorSubject<string>;
+export class TournamentService extends DatabaseAccessor {
     
-    constructor(private db: AngularFireDatabase) {
-        this.key = new BehaviorSubject<string>('');
-    }
-
-    setKey(key: string) {
-        this.key.next(key);
-    }
-
-    getKey() {
-        return this.key.getValue();
-    }
-
-    private getObject<T>(ref: AngularFireObject<T>, key: string = "key"): Observable<T & { key: string }> {
-        return ref.snapshotChanges()
-            .map(({ payload }) => ({ [key]: payload.key, ...payload.val() }));
-    }
-
-    private getList<T>(ref: AngularFireList<T>, key: string = "key"): Observable<Array<T & { key: string }>> {
-        return ref.snapshotChanges()
-            .map(actions => 
-                actions.map(({ payload }) => ({ [key]: payload.key, ...payload.val() }))
-            );
+    constructor(db: AngularFireDatabase, zone: NgZone) {
+        super(db, zone);
     }
 
     getTournament(): Observable<Tournament> {
-        return this.key.switchMap(key => {
-            if (!key) return Observable.of(null)
-            return this.getObject(this.db.object<TournamentData>(`/tournaments/${key}`))
-        });
-    }
-
-    setTime(time: number, tableId: string, seat?: string) {
-        if (seat) {
-            return this.db.object(`tables/${this.key.getValue()}/${tableId}/time/${seat}`).set(time);
-        } else {
-            return this.db.object(`tables/${this.key.getValue()}/${tableId}`).update({ time });
-        }
-        
+        return this.doWithKey<Tournament>(
+            key => this.getObjectFrom<TournamentData>(`/tournaments/${key}`)
+        )
     }
 
     getZones(): Observable<Zone[]> {
-        return this.key.switchMap(key =>
-            key ? this.getList(this.db.list(`/zones/${key}`)) : Observable.of([])
+        return this.doWithKey<Zone[]>(
+            key => this.getListFrom<ZoneData>(`/zones/${key}`),
+            []
         );
     }
 
-    getZone(zoneId: string): Observable<Zone> {
-        return this.key.switchMap(key => {
-            if (!key) {
-                return Observable.of(null)
-            } else if (zoneId) {
-                return this.getObject(this.db.object(`/zones/${key}/${zoneId}`))
-            } else {
-                return this.getTournament().map(tournament => {
-                    return {
-                        key: "",
-                        name: "All",
-                        start: tournament.start,
-                        end: tournament.end,
-                        leader: "",
-                        needHelp: false
-                    }
-                })
-            }
-        }
-        );
+    getAllZones(): Observable<Zone[]> {
+        return this.getZones().map(zones => {
+            return [{ key: "all", name: "All" }].concat(zones);
+        })
     }
 
     getAllTables(): Observable<Table[]> {
-        return this.key.switchMap(key =>
-            key ? this.getList(this.db.list(`/tables/${key}`), "number") : Observable.of([])
-        );
+        return this.doWithKey<Table[]>(
+            key => this.getListFrom<Table>(`/tables/${key}`, "number"),
+            []
+        )
+    }
+
+    getOutstandings(): Observable<string[]> {
+        return this.doWithKey<string[]>(
+            key => {
+                return this.db.object(`/outstandings/${key}`).valueChanges<string>()
+                    .map(val => {
+                        return val ? val.split(' ') : []
+                    })
+            },
+            []
+        )
+    }
+
+    isOnOutstandingsStep(): Observable<boolean> {
+        return this.getOutstandings().map(out => out.length > 0);
     }
 
     getOutstandingsTables(): Observable<Table[]> {
@@ -157,43 +130,75 @@ export class TournamentService {
         return this.getOutstandingsTables().map(tables => tables.filter(t => t.hasResult));
     }
 
-    getAllTablesByZone(zone: Zone): Observable<Table[]> {
-        if (!zone) return this.getAllTables();
-        return this.key.switchMap(key =>
-            key ?
-            this.getList(this.db.list(
-                `/tables/${key}/`,
-                ref => ref.orderByKey().startAt(zone.start + "").endAt(zone.end + "")
-            ), "number") : Observable.of([])
-        );
+    getAllTablesByZone(zoneId: string): Observable<Table[]> {
+        if (zoneId === 'all') return this.getAllTables();
+        return this.doWithKey<Table[]>(
+            key => {
+                let list$;
+                if (zoneId === 'feature') {
+                    list$ = this.db.list(
+                        `/tables/${key}/`,
+                        ref => ref.orderByChild('isFeatured').equalTo(true)
+                    );
+                    return this.getList<Table>(list$, "number");
+                } else {
+                    list$ = this.db.list(
+                        `/tables/${key}/`,
+                        ref => ref.orderByChild('zoneId').equalTo(zoneId)
+                    );
+                    return this.getList<Table>(list$, "number")
+                        .map(tables => tables.filter(t => t.zoneId === zoneId));
+                }
+            },
+            []
+        )
     }
 
-    getActiveTablesByZone(zone: Zone): Observable<Table[]> {
-        return Observable.combineLatest(this.getOutstandings(), this.getAllTablesByZone(zone))
+    getOutstandingsTablesByZone(zoneId: string): Observable<Table[]> {
+        return Observable.combineLatest(this.getOutstandings(), this.getAllTablesByZone(zoneId))
             .map(([outstandings, tables]) => {
                 if (outstandings.length === 0) return tables;
 
-                return tables.filter(t => outstandings.indexOf(t.number) > -1 && !t.hasResult);
+                return tables.filter(t => outstandings.includes(t.number));
             })
     }
 
-    getActiveTablesInformationByZone(zone: Zone | null): Observable<TablesInformation> {
-        const tables$ = zone ? this.getActiveTablesByZone(zone) : this.getActiveTables();
-        return Observable.combineLatest(tables$, this.getTournament().map(t => t.isTeam))
+    getActiveTablesByZone(zoneId: string): Observable<Table[]> {
+        return this.getOutstandingsTablesByZone(zoneId).map(tables => tables.filter(t => !t.hasResult));
+    }
+
+    getOkTablesByZone(zoneId: string): Observable<Table[]> {
+        return this.getOutstandingsTablesByZone(zoneId).map(tables => tables.filter(t => t.hasResult));
+    }
+
+    isTeam(): Observable<boolean> {
+        return this.getTournament().map(t => t.isTeam);
+    }
+
+    filterExtraTimedTable(tables: Table[], isTeam: boolean) {
+        return (tables || []).filter(t => {
+            if (isTeam) {
+                const time = t.time as any;
+                return (time.A > 0 || time.B > 0 || time.C > 0)
+                    && t.status !== 'done'
+            } else {
+                const time = t.time as number;
+                return time > 0 && t.status !== 'done'
+            }
+        });
+    }
+
+    getActiveTablesInformationByZone(zoneId: string): Observable<TablesInformation> {
+        const tables$ = this.getActiveTablesByZone(zoneId);
+        const isTeam$ = this.getTournament().map(t => t.isTeam);
+        return Observable.combineLatest(tables$, isTeam$)
             .map(([tables, isTeam]) => {
-                const extraTimeTables = (tables || [])
-                    .filter(t => {
-                        if (isTeam) {
-                            const time = t.time as any;
-                            return (time.A > 0 || time.B > 0 || time.C > 0)
-                                && t.status !== 'done'
-                        } else {
-                            const time = t.time as number;
-                            return time > 0 && t.status !== 'done'
-                        }
-                    })
+                if (zoneId !== 'feature') {
+                    tables = tables.filter(t => !t.isFeatured);
+                }
+                const extraTimeTables = this.filterExtraTimedTable(tables, isTeam);
                 return {
-                    remaining: tables.filter(t => t.status && t.status !== "done" && t.status !== 'featured').length,
+                    remaining: tables.filter(t => t.status && t.status !== "done").length,
                     playing: tables.filter(t => t.status === "playing").length,
                     covered: tables.filter(t => t.status === "covered").length,
                     extraTimed: extraTimeTables.length
@@ -201,54 +206,46 @@ export class TournamentService {
             })
     }
 
+    updateZone(zoneId: string, update: any) {
+        if (zoneId === 'all') return;
+        this.db.object(`/zones/${this.key}/${zoneId}`).update(update);
+    }
+
     getMessages(zoneId: string): Observable<Message[]> {
-        return this.key.switchMap(key => {
-            if (!key) {
-                return Observable.of([]);
-            } else {
-                if (!zoneId) {
-                    return this.db.list<Message>(`/messages/${key}/for_all`, ref => ref.orderByChild('timestamp'))
-                        .valueChanges()
+        return this.doWithKey(
+            key => {
+                if (zoneId === 'all') {
+                    return this.db.list<Message>(`/messages/${key}/all`, ref => ref.orderByChild('timestamp'))
+                        .valueChanges<Message>()
                         .map(t => t.reverse())
                 } else {
                     const zoneMessages = this.db.list<Message>(
                         `/messages/${key}/${zoneId}`,
                         ref => ref.orderByChild('timestamp')
-                    ).valueChanges().map(t => t.reverse());
+                    ).valueChanges<Message>().map(t => t.reverse());
                     const allMessages = this.db.list<Message>(
-                        `/messages/${key}/for_all`,
+                        `/messages/${key}/all`,
                         ref => ref.orderByChild('timestamp')
-                    ).valueChanges().map(t => t.reverse());
+                    ).valueChanges<Message>().map(t => t.reverse());
 
                     return Observable.combineLatest(zoneMessages, allMessages)
                         .map(([zoneMessages, allMessages]) => {
-                            return zoneMessages.concat(allMessages).sort((m: Message) => - m.timestamp)
+                            return zoneMessages.concat(allMessages)
+                                .sort((a, b) => a.timestamp < b.timestamp ? 1 : -1)
                         })
                     ;
                 }
-                
-            }
-        });
+            },
+            []
+        )
     }
 
     sendMessage(zoneId: string, message: string) {
-        this.db.list<Message>(`/messages/${this.key.getValue()}/${zoneId || 'for_all'}`).push({
+        this.db.list<Message>(`/messages/${this.key}/${zoneId}`).push({
             login: 'Anonymous',
             message,
             timestamp: (new Date()).valueOf()
         })
-    }
-
-    getOutstandings(): Observable<string[]> {
-        return this.key.switchMap(key =>
-            key ?
-            this.db.object(`/outstandings/${key}`).valueChanges<string>()
-                .map(val => val ? val.split(' ') : []) : Observable.of([])
-        );
-    }
-
-    isOnOutstandingsStep(): Observable<boolean> {
-        return this.getOutstandings().map(out => out.length > 0);
     }
 
     addOutstandings(tableIds: string[], replaceExisting: boolean) {
@@ -259,100 +256,94 @@ export class TournamentService {
             ;
             const newTablesString = newTableIds.join(' ');
             
-            this.db.object(`/outstandings/${this.key.getValue()}`).set(newTablesString);
+            this.db.object(`/outstandings/${this.key}`).set(newTablesString);
         });
     }
 
     addFeatured(tableIds: string[], replaceExisting: boolean) {
-        tableIds.forEach(id => this.db.object(`/tables/${this.key.getValue()}/${id}`).update({ status: 'featured'}));
+        tableIds.forEach(id => this.db.object(`/tables/${this.key}/${id}`).update({ isFeatured: true }));
     }
 
     restart() {
-        this.db.object(`/outstandings/${this.key.getValue()}`).set('');
+        this.db.object(`/outstandings/${this.key}`).set('');
         this.getTournament().take(1).subscribe(tournament => {
             if (!tournament) return;
             this.getAllTables().take(1).subscribe(tables => {
-                const val = {};
-                tables.forEach(t => val[t.number] = t);
-                this.db.object(`tables-archives/${this.key.getValue()}`).set(val);
+                const data = tables.map(table => ({
+                        time: 0,
+                        status: "",
+                        doneTime: null,
+                        hasResult: false,
+                        result: null,
+                        isFeatured: false,
+                        zoneId: table.zoneId,
+                        number: table.number
+                }));
+                const newTables = {};
+                data.forEach((t, i) =>  {
+                    const number = t.number;
+                    delete data[i].number
+                    newTables[number] = data[i]
+                })
+                this.db.object(`tables/${this.key}`).update(newTables);
             })
-            this.db.object(`/outstandings/${this.key.getValue()}`).valueChanges().take(1).subscribe(out => {
-                this.db.object(`outstandings-archives/${this.key.getValue()}`).set(out);
-            })
-            const tables: { [id: string]: any } = {};
-            for (let i = tournament.start; i <= tournament.end; i++ ) {
-                tables[i] = {
-                    time: 0,
-                    status: "",
-                    doneTime: null,
-                    hasResult: false,
-                    result: null
-                };
-            }
-            this.db.object(`tables/${this.key.getValue()}`).update(tables);
+
         });
         this.getZones().take(1).subscribe(zones => {
             zones.forEach(zone => {
-                this.db.object(`/messages/${this.key.getValue()}/${zone.key}`).set("");
+                this.db.object(`/messages/${this.key}/${zone.key}`).set("");
             })
-            this.db.object(`/messages/${this.key.getValue()}/for_all`).set("");
+            this.db.object(`/messages/${this.key}/all`).set("");
         })
     }
 
     getTable(tableId: string): Observable<Table> {
-        return this.getObject(this.db.object<Table>(`/tables/${this.key.getValue()}/${tableId}`), "number").take(1);
+        return this.getObject(this.db.object<Table>(`/tables/${this.key}/${tableId}`), "number").take(1);
     }
 
     updateTable(tableId: string, update: any) {
-        this.db.object(`/tables/${this.key.getValue()}/${tableId}`).update(update);
+        this.db.object(`/tables/${this.key}/${tableId}`).update(update);
     }
 
-    updateZone(zoneId: string, update: any) {
-        this.db.object(`/zones/${this.key.getValue()}/${zoneId}`).update(update);
+    setTime(time: number, tableId: string, seat?: string) {
+        const key = this.key;
+        if (seat) {
+            return this.db.object(`tables/${key}/${tableId}/time/${seat}`).set(time);
+        } else {
+            return this.db.object(`tables/${key}/${tableId}`).update({ time });
+        }
     }
-
 
     getCoverageTables(resultLast?: boolean): Observable<CoveredTable[]> {
-        return this.key.switchMap(key => {
-            const tables$ = this.getList<Table>(
-                this.db.list(
-                    `/tables/${key}/`,
-                    ref => ref.orderByChild('isCovered').equalTo(true)
-                ), 
-                "number"
-            ).map(tables => 
-                tables.sort((a, b) => {
-                    if (!resultLast || (a.result && b.result) || (!a.result && !b.result)) {
-                        return Number(a.number) < Number(b.number) ? -1 : 1;
-                    }
-                    if (a.result && !b.result) {
-                        return 1;
-                    }
-                    if (!a.result && b.result) {
-                        return -1;
-                    }
-
-                    return 0;
-                })
-            )
-
-            return key ? tables$ : Observable.of([])
-        });
-    }
-
-    addCoverageTable(data: CoveredDataTable) {
-        this.updateTable(data.number, { coverage: data.coverage, isCovered: true })
-    }
-
-    hasArchives(): Observable<boolean> {
-        return this.key.switchMap(key =>
-            key ?
-                this.db.object(`/tables-archives/${key}`).valueChanges().map(val => !!val)
-                : Observable.of(false)    
+        return this.doWithKey(
+            key => {
+                return this.getList<CoveredTable>(
+                    this.db.list(
+                        `/tables/${key}/`,
+                        ref => ref.orderByChild('isTop').equalTo(true)
+                    ), 
+                    "number"
+                ).map(tables => 
+                    tables.sort((a, b) => {
+                        if (!resultLast || (a.result && b.result) || (!a.result && !b.result)) {
+                            return Number(a.number) < Number(b.number) ? -1 : 1;
+                        }
+                        if (a.result && !b.result) {
+                            return 1;
+                        }
+                        if (!a.result && b.result) {
+                            return -1;
+                        }
+    
+                        return 0;
+                    })
+                )
+            },
+            []
         )
     }
 
-    restoreArchives() {
-
+    addCoverageTable(data: CoveredDataTable) {
+        this.updateTable(data.number, { coverage: data.coverage, isTop: true })
     }
 }
