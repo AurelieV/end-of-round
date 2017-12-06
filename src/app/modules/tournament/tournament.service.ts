@@ -10,6 +10,7 @@ import { UserService } from './../user/user.service';
 import { TournamentData, Tournament, Zone, ZoneData, Message } from '../../model';
 export { Tournament, TournamentData, Zone, ZoneData, Message };
 import { DatabaseAccessor } from './../../utils/database-accessor';
+import { NotificationService } from './../../notification.service';
 
 export interface Table {
     number: string;
@@ -68,7 +69,7 @@ export interface TablesInformation {
 @Injectable()
 export class TournamentService extends DatabaseAccessor {
     
-    constructor(db: AngularFireDatabase, zone: NgZone, private userService: UserService) {
+    constructor(db: AngularFireDatabase, zone: NgZone, private userService: UserService, private notif: NotificationService) {
         super(db, zone);
     }
 
@@ -209,7 +210,7 @@ export class TournamentService extends DatabaseAccessor {
 
     updateZone(zoneId: string, update: any) {
         if (zoneId === 'all') return;
-        this.db.object(`/zones/${this.key}/${zoneId}`).update(update);
+        return this.db.object(`/zones/${this.key}/${zoneId}`).update(update);
     }
 
     getMessages(zoneId: string): Observable<Message[]> {
@@ -262,7 +263,11 @@ export class TournamentService extends DatabaseAccessor {
     }
 
     addFeatured(tableIds: string[], replaceExisting: boolean) {
-        tableIds.forEach(id => this.db.object(`/tables/${this.key}/${id}`).update({ isFeatured: true }));
+        Promise.all(
+            tableIds.map(id => 
+                this.db.object(`/tables/${this.key}/${id}`).update({ isFeatured: true })
+            )
+        ).then(_ => this.notif.notify("Featured tables added"))
     }
 
     restart() {
@@ -303,16 +308,22 @@ export class TournamentService extends DatabaseAccessor {
     }
 
     updateTable(tableId: string, update: any) {
-        this.db.object(`/tables/${this.key}/${tableId}`).update(update);
+        return this.db.object(`/tables/${this.key}/${tableId}`).update(update);
     }
 
     setTime(time: number, tableId: string, seat?: string) {
         const key = this.key;
+        let action;
         if (seat) {
-            return this.db.object(`tables/${key}/${tableId}/time/${seat}`).set(time);
+            action = this.db.object(`tables/${key}/${tableId}/time/${seat}`).set(time);
         } else {
-            return this.db.object(`tables/${key}/${tableId}`).update({ time });
+            action = this.db.object(`tables/${key}/${tableId}`).update({ time });
         }
+        action.then(_ => {
+            this.notif.notify(`Time added to table ${tableId}`);
+        })
+
+        return action;
     }
 
     getCoverageTables(resultLast?: boolean): Observable<CoveredTable[]> {

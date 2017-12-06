@@ -6,10 +6,11 @@ import 'rxjs/add/observable/combineLatest';
 
 import { Zone, ZoneData, Tournament, TournamentData } from '../../model';
 export { Zone, ZoneData, Tournament, TournamentData }
+import { NotificationService } from './../../notification.service';
 
 @Injectable()
 export class AdministrationService {
-    constructor(private db: AngularFireDatabase) {}
+    constructor(private db: AngularFireDatabase, private notif: NotificationService) {}
 
     getTournaments(): Observable<Tournament[]> {
         return this.db.list<TournamentData>('/tournaments')
@@ -64,12 +65,17 @@ export class AdministrationService {
         .then(tournament => {
             this.createZonesAndTables(tournament.key, data.start, data.end, zones);
             return this.db.object(`passwords/${tournament.key}`).set(password)
-                .then(pass => tournament.key);
+                .then(pass => {
+                    this.notif.notify(`Tournament ${data.name} created`);
+                    return tournament.key
+                });
         });
     }
 
     deleteTournament(key: string) {
-        this.db.list('tournaments').remove(key);
+        this.db.list('tournaments').remove(key).then(_ => {
+            this.notif.notify("Tournament deleted");
+        });
     }
 
     editTournament(key: string, data: TournamentData, zones: ZoneData[]) {
@@ -79,6 +85,8 @@ export class AdministrationService {
             .subscribe(tournament => {
                 this.db.object(`tournaments/${key}`).update(data);
         })
-        this.db.list(`zones`).remove(key).then(_ => this.createZonesAndTables(key, data.start, data.end, zones));
+        this.db.list(`zones`).remove(key)
+            .then(_ => this.createZonesAndTables(key, data.start, data.end, zones))
+            .then(_ => this.notif.notify(`Tournament ${data.name} edited`));
     }
 }
