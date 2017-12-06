@@ -71,10 +71,10 @@
         <div class="result">{{table.result | result }}</div>
         <div class="assignated" *ngIf="table.assignated">{{table.assignated}}</div>
         <div class="actions">
-            <button mat-button color="primary" (click)="assign(table.number, $event)">
+            <button mat-mini-fab color="primary" (click)="assign(table.number, $event)">
                 <mat-icon>&#xE851;</mat-icon>
             </button>
-            <button mat-button color="primary" (click)="addResult($event, table)">
+            <button mat-mini-fab color="primary" (click)="addResult($event, table)">
                     <mat-icon>&#xE862;</mat-icon>
             </button>
         </div>
