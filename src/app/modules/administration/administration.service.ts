@@ -47,7 +47,7 @@ export class AdministrationService {
             zones.forEach(z => {
                 (z.tables || []).forEach(section => {
                     for (let i = section.start; i <= section.end; i++) {
-                        tables[i].zoneId = z.key;
+                        if (tables[i]) tables[i].zoneId = z.key;
                     }
                 })
             })
