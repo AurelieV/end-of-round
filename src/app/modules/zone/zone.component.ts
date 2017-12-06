@@ -10,7 +10,8 @@ import {
     OnChanges,
     Output,
     EventEmitter,
-    NgZone
+    NgZone,
+    HostBinding
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
@@ -42,7 +43,9 @@ interface Filter {
 })
 export class ZoneComponent implements OnInit, OnChanges, OnDestroy { 
     @Input() zoneId: string;
+    @Input() isInserted: boolean;
     @Output() onClose = new EventEmitter();
+    @Output() onZoneChange = new EventEmitter();
 
     private subscription: Subscription;
 
@@ -68,6 +71,11 @@ export class ZoneComponent implements OnInit, OnChanges, OnDestroy {
     };
 
     @ViewChild('help') helpTemplate: TemplateRef<any>;
+
+    @HostBinding('class.inserted')
+    get inserted() {
+        return this.isInserted;
+    }
 
     constructor(
         private route: ActivatedRoute,
@@ -237,7 +245,11 @@ export class ZoneComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     goToZone(key: string) {
-        this.router.navigate(['/tournament', this.tournamentService.key, 'zone', key])
+        if (this.isInserted) {
+            this.onZoneChange.emit(key)
+        } else {
+            this.router.navigate(['/tournament', this.tournamentService.key, 'zone', key]);
+        }
     }
 
     ngOnDestroy() {

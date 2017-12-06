@@ -36,7 +36,7 @@
             <tables-info [tables]="okTables$ | async"></tables-info>
         </div>
     </div>
-    <zone class="inserted" (onClose)="displayZoneId = ''" [zoneId]="displayZoneId" *ngIf="displayZoneId"></zone>
+    <zone [isInserted]="true" (onClose)="displayZoneId = ''" (onZoneChange)="displayZoneId = $event" [zoneId]="displayZoneId" *ngIf="displayZoneId"></zone>
 </div>
 <ng-template #confirmEnd>
     <div class="confirmation">
