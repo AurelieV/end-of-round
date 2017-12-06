@@ -1,4 +1,5 @@
 <h3>Add result<span *ngIf="!displayTable"> for table {{tableId}}</span></h3>
+<input class="null">
 <div *ngIf="displayTable">
     <mat-form-field>
         <input type="texte" matInput [(ngModel)]="tableId" id="table" placeholder="Table number">

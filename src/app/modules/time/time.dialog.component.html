@@ -1,4 +1,5 @@
 <h3 mat-dialog-title>Add time to a table</h3>
+<input class="null">
 <form mat-dialog-content #form="ngForm">
     <mat-input-container>
       <input (ngModelChange)="onTableNumberChange($event)" name="number" matInput placeholder="Table number" type="number" required [(ngModel)]="data.tableNumber">

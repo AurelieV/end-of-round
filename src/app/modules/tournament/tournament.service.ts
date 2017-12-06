@@ -88,7 +88,12 @@ export class TournamentService extends DatabaseAccessor {
 
     getAllZones(): Observable<Zone[]> {
         return this.getZones().map(zones => {
-            return [{ key: "all", name: "All" }].concat(zones);
+            if (zones.length > 2) {
+                return [{ key: "all", name: "All" }].concat(zones);
+            } else {
+                return zones;
+            }
+            
         })
     }
 

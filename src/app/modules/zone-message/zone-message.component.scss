@@ -7,16 +7,6 @@
     }
 }
 
-.null {
-    height: 0;
-    width: 0;
-    border: none;
-    &:focus {
-        background: none;
-        outline: none;
-    }
-}
-
 .body {
     .sending {
         display: flex;

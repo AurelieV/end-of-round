@@ -49,3 +49,13 @@ md-dialog-container {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+
+input.null {
+    height: 0;
+    width: 0;
+    border: none;
+    &:focus {
+        background: none;
+        outline: none;
+    }
+}
