@@ -13,8 +13,8 @@ export const routes: Routes = [
     { 
         path: '',
         children: [
-            { path: '', component: CoverageComponent, pathMatch: 'full', data: { section: 'Home' } },
-            { path: 'admin', component: AdminCoverageComponent }
+            { path: '', component: CoverageComponent, pathMatch: 'full', data: { section: 'Coverage' } },
+            { path: 'admin', component: AdminCoverageComponent, data: { section: 'AdminCoverage' } }
         ]
     }
 ]

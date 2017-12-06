@@ -31,7 +31,7 @@
         <mat-icon>&#xE02C;</mat-icon>
         <span>Go to coverage page</span>
     </a>
-    <a mat-menu-item *ngIf="state.isOnTournament && !state.isOnAdminCoverage" [routerLink]="['tournament', state.tournamentKey, 'coverage', 'admin']">
+    <a mat-menu-item *ngIf="state.isOnDashboard || state.isOnCoverage" [routerLink]="['tournament', state.tournamentKey, 'coverage', 'admin']">
         <mat-icon>&#xE02C;</mat-icon>
         <span>Edit coverage page</span>
     </a>
