@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { TimeService } from './../time/time.service';
 import { Observable } from 'rxjs/Observable';
 import { Component, OnInit } from '@angular/core';
@@ -15,8 +16,14 @@ export class HomeComponent implements OnInit {
     information: Observable<string>;
     isLoading: boolean = true;
     zones$: Observable<Zone[]>
+
+    zoneId: string;
     
-    constructor(private tournamentService: TournamentService, private timeService: TimeService) {}
+    constructor(
+        private tournamentService: TournamentService,
+        private timeService: TimeService,
+        private router: Router
+    ) {}
 
     ngOnInit() {
         this.information = this.tournamentService.getTournament().map(t => t.information);
@@ -26,5 +33,9 @@ export class HomeComponent implements OnInit {
 
     addTime() {
         this.timeService.openDialog();
+    }
+
+    goToZone() {
+        this.router.navigate(['/tournament', this.tournamentService.key, 'zone', this.zoneId]);
     }
 }

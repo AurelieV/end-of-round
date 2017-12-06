@@ -1,10 +1,22 @@
-<loader [isLoading]="isLoading"></loader>
-<button mat-raised-button color="accent" (click)="addTime()">
-    <mat-icon>&#xE856;</mat-icon><span> Add time</span>
+<button mat-raised-button color="accent" (click)="addTime()" class="time-button">
+    <div class="time-button-content">
+        <mat-icon>&#xE856;</mat-icon>
+        <span>Add time</span>
+    </div>
 </button>
 <hr>
 <div class="information">{{information | async}}</div>
 <hr *ngIf="information | async">
-<div class="zones">
-    <a [routerLink]="['zone', zone.key]" mat-raised-button color="primary" *ngFor="let zone of zones$ | async">{{zone.name}}</a>
+<loader [isLoading]="isLoading"></loader>
+
+<div class="zone-lead">
+    <p>For zone leader, here is an access to your page</p>
+    <mat-form-field>
+        <mat-select placeholder="Choose a zone" [(ngModel)]="zoneId">
+            <mat-option *ngFor="let zone of zones$ | async" [value]="zone.key">
+                {{zone.name}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <button (click)="goToZone()" [disabled]="!zoneId" mat-raised-button color="primary">Go</button>
 </div>
