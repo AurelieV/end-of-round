@@ -1,5 +1,5 @@
 <div class="title">{{zone.name}} <span *ngIf="zone.leader">- {{zone.leader}}</span></div>
-<div class="subtitle">({{subtitle}})</div>
+<div class="subtitle" [innerHtml]="subtitle"></div>
 <div class="subtitle" *ngIf="zone.zoneLeaderPlace">ZL at {{zone?.zoneLeaderPlace}}</div>
 
 <div class="status" *ngIf="!isLoading">

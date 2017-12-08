@@ -36,7 +36,7 @@ export class ZoneInfoComponent implements OnInit, OnChanges {
         } else if (this.zone.key === 'feature') {
             this.subtitle = "Feature tables"
         } else {
-            this.subtitle = this.zone.tables.map(section => `${section.start}-${section.end}`).join(' // ')
+            this.subtitle = this.zone.tables.map(section => `${section.start}-${section.end}`).join('<br>')
         }
     }
 }
