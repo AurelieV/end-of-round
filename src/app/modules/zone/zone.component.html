@@ -71,7 +71,7 @@
         <div class="result">{{table.result | result }}</div>
         <div class="assignated" *ngIf="table.assignated">{{table.assignated}}</div>
         <div class="actions">
-            <button mat-mini-fab color="primary" (click)="assign(table.number, $event)">
+            <button mat-mini-fab color="primary" (click)="assign($event, table)">
                 <mat-icon>&#xE851;</mat-icon>
             </button>
             <button mat-mini-fab color="primary" (click)="addResult($event, table)">
@@ -113,27 +113,6 @@
     </div>
 </ng-template>
 
-<ng-template #assignJudges>
-    <div class="assign-judges">
-        <h3>Assign judge</h3>
-        <input class="null">
-        <div mat-dialog-content>
-            <form #assignJudgesForm="ngForm">
-                <mat-input-container *ngIf="assignData.displayTableInput">
-                    <input matInput required type="text" [(ngModel)]="assignData.table" name="table" placeholder="Table number">
-                </mat-input-container>
-                <div *ngIf="!assignData.displayTableInput">Table {{assignData.table}}</div>
-                <mat-input-container>
-                    <input maxLength="4" name="judge" matInput placeholder="Judge" type="text" required [(ngModel)]="assignData.judge">
-                </mat-input-container>
-            </form>
-        </div>
-        <div class="actions" mat-dialog-actions>
-            <button mat-raised-button color="warn" (click)="cancelAssignJudges()">Close</button>
-            <button mat-raised-button color="primary" [disabled]="!assignJudgesForm.form.valid" (click)="confirmAssignJudges(assignJudgesForm)">Assign</button>
-        </div>
-    </div>
-</ng-template>
 <ng-template #help>
     <div class="help">
         <h3>Reminder</h3>

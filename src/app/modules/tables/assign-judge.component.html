@@ -1,0 +1,17 @@
+<h3>Assign judge</h3>
+<input class="null">
+<div mat-dialog-content>
+    <form #assignJudgesForm="ngForm">
+        <mat-input-container *ngIf="displayTableInput">
+            <input matInput required type="text" [(ngModel)]="tableId" name="table" placeholder="Table number">
+        </mat-input-container>
+        <div *ngIf="!displayTableInput">Table {{tableId}}</div>
+        <mat-input-container>
+            <input maxLength="4" name="judge" matInput placeholder="Judge" type="text" required [(ngModel)]="judge">
+        </mat-input-container>
+    </form>
+</div>
+<div class="actions" mat-dialog-actions>
+    <button mat-raised-button color="warn" mat-dialog-close>Close</button>
+    <button mat-raised-button color="primary" [disabled]="!assignJudgesForm.form.valid" mat-dialog-close [mat-dialog-close]="{ judge: judge, number: tableId }">Assign</button>
+</div>

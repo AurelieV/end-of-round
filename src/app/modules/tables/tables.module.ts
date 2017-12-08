@@ -1,4 +1,5 @@
-import { MatDialogModule, MatIconModule, MatButtonModule, MatInputModule, MatCheckboxModule } from '@angular/material';
+import { AssignJudgeComponent } from './assign-judge.component';
+import { MatDialogModule, MatIconModule, MatButtonModule, MatInputModule, MatCheckboxModule, MatSelectModule } from '@angular/material';
 import { AddResultDialogComponent } from './add-result.dialog.component';
 import { NgModule } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
@@ -14,19 +15,23 @@ import { TablesService } from './tables.service';
         MatIconModule,
         MatButtonModule,
         MatInputModule,
-        MatCheckboxModule
+        MatCheckboxModule,
+        MatSelectModule
     ],
     declarations: [
-        AddResultDialogComponent
+        AddResultDialogComponent,
+        AssignJudgeComponent
     ],
     providers: [
         TablesService
     ],
     exports: [
-        AddResultDialogComponent
+        AddResultDialogComponent,
+        AssignJudgeComponent
     ],
     entryComponents: [
-        AddResultDialogComponent
+        AddResultDialogComponent,
+        AssignJudgeComponent
     ]
 })
 export class TablesModule {}

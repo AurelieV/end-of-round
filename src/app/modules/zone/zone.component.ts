@@ -64,12 +64,6 @@ export class ZoneComponent implements OnInit, OnChanges, OnDestroy {
     @ViewChild('confirm') confirmTemplate: TemplateRef<any>;
     confirmation: MatDialogRef<any>;
 
-    @ViewChild('assignJudges') assignJudgesTemplate: TemplateRef<any>;
-    assignJudges: MatDialogRef<any>;
-    assignData: any = {
-        displayTableInput: true
-    };
-
     @ViewChild('help') helpTemplate: TemplateRef<any>;
 
     @HostBinding('class.inserted')
@@ -167,14 +161,6 @@ export class ZoneComponent implements OnInit, OnChanges, OnDestroy {
         handleReturn(this.confirmation);
     }
 
-    assign(tableId?: number, $event?) {
-        this.assignJudges = this.md.open(this.assignJudgesTemplate);
-        this.assignData.displayTableInput = !tableId;
-        if (tableId) this.assignData.table = tableId;
-        if ($event) $event.stopPropagation();
-        handleReturn(this.assignJudges);
-    }
-
     confirmAllGreen() {
         this.confirmation.close();
         this.tournamentService.getAllTablesByZone(this.zoneService.key)
@@ -189,26 +175,18 @@ export class ZoneComponent implements OnInit, OnChanges, OnDestroy {
         });
     }
 
-    confirmAssignJudges(form) {
-        const judge = this.assignData.judge;
-        const tableId = this.assignData.table;
-        this.assignData = {};
-        form.reset();
-        this.tournamentService.updateTable(tableId, { assignated: judge, status: 'covered' });
-        this.assignJudges.close();
-    }
-
     cancelAllGreen() {
         this.confirmation.close();
-    }
-
-    cancelAssignJudges() {
-        this.assignJudges.close();
     }
 
     addResult(e: Event, table: Table) {
         if (e) e.stopPropagation();
         this.tablesService.addResult(table);
+    }
+
+    assign(e: Event, table: Table) {
+        if (e) e.stopPropagation();
+        this.tablesService.assign(table);
     }
 
     addTime() {
