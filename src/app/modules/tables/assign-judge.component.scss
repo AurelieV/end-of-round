@@ -6,3 +6,17 @@ textarea {
     min-height: 100px;
     margin-top: 10px;
 }
+
+.judges {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    
+    button:not(:first-child) {
+        margin-left: 10px;
+    }
+}
+
+mat-input-container {
+    margin-top: 20px;
+}

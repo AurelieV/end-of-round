@@ -363,4 +363,19 @@ export class TournamentService extends DatabaseAccessor {
     addCoverageTable(data: CoveredDataTable) {
         this.updateTable(data.number, { coverage: data.coverage, isTop: true })
     }
+
+    addJudge(judge: string) {
+        this.getJudges().take(1).subscribe(judges => {
+            this.db.object(`/judges/${this.key}`).set(
+                judges.concat(judge).filter((val, i, tab) => tab.indexOf(val) === i).join(" ")
+            )
+        })
+    }
+
+    getJudges(): Observable<string[]> {
+        return this.doWithKey<string>(
+            key => this.db.object(`/judges/${this.key}`).valueChanges<string>(),
+            []
+        ).map(s => s ? s.split(" ") : [])
+    }
 }

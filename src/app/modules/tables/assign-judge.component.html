@@ -9,9 +9,12 @@
         <mat-input-container>
             <input maxLength="4" name="judge" matInput placeholder="Judge" type="text" required [(ngModel)]="judge">
         </mat-input-container>
+        <div class="judges">
+            <button (click)="onJudgeClick(name)" *ngFor="let name of judges$ | async" type="button" mat-raised-button color="primary">{{name}}</button>
+        </div>
     </form>
 </div>
 <div class="actions" mat-dialog-actions>
     <button mat-raised-button color="warn" mat-dialog-close>Close</button>
-    <button mat-raised-button color="primary" [disabled]="!assignJudgesForm.form.valid" mat-dialog-close [mat-dialog-close]="{ judge: judge, number: tableId }">Assign</button>
+    <button mat-raised-button color="primary" [disabled]="!assignJudgesForm.form.valid" (click)="submit()">Assign</button>
 </div>

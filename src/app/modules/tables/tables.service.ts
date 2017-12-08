@@ -35,7 +35,7 @@ export class TablesService {
     }
 
     assign(table?: Table) {
-        const dialogRef = this.md.open(AssignJudgeComponent);
+        const dialogRef = this.md.open(AssignJudgeComponent, { width: '70%' });
         handleReturn(dialogRef);
         if (table) {
             dialogRef.componentInstance.displayTableInput = false;
@@ -43,8 +43,10 @@ export class TablesService {
         }
         dialogRef.afterClosed().subscribe(data => {
             if (!data) return;
-            const { judge, number } = data;
+            let { judge, number } = data;
+            judge = judge.replace(" ", "");
             this.tournamentService.updateTable(number, { assignated: judge, status: 'covered' });
+            this.tournamentService.addJudge(judge);
         })
     }
 }
