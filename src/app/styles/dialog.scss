@@ -2,8 +2,10 @@
     display: flex;
     justify-content: flex-end;
     margin-top: 20px;
+    flex-wrap: wrap;
     button {
         margin-left: 10px;
+        margin-bottom: 10px;
     }
 }
 

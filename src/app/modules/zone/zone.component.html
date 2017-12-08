@@ -57,7 +57,7 @@
 <div class="tables" 
     [class.hide-button]="!(isOnOutstandingsStep$ | async)"
     [class.show-warn]="(isOnOutstandingsStep$ | async)"
-    [class.high-padding]="!(isOnOutstandingsStep$ | async)"
+    [class.outstandings]="(isOnOutstandingsStep$ | async)"
     [class.is-team]="isTeam$ | async">
     <loader [isLoading]="isLoading"></loader>
     <ng-template ngFor let-table [ngForOf]="tables$ | async" [ngForTrackBy]="trackByFn">
@@ -68,7 +68,7 @@
             [class.featured]="(zoneId !== 'feature' && table.isFeatured)"
             [class.has-time]="table.time"
             (click)="onTableClick(table)">
-            <div class="number">{{table.number}} {{table.isSectionStart}}</div>
+            <div class="number">{{table.number}}</div>
             <div class="time" *ngIf="table.time"><display-time [time]="table.time"></display-time></div>
             <div class="result">{{table.result | result }}</div>
             <div class="assignated" *ngIf="table.assignated">{{table.assignated}}</div>
