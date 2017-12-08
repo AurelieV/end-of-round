@@ -2,9 +2,10 @@ import { MatDialogRef } from '@angular/material';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { Table, TournamentService } from '../tournament/tournament.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/operator/map';
+import { FormControl } from '@angular/forms';
 
 interface TimeData {
     time: number;
@@ -28,6 +29,8 @@ export class TimeDialogComponent implements OnInit {
     isLoading: Observable<boolean>;
     displayMessage: Observable<boolean>;
     isTeam: boolean;
+
+    @ViewChild('form') form: FormControl;
 
     constructor(private tournamentService: TournamentService, private md: MatDialogRef<any>) {}
 
@@ -54,14 +57,28 @@ export class TimeDialogComponent implements OnInit {
         this.currentTableId$.take(1).subscribe(id => this.currentTableId$.next(id));
     }
 
-    submit() {
+    submit(wantToContinue: boolean) {
         this.currentTable$.take(1).subscribe(table => {
             let time = this.data.time;
             if (table && this.addOrUpdate === 'add' && table.time) {
                 time += this.isTeam ? (table.time[this.data.seat] || 0) : table.time;
             }
             this.tournamentService.setTime(time, this.data.tableNumber, this.isTeam ? this.data.seat : null);
-            this.md.close();
+            if (wantToContinue) {
+                this.form.reset();
+                setTimeout(() => {
+                    this.data = {
+                        time: null,
+                        tableNumber: '',
+                        seat: 'A'
+                    };
+                    this.addOrUpdate = 'add';
+                    this.onTableNumberChange(null);
+                    this.onSeatChange('A');
+                }, 0);
+            } else {
+                this.md.close();
+            }
         })
     }
 

@@ -27,5 +27,6 @@
 </form>
 <div class="actions" mat-dialog-actions>
     <button mat-raised-button color="warn" (click)="close()">Cancel</button>
+    <button mat-raised-button color="primary" (click)="submit(true)" [disabled]="!form.form.valid || (isLoading | async)">Add and continue</button>    
     <button mat-raised-button color="primary" (click)="submit()" [disabled]="!form.form.valid || (isLoading | async)">Add</button>
 </div>
