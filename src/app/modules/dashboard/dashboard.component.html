@@ -31,9 +31,9 @@
         <div *ngIf="(isOnOutstandingsStep$ | async)">
             <h3>Outstanding</h3>
             <button (click)="checkOutstandings()" *ngIf="(isOnOutstandingsStep$ | async)" mat-raised-button color="primary">Check several tables</button>
-            <tables-info [tables]="tables$ | async"></tables-info>
+            <tables-info [tables]="tables$ | async" [displayActions]="true"></tables-info>
             <h3>Done</h3>
-            <tables-info [tables]="okTables$ | async"></tables-info>
+            <tables-info [tables]="okTables$ | async" [displayActions]="false"></tables-info>
         </div>
     </div>
     <zone [isInserted]="true" (onClose)="displayZoneId = ''" (onZoneChange)="displayZoneId = $event" [zoneId]="displayZoneId" *ngIf="displayZoneId"></zone>

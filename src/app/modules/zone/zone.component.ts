@@ -179,12 +179,12 @@ export class ZoneComponent implements OnInit, OnChanges, OnDestroy {
         this.confirmation.close();
     }
 
-    addResult(e: Event, table: Table) {
+    addResult(e?: Event, table?: Table) {
         if (e) e.stopPropagation();
         this.tablesService.addResult(table);
     }
 
-    assign(e: Event, table: Table) {
+    assign(e?: Event, table?: Table) {
         if (e) e.stopPropagation();
         this.tablesService.assign(table);
     }

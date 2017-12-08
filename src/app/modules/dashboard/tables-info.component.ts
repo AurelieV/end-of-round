@@ -1,10 +1,11 @@
 import { MatDialog, MatDialogRef } from '@angular/material';
-import {  Component, Input, ViewChild, TemplateRef } from '@angular/core';
+import { Component, Input, ViewChild, TemplateRef } from '@angular/core';
 import { AngularFireDatabase } from 'angularfire2/database';
 
 import { Table } from '../tournament/tournament.service';
 import { TournamentService } from './../tournament/tournament.service';
 import { handleReturn } from '../shared/handle-return';
+import { TablesService } from '../tables/tables.service';
 
 @Component({
     selector: 'tables-info',
@@ -13,6 +14,7 @@ import { handleReturn } from '../shared/handle-return';
 })
 export class TablesInfoComponent {
     @Input() tables: Table[];
+    @Input() displayActions: boolean;
 
     @ViewChild('addInfoTemplate') addInfoTemplate: TemplateRef<any>;
     addInfoDialog: MatDialogRef<any>;
@@ -20,7 +22,11 @@ export class TablesInfoComponent {
     selectedTable: Table;
     information: string;
 
-    constructor(private tournamentService: TournamentService, private md: MatDialog) {}
+    constructor(
+        private tournamentService: TournamentService,
+        private md: MatDialog,
+        private tablesService: TablesService
+    ) {}
 
     setHasResult(tableId: string, value: boolean) {
         this.tournamentService.updateTable(tableId, { hasResult: value });
@@ -42,6 +48,16 @@ export class TablesInfoComponent {
 
     markEvent(event) {
         event.hasToBeStopped = true;
+    }
+
+    addResult(e: Event, table: Table) {
+        if (e) e.stopPropagation();
+        this.tablesService.addResult(table);
+    }
+
+    assign(e: Event, table: Table) {
+        if (e) e.stopPropagation();
+        this.tablesService.assign(table);
     }
 
     trackByFn(table: Table) {

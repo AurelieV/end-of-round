@@ -57,7 +57,7 @@ export class TimeDialogComponent implements OnInit {
         this.currentTableId$.take(1).subscribe(id => this.currentTableId$.next(id));
     }
 
-    submit(wantToContinue: boolean) {
+    submit(wantToContinue?: boolean) {
         this.currentTable$.take(1).subscribe(table => {
             let time = this.data.time;
             if (table && this.addOrUpdate === 'add' && table.time) {

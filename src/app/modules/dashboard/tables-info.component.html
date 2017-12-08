@@ -1,6 +1,5 @@
-<div *ngFor="let table of tables; trackBy: trackByFn" 
+<div *ngFor="let table of tables" 
     class="table block"
-    (click)="setHasResult(table.number, !table.hasResult)"
     [ngClass]="[table.status, table.result || table.hasResult ? '' : (table.doneTime | warnAgo)]"
     [class.featured]="table.isFeatured"
     [class.no-status]="!table.status"
@@ -15,13 +14,23 @@
             [checked]="!!table.hasResult"
             (change)="setHasResult(table.number, $event.checked)"></mat-checkbox>
     </div>
-    <div class="content">
-        <div class="extra-time" *ngIf="table.time"><display-time [time]="table.time"></display-time></div>
-        <div class="time" *ngIf="table.status === 'done' && !table.hasResult">{{table.doneTime | ago}}</div>
-        <div class="assignated" *ngIf="table.assignated">Covered by {{table.assignated}}</div>
-        <div class="information" *ngIf="table.information">{{table.information}}</div>
-        <div class="result" class="result" *ngIf="table.result">
-            {{table.result | result}}
+    <div class="content-wrapper">
+        <div class="content">
+            <div class="extra-time" *ngIf="table.time"><display-time [time]="table.time"></display-time></div>
+            <div class="time" *ngIf="table.status === 'done' && !table.hasResult">{{table.doneTime | ago}}</div>
+            <div class="assignated" *ngIf="table.assignated">Covered by {{table.assignated}}</div>
+            <div class="information" *ngIf="table.information">{{table.information}}</div>
+            <div class="result" class="result" *ngIf="table.result">
+                {{table.result | result}}
+            </div>
+        </div>
+        <div class="table-actions" *ngIf="displayActions">
+            <button mat-mini-fab color="primary" (click)="assign($event, table)">
+                <mat-icon>&#xE851;</mat-icon>
+            </button>
+            <button mat-mini-fab color="primary" (click)="addResult($event, table)">
+                    <mat-icon>&#xE862;</mat-icon>
+            </button>
         </div>
     </div>
 </div>
