@@ -38,7 +38,7 @@ export class CreateTournamentComponent implements OnInit {
 
     ngOnInit() {
         this.route.paramMap.subscribe(params => {
-            const id = params.get('id');
+            const id = params.get('key');
             if (id) { 
                 this.administrationService.getTournament(id).take(1).subscribe(val => this.current = val);
                 this.id = id;

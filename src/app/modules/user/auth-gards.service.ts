@@ -1,7 +1,7 @@
 import { MatDialog } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
-import { CanActivate, ActivatedRouteSnapshot } from '@angular/router';
+import { CanActivate, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
 
 import { NotificationService } from '../../notification.service';
 import { UserService } from './user.service';
@@ -15,10 +15,16 @@ export class HasLoginGuard implements CanActivate {
         private md: MatDialog
     ) {}
 
-    canActivate(route: ActivatedRouteSnapshot) {
+    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         // Wait initialisation
+        let root = state.root;
+        let params: any = Object.assign({}, root.params);
+        while (root.children.length > 0 ) {
+          root = root.children[0];
+          params = Object.assign(params, root.params);
+        }
         return this.userService.user.take(1)
-            .switchMap(user => this.userService.isAuthorized(route.params.key))
+            .switchMap(user => this.userService.isAuthorized(params.key))
             .switchMap(hasAccess => {
                 const login = this.userService.login;
                 if (hasAccess && login) {
@@ -27,9 +33,13 @@ export class HasLoginGuard implements CanActivate {
                 const modalRef = this.md.open(AccessInfoComponent);
                 modalRef.componentInstance.askLogin = !login;
                 modalRef.componentInstance.askPassword = !hasAccess;
-                modalRef.componentInstance.tournamentId = route.params.key;
+                modalRef.componentInstance.tournamentId = params.key;
+                modalRef.afterClosed().subscribe(data => {
+                    if (!data) {
+                        this.notificationService.notify("Access denied");
+                    }
+                })
                 return modalRef.afterClosed().map(data => !!data);
         })
-        
     }
 }

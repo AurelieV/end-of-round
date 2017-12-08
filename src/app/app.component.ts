@@ -77,7 +77,7 @@ export class AppComponent {
       isOnMainPage: sections.includes('Home'),
       isOnCoverage: sections.includes('Coverage'),
       isOnAdminCoverage: sections.includes('AdminCoverage'),
-      tournamentKey: isOnEdit ? params.id : params.key
+      tournamentKey: params.key
     }
   }
 

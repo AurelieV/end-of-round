@@ -20,7 +20,7 @@ export const routes: Routes = [
         canActivate: [ HasLoginGuard ],
         children: [
             { path: '', component: CreateTournamentComponent },
-            { path: 'edit/:id', component: CreateTournamentComponent, data: { section: 'Edition' } }
+            { path: 'edit/:key', component: CreateTournamentComponent, data: { section: 'Edition' } }
         ]
     }
 ]
