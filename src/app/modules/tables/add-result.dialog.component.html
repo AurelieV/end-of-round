@@ -39,5 +39,6 @@
     </div>
 </div>
 <div class="actions" mat-dialog-actions>
-    <button mat-raised-button color="primary" mat-dialog-close [mat-dialog-close]="{ result: result, number: tableId }">Add</button>
+    <button mat-raised-button color="warn" mat-dialog-close>Cancel</button>
+    <button mat-raised-button color="primary" [disabled]="!tableId" mat-dialog-close [mat-dialog-close]="{ result: result, number: tableId }">Add</button>
 </div>

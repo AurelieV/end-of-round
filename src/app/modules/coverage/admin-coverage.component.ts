@@ -1,10 +1,10 @@
+import { TablesService } from './../tables/tables.service';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { Component, ViewChild, TemplateRef, OnInit } from '@angular/core';
 import { handleReturn } from '../shared/handle-return';
 import { Observable } from 'rxjs/Observable';
 
 import { TournamentService, CoveredTable, CoveredDataTable } from '../tournament/tournament.service';
-import { AddResultDialogComponent } from '../zone/add-result.dialog.component';
 import { FormControl } from '@angular/forms';
 
 @Component({
@@ -31,7 +31,11 @@ export class AdminCoverageComponent implements OnInit {
     @ViewChild('import') importTemplate: TemplateRef<any>;
     @ViewChild('form') form; 
 
-    constructor(private md: MatDialog, private tournamentService: TournamentService) {}
+    constructor(
+        private md: MatDialog,
+        private tournamentService: TournamentService,
+        private tablesService: TablesService
+    ) {}
 
     ngOnInit() {
         this.tables$ = this.tournamentService.getCoverageTables(true);
@@ -91,19 +95,7 @@ export class AdminCoverageComponent implements OnInit {
     }
 
     addResult(table: CoveredTable) {
-        const dialogRef = this.md.open(AddResultDialogComponent, { width: "90%" });
-        if (table.result) {
-            dialogRef.componentInstance.result = table.result;
-        }
-        dialogRef.componentInstance.setTableId(table.number);
-        dialogRef.afterClosed().subscribe(({result = ""}) => {
-            if (!result) return;
-            this.tournamentService.updateTable(table.number, { 
-                result,
-                status: 'done',
-                doneTime: table.doneTime  || new Date()
-            })
-        });
+        this.tablesService.addResult(table);
     }
 
     trackByFn(table: CoveredTable) {

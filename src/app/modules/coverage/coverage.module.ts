@@ -1,3 +1,4 @@
+import { TablesModule } from './../tables/tables.module';
 import { FormsModule } from '@angular/forms';
 import { MatDialogModule, MatButtonModule, MatInputModule, MatToolbarModule, MatIconModule, MatRadioModule, MatMenuModule, MatSelectModule } from '@angular/material';
 import { RouterModule, Routes } from '@angular/router';
@@ -24,6 +25,8 @@ export const routes: Routes = [
         SharedModule,
         RouterModule.forChild(routes),
         FormsModule,
+
+        TablesModule,
 
         /* Angular material */
         MatDialogModule,

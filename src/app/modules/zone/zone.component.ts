@@ -1,3 +1,4 @@
+import { TablesService } from './../tables/tables.service';
 import { 
     Component,
     OnInit,
@@ -24,7 +25,6 @@ import { handleReturn } from '../shared/handle-return';
 import { Subscription } from 'rxjs/Subscription';
 
 import { TournamentService, Zone, Table } from './../tournament/tournament.service';
-import { AddResultDialogComponent } from './add-result.dialog.component';
 import { TimeService } from '../time/time.service';
 import { ZoneService } from './zone.service';
 
@@ -86,7 +86,8 @@ export class ZoneComponent implements OnInit, OnChanges, OnDestroy {
         private router: Router,
         private timeService: TimeService,
         private zoneService: ZoneService,
-        private zone: NgZone
+        private zone: NgZone,
+        private tablesService: TablesService
     ) {}
 
     ngOnInit() {
@@ -205,35 +206,9 @@ export class ZoneComponent implements OnInit, OnChanges, OnDestroy {
         this.assignJudges.close();
     }
 
-    addResult(e: Event, table: any) {
-        e.stopPropagation();
-        const dialogRef = this.md.open(AddResultDialogComponent, { width: "90%" });
-        handleReturn(dialogRef);
-        if (table.result) {
-            dialogRef.componentInstance.result = table.result;
-        }
-        dialogRef.componentInstance.setTableId(table.number);
-        dialogRef.afterClosed().subscribe(({result = ""}) => {
-            if (!result) return;
-            this.tournamentService.updateTable(table.number, { 
-                result,
-                status: 'done',
-                doneTime: table.doneTime  || new Date()
-            })
-        });
-    }
-
-    addResultToTable() {
-        const dialogRef = this.md.open(AddResultDialogComponent, { width: "90%" });
-        handleReturn(dialogRef);
-        dialogRef.afterClosed().subscribe(({number = "", result = ""}) => {
-            if (!result) return;
-            this.tournamentService.updateTable(number, { 
-                result,
-                status: 'done',
-                doneTime: new Date()
-            })
-        });
+    addResult(e: Event, table: Table) {
+        if (e) e.stopPropagation();
+        this.tablesService.addResult(table);
     }
 
     addTime() {

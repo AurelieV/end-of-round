@@ -1,3 +1,4 @@
+import { TablesModule } from './../tables/tables.module';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule, MatButtonModule, MatMenuModule, MatSlideToggleModule, MatDialogModule, MatInputModule, MatCheckboxModule } from '@angular/material';
 import { NgModule } from '@angular/core';
@@ -9,7 +10,6 @@ import { TimeModule } from './../time/time.module';
 
 /* Components */
 import { ZoneComponent } from './zone.component';
-import { AddResultDialogComponent } from './add-result.dialog.component';
 
 const routes: Routes = [
     { path: '', component: ZoneComponent }
@@ -28,17 +28,14 @@ const routes: Routes = [
         MatCheckboxModule,
         ZoneMessageModule,
         RouterModule,
-        TimeModule
+        TimeModule,
+        TablesModule
     ],
     declarations: [
-        ZoneComponent,
-        AddResultDialogComponent
+        ZoneComponent
     ],
     exports: [
         ZoneComponent
-    ],
-    entryComponents: [
-        AddResultDialogComponent
     ]
 })
 export class ZoneModule {}
