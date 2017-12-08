@@ -60,26 +60,28 @@
     [class.high-padding]="!(isOnOutstandingsStep$ | async)"
     [class.is-team]="isTeam$ | async">
     <loader [isLoading]="isLoading"></loader>
-    <div class="table block" 
-        *ngFor="let table of tables$ | async; trackBy: trackByFn"
-        [ngClass]="table.status"
-        [class.warn]="table.status === 'done' && !table.result && !table.hasResult && (table.doneTime | warnAgo)"
-        [class.featured]="(zoneId !== 'feature' && table.isFeatured)"
-        [class.has-time]="table.time"
-        (click)="onTableClick(table)">
-        <div class="number">{{table.number}}</div>
-        <div class="time" *ngIf="table.time"><display-time [time]="table.time"></display-time></div>
-        <div class="result">{{table.result | result }}</div>
-        <div class="assignated" *ngIf="table.assignated">{{table.assignated}}</div>
-        <div class="actions">
-            <button mat-mini-fab color="primary" (click)="assign($event, table)">
-                <mat-icon>&#xE851;</mat-icon>
-            </button>
-            <button mat-mini-fab color="primary" (click)="addResult($event, table)">
-                    <mat-icon>&#xE862;</mat-icon>
-            </button>
+    <ng-template ngFor let-table [ngForOf]="tables$ | async" [ngForTrackBy]="trackByFn">
+        <div class="separator" *ngIf="table.isSectionStart"></div>
+        <div class="table block"
+            [ngClass]="table.status"
+            [class.warn]="table.status === 'done' && !table.result && !table.hasResult && (table.doneTime | warnAgo)"
+            [class.featured]="(zoneId !== 'feature' && table.isFeatured)"
+            [class.has-time]="table.time"
+            (click)="onTableClick(table)">
+            <div class="number">{{table.number}} {{table.isSectionStart}}</div>
+            <div class="time" *ngIf="table.time"><display-time [time]="table.time"></display-time></div>
+            <div class="result">{{table.result | result }}</div>
+            <div class="assignated" *ngIf="table.assignated">{{table.assignated}}</div>
+            <div class="actions">
+                <button mat-mini-fab color="primary" (click)="assign($event, table)">
+                    <mat-icon>&#xE851;</mat-icon>
+                </button>
+                <button mat-mini-fab color="primary" (click)="addResult($event, table)">
+                        <mat-icon>&#xE862;</mat-icon>
+                </button>
+            </div>
         </div>
-    </div>
+    </ng-template>
 </div>
 <div class="message" *ngIf="(tables$ | async)?.length === 0">
     No tables.

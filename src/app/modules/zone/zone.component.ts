@@ -51,7 +51,7 @@ export class ZoneComponent implements OnInit, OnChanges, OnDestroy {
 
     zone$: Observable<Zone>;
     otherZones$: Observable<Zone[]>;
-    tables$: Observable<Table[]>;
+    tables$: Observable<(Table & { isSectionStart?: boolean })[]>;
     filter$: BehaviorSubject<Filter> = new BehaviorSubject({
         onlyPlaying: false,
         onlyExtraTime: false
@@ -95,7 +95,7 @@ export class ZoneComponent implements OnInit, OnChanges, OnDestroy {
         ;
         this.isOnOutstandingsStep$ = this.tournamentService.isOnOutstandingsStep();
         this.zone$ = this.zoneService.getZone();
-        this.tables$ = Observable.combineLatest(
+        this.tables$ = Observable.combineLatest(Observable.combineLatest(
             this.zoneService.getTables(),
             this.filter$,
             this.isOnOutstandingsStep$
@@ -107,7 +107,20 @@ export class ZoneComponent implements OnInit, OnChanges, OnDestroy {
 
                 return true;
             });
-        })
+        }), this.zone$).map(([tables, z]) => {
+            if (!z.tables || z.tables.length === 0) return tables;
+
+            let cursor = 0;
+            for (let t of tables) {
+                if (+t.number > z.tables[cursor].end) {
+                    cursor++;
+                    (t as any).isSectionStart = true;
+                }
+            }
+
+            return tables;
+        });
+
         this.tables$.take(1).subscribe(_ => this.isLoading = false);
         this.isTeam$ = this.tournamentService.isTeam();
         this.otherZones$ = this.zoneService.getOtherZones();
