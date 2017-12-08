@@ -1,8 +1,7 @@
 $mobile: 370px;
 .column2 {
-    padding-left: 330px;
-    padding-right: 20px;
-    padding-top: 20px;
+    padding-left: 320px;
+    padding-right: 5px;
     @media screen and (max-width: $mobile) {
         display: none;
     }
@@ -31,10 +30,6 @@ $mobile: 370px;
     top: 60px; bottom: 0; left: 0;
     padding-top: 10px;
     overflow: auto;
-}
-
-.tables {
-    padding-top: 10px;
 }
 
 zone-info {
@@ -99,4 +94,17 @@ zone {
     margin-bottom: 5px;
     text-transform: uppercase;
     font-weight: bold;
+}
+
+.column2-header {
+    display: flex;
+    justify-content: flex-end;
+}
+
+h3 {
+    margin: 0;
+}
+
+.menu-button {
+    margin-right: 10px;
 }

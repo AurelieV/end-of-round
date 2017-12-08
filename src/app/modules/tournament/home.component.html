@@ -10,7 +10,7 @@
 <loader [isLoading]="isLoading"></loader>
 
 <div class="zone-lead">
-    <p>For zone leader, here is an access to your page</p>
+    <p>Zone leader: access to your page</p>
     <mat-form-field>
         <mat-select placeholder="Choose a zone" [(ngModel)]="zoneId">
             <mat-option *ngFor="let zone of zones$ | async" [value]="zone.key">

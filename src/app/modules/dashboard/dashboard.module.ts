@@ -1,4 +1,4 @@
-import { MatDialogModule, MatInputModule, MatButtonModule, MatToolbarModule, MatIconModule, MatCheckboxModule } from '@angular/material';
+import { MatDialogModule, MatInputModule, MatButtonModule, MatToolbarModule, MatIconModule, MatCheckboxModule, MatMenuModule } from '@angular/material';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
@@ -32,7 +32,8 @@ const routes: Routes = [
         MatInputModule,
         MatButtonModule,
         MatIconModule,
-        MatCheckboxModule
+        MatCheckboxModule,
+        MatMenuModule
     ],
     declarations: [
         DashboardComponent,

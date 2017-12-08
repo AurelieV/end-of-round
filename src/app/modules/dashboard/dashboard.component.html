@@ -1,7 +1,15 @@
 <div class="column1">
-    <div class="actions">
-        <button class="show-mobile" (click)="openExtraTimed()" mat-raised-button color="primary">Show extra timed</button>
-        <button class="show-mobile" (click)="openRemainingTables()" mat-raised-button color="primary">See remaining</button>
+    <div class="column2-header">
+        <button mat-raised-button color="primary" class="menu-button" [matMenuTriggerFor]="actions">Actions</button>
+        <mat-menu #actions="matMenu">
+            <button (click)="addFeatured()" mat-menu-item>Add featured</button>
+            <button (click)="openExtraTimed()" mat-menu-item>Show extra timed</button>
+            <button (click)="openRemainingTables()" mat-menu-item>See remaining</button>
+            <button (click)="addOutstandings()" mat-menu-item>Add outstanding</button>
+            <button (click)="endRound()" mat-menu-item>End round</button>
+            <button (click)="addTime()" mat-menu-item>Add time</button>
+            <button (click)="checkOutstandings()" *ngIf="(isOnOutstandingsStep$ | async)" mat-menu-item>Check several tables</button>
+        </mat-menu>
     </div>
     <loader [isLoading]="isLoading"></loader>
     <zone-info 
@@ -11,26 +19,10 @@
         (click)="displayZone(zone.key)"
         [zone]="zone">
     </zone-info>
-    <div class="actions">
-        <button class="show-mobile" (click)="addFeatured()" mat-raised-button color="primary">Add featured</button>
-        <button class="show-mobile" (click)="addOutstandings()" mat-raised-button color="primary">Add outstanding</button>
-        <button class="show-mobile" (click)="addTime()" mat-raised-button color="primary">Add time</button>
-        <button class="show-mobile" (click)="endRound()" mat-raised-button color="accent">End round</button>
-    </div>
 </div>
 <div class="column2">
-    <div class="actions main">
-        <button (click)="addFeatured()" mat-raised-button color="primary">Add featured</button>
-        <button (click)="openExtraTimed()" mat-raised-button color="primary">Show extra timed</button>
-        <button (click)="openRemainingTables()" mat-raised-button color="primary">See remaining</button>
-        <button (click)="addOutstandings()" mat-raised-button color="primary">Add outstanding</button>
-        <button (click)="endRound()" mat-raised-button color="accent">End round</button>
-        <button (click)="addTime()" mat-raised-button color="accent">Add time</button>
-    </div>
     <div class="tables">
         <div *ngIf="(isOnOutstandingsStep$ | async)">
-            <h3>Outstanding</h3>
-            <button (click)="checkOutstandings()" *ngIf="(isOnOutstandingsStep$ | async)" mat-raised-button color="primary">Check several tables</button>
             <tables-info [tables]="tables$ | async" [displayActions]="true"></tables-info>
             <h3>Done</h3>
             <tables-info [tables]="okTables$ | async" [displayActions]="false"></tables-info>

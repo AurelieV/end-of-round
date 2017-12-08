@@ -1,20 +1,20 @@
 <div *ngFor="let table of tables" 
     class="table block"
-    [ngClass]="[table.status, table.result || table.hasResult ? '' : (table.doneTime | warnAgo)]"
+    [ngClass]="table.status"
+    [class.warn]="table.status === 'done' && !table.result && !table.hasResult && (table.doneTime | warnAgo)"
     [class.featured]="table.isFeatured"
     [class.no-status]="!table.status"
     [class.extra-timed]="
-        (table.time > 0 || table.time.A > 0 || table.time.B > 0 || table.time.C > 0)
-        && table.status !== 'done'">
-    <div class="header">
-        <div class="title">Table {{table.number}}</div>
-        <mat-checkbox
-            (click)="markEvent($event)"
-            color="primary"
-            [checked]="!!table.hasResult"
-            (change)="setHasResult(table.number, $event.checked)"></mat-checkbox>
-    </div>
+        table.status !== 'done' && (table.time > 0 || table.time.A > 0 || table.time.B > 0 || table.time.C > 0)">
     <div class="content-wrapper">
+        <div class="header">
+            <mat-checkbox
+                (click)="markEvent($event)"
+                color="primary"
+                [checked]="!!table.hasResult"
+                (change)="setHasResult(table.number, $event.checked)"></mat-checkbox>
+                <div class="title">Table {{table.number}}</div>
+        </div>
         <div class="content">
             <div class="extra-time" *ngIf="table.time"><display-time [time]="table.time"></display-time></div>
             <div class="time" *ngIf="table.status === 'done' && !table.hasResult">{{table.doneTime | ago}}</div>
@@ -24,14 +24,14 @@
                 {{table.result | result}}
             </div>
         </div>
-        <div class="table-actions" *ngIf="displayActions">
-            <button mat-mini-fab color="primary" (click)="assign($event, table)">
-                <mat-icon>&#xE851;</mat-icon>
-            </button>
-            <button mat-mini-fab color="primary" (click)="addResult($event, table)">
-                    <mat-icon>&#xE862;</mat-icon>
-            </button>
-        </div>
+    </div>
+    <div class="table-actions" *ngIf="displayActions">
+        <button mat-mini-fab color="primary" (click)="assign($event, table)">
+            <mat-icon>&#xE851;</mat-icon>
+        </button>
+        <button mat-mini-fab color="primary" (click)="addResult($event, table)">
+                <mat-icon>&#xE862;</mat-icon>
+        </button>
     </div>
 </div>
 <div *ngIf="tables?.length === 0">

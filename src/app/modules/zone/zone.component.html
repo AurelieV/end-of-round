@@ -62,7 +62,8 @@
     <loader [isLoading]="isLoading"></loader>
     <div class="table block" 
         *ngFor="let table of tables$ | async; trackBy: trackByFn"
-        [ngClass]="[table.status, table.result ? '' : table.doneTime | warnAgo]"
+        [ngClass]="table.status"
+        [class.warn]="table.status === 'done' && !table.result && !table.hasResult && (table.doneTime | warnAgo)"
         [class.featured]="(zoneId !== 'feature' && table.isFeatured)"
         [class.has-time]="table.time"
         (click)="onTableClick(table)">
@@ -119,7 +120,7 @@
         <div mat-dialog-content>
             <div class="text playing">Playing</div>
             <div class="text covered">Covered</div>
-            <div class="text done">Done (no body at the table)</div>
+            <div class="text done">Done (nobody at the table)</div>
             <div class="text featured">Featured</div>
         </div>
     </div>

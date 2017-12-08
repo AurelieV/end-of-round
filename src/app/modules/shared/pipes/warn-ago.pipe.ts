@@ -9,17 +9,17 @@ export class WarnAgoPipe implements PipeTransform, OnDestroy {
 
   private lastTime: Number;
   private lastValue: Date | moment.Moment;
-  private lastText: string;
+  private lastText: boolean;
 
   constructor(private cdRef: ChangeDetectorRef, private ngZone: NgZone) {}
 
-  transform(value: Date | moment.Moment): string {
+  transform(value: Date | moment.Moment): boolean {
         if (this.hasChanged(value)) {
             this.lastTime = this.getTime(value);
             this.lastValue = value;
             this.removeTimer();
             this.createTimer();
-            this.lastText = Math.abs(moment().diff(moment(value), 'minute')) > limit ? 'warn' : '';
+            this.lastText = Math.abs(moment().diff(moment(value), 'minute')) > limit;
         } else {
             this.createTimer();
         }
@@ -33,14 +33,14 @@ export class WarnAgoPipe implements PipeTransform, OnDestroy {
 
 
   private createTimer() {
-        if (this.currentTimer || this.lastText === 'warn') {
+        if (this.currentTimer) {
             return;
         }
         const momentInstance = moment(this.lastValue);
         this.currentTimer = this.ngZone.runOutsideAngular(() => {
             if (typeof window !== 'undefined') {
                 return window.setTimeout(() => {
-                    this.lastText = Math.abs(moment().diff(momentInstance, 'minute')) > limit ? 'warn' : '';
+                    this.lastText = Math.abs(moment().diff(momentInstance, 'minute')) > limit;
                     this.currentTimer = null;
                     this.ngZone.run(() => this.cdRef.markForCheck());
                 }, 30 * 1000);
