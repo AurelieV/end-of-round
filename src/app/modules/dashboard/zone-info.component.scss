@@ -6,9 +6,9 @@
         &:active {
             border: black solid 2px;
         }
-        &.need-help {
-            border: red solid 2px;
-        }
+    }
+    &.need-help {
+        border: red solid 2px;
     }
     display: flex;
     flex-direction: column;
