@@ -85,7 +85,7 @@
 </div>
 <div class="message" *ngIf="(tables$ | async)?.length === 0">
     No tables.
-    <span *ngIf="isOnOutstandingsStep$ | async"><br/>your team leader have all result</span>
+    <span *ngIf="isOnOutstandingsStep$ | async"><br/>your team leader has all result</span>
     <span *ngIf="!(isOnOutstandingsStep$ | async)"><br/>If this is not normal, check your filters</span>
 </div>
 

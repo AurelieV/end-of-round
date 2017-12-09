@@ -1,9 +1,9 @@
 <div class="column1">
     <div class="column2-header">
+        <button (click)="openExtraTimed()" mat-raised-button color="warn">Show extra timed</button>
         <button mat-raised-button color="primary" class="menu-button" [matMenuTriggerFor]="actions">Actions</button>
         <mat-menu #actions="matMenu">
             <button (click)="addFeatured()" mat-menu-item>Add featured</button>
-            <button (click)="openExtraTimed()" mat-menu-item>Show extra timed</button>
             <button (click)="openRemainingTables()" mat-menu-item>See remaining</button>
             <button (click)="addOutstandings()" mat-menu-item>Add outstanding</button>
             <button (click)="endRound()" mat-menu-item>End round</button>
