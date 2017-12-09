@@ -9,6 +9,7 @@
             <button (click)="endRound()" mat-menu-item>End round</button>
             <button (click)="addTime()" mat-menu-item>Add time</button>
             <button (click)="checkOutstandings()" *ngIf="(isOnOutstandingsStep$ | async)" mat-menu-item>Check several tables</button>
+            <button (click)="openSendMessageToAll()" mat-menu-item>Send message to all</button>
         </mat-menu>
     </div>
     <loader [isLoading]="isLoading"></loader>
@@ -74,6 +75,23 @@
         </div>
         <div class="actions" mat-dialog-actions>
             <button mat-raised-button color="primary" (click)="closeRemainingTables()">Closed</button>
+        </div>
+    </div>
+</ng-template>
+<ng-template #sendMessage>
+    <div class="remaining-tables">
+        <h3>Send message to everybody</h3>
+        <div mat-dialog-content>
+            <form #form="ngForm">
+                <mat-form-field>
+                    <input matInput #message>
+                </mat-form-field>
+            </form>
+            {{message.value}}
+        </div>
+        <div class="actions" mat-dialog-actions>
+            <button mat-raised-button color="warn" (click)="closeSendMessage(form)">Cancel</button>
+            <button mat-raised-button color="primary" [disabled]="!message.value" (click)="sendMessageToAll(form, message.value)">Send</button>
         </div>
     </div>
 </ng-template>

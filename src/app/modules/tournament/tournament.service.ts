@@ -220,29 +220,10 @@ export class TournamentService extends DatabaseAccessor {
 
     getMessages(zoneId: string): Observable<Message[]> {
         return this.doWithKey(
-            key => {
-                if (zoneId === 'all') {
-                    return this.db.list<Message>(`/messages/${key}/all`, ref => ref.orderByChild('timestamp'))
-                        .valueChanges<Message>()
-                        .map(t => t.reverse())
-                } else {
-                    const zoneMessages = this.db.list<Message>(
-                        `/messages/${key}/${zoneId}`,
-                        ref => ref.orderByChild('timestamp')
-                    ).valueChanges<Message>().map(t => t.reverse());
-                    const allMessages = this.db.list<Message>(
-                        `/messages/${key}/all`,
-                        ref => ref.orderByChild('timestamp')
-                    ).valueChanges<Message>().map(t => t.reverse());
-
-                    return Observable.combineLatest(zoneMessages, allMessages)
-                        .map(([zoneMessages, allMessages]) => {
-                            return zoneMessages.concat(allMessages)
-                                .sort((a, b) => a.timestamp < b.timestamp ? 1 : -1)
-                        })
-                    ;
-                }
-            },
+            key => this.db.list<Message>(
+                `/messages/${key}/${zoneId}`,
+                ref => ref.orderByChild('timestamp')).valueChanges<Message>().map(t => t.reverse())
+            ,
             []
         )
     }
@@ -252,6 +233,12 @@ export class TournamentService extends DatabaseAccessor {
             login: this.userService.login || 'Anonymous',
             message,
             timestamp: (new Date()).valueOf()
+        })
+    }
+
+    sendMessageToAll(message: string) {
+        this.getZones().take(1).subscribe(zones => {
+            zones.forEach(z => this.sendMessage(z.key, message));
         })
     }
 

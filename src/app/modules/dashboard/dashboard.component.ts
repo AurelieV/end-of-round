@@ -9,6 +9,7 @@ import { handleReturn } from '../shared/handle-return';
 import { AddTablesDialogComponent } from './add-tables.dialog.component';
 import { TimeService } from './../time/time.service';
 import { TournamentService, Zone, Table } from './../tournament/tournament.service';
+import { NgForm } from '@angular/forms';
 
 @Component({
     selector: 'dashboard',
@@ -36,6 +37,9 @@ export class DashboardComponent implements OnInit {
 
     @ViewChild('remainingTables') remainingTablesTemplate: TemplateRef<any>;
     remainingTablesDialog: MatDialogRef<any>;
+
+    @ViewChild('sendMessage') sendMessageTemplate: TemplateRef<any>;
+    sendMessageDialog: MatDialogRef<any>;
 
     constructor(
         private tournamentService: TournamentService,
@@ -180,5 +184,21 @@ export class DashboardComponent implements OnInit {
 
     addTime() {
         this.timeService.openDialog();
+    }
+
+    openSendMessageToAll() {
+        this.sendMessageDialog = this.md.open(this.sendMessageTemplate);
+        handleReturn(this.sendMessageDialog);
+    }
+
+    closeSendMessage(form: NgForm) {
+        form.reset();
+        this.sendMessageDialog.close();
+    }
+
+    sendMessageToAll(form: NgForm, message: string) {
+        form.reset();
+        this.tournamentService.sendMessageToAll(message);
+        this.sendMessageDialog.close();
     }
 }
