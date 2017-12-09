@@ -9,6 +9,7 @@
           <mat-option value="A">A</mat-option>
           <mat-option value="B">B</mat-option>
           <mat-option value="C">C</mat-option>
+          <mat-option value="all">All</mat-option>
         </mat-select>
     </mat-form-field>
     <mat-input-container>
@@ -27,6 +28,6 @@
 </form>
 <div class="actions" mat-dialog-actions>
     <button mat-raised-button color="warn" (click)="close()">Cancel</button>
-    <button mat-raised-button color="primary" (click)="submit(true)" [disabled]="!form.form.valid || (isLoading | async)">Add and continue</button>    
     <button mat-raised-button color="primary" (click)="submit()" [disabled]="!form.form.valid || (isLoading | async)">Add</button>
-</div>
+    <button mat-raised-button color="primary" (click)="submit(true)" [disabled]="!form.form.valid || (isLoading | async)">Add and continue</button>
+  </div>
