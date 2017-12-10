@@ -11,13 +11,13 @@ import { CreateTournamentComponent } from './create-tournament.component';
 
 /* Service */
 import { AdministrationService } from './administration.service';
-import { HasLoginGuard } from '../user/auth-gards.service';
+import { AuthenticatedGuard } from '../user/auth-gards.service';
 
 export const routes: Routes = [
     { 
         path: '',
         component: AdministrationComponent,
-        canActivate: [ HasLoginGuard ],
+        canActivate: [ AuthenticatedGuard ],
         children: [
             { path: '', component: CreateTournamentComponent },
             { path: 'edit/:key', component: CreateTournamentComponent, data: { section: 'Edition' } }

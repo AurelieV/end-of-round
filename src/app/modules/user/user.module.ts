@@ -3,7 +3,7 @@ import { MatDialogModule, MatButtonModule, MatInputModule } from '@angular/mater
 import { NgModule } from '@angular/core';
 
 import { UserService } from './user.service';
-import { HasLoginGuard } from './auth-gards.service';
+import { AuthenticatedGuard, SetLoginGuard } from './auth-gards.service';
 import { ConnectionService } from './connection.service';
 import { AccessInfoComponent } from './access-info.component';
 import { SharedModule } from '../shared/shared.module';
@@ -24,6 +24,6 @@ import { HttpModule } from '@angular/http';
     entryComponents: [
         AccessInfoComponent
     ],
-    providers: [ ConnectionService, UserService, HasLoginGuard ]
+    providers: [ ConnectionService, UserService, AuthenticatedGuard, SetLoginGuard ]
 })
 export class UserModule {}

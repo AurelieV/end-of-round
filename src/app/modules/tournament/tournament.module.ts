@@ -14,8 +14,9 @@ import { MainComponent } from './main.component';
 /* Modules */
 import { ZoneModule } from '../zone/zone.module';
 import { TimeModule } from './../time/time.module';
-// Guards
-import { HasLoginGuard } from '../user/auth-gards.service';
+
+/* Guards */
+import { AuthenticatedGuard, SetLoginGuard } from '../user/auth-gards.service';
 
 export const routes: Routes = [
     { 
@@ -28,9 +29,14 @@ export const routes: Routes = [
                     path: 'dashboard',
                     loadChildren: '../dashboard/dashboard.module#DashboardModule',
                     data: { section: 'Dashboard' },
-                    canActivate: [ HasLoginGuard ]
+                    canActivate: [ AuthenticatedGuard ]
                 },
-                { path: 'zone/:id', loadChildren: '../zone/zone.module#ZoneWithRouteModule', data: { section: 'Zone' } },
+                { 
+                    path: 'zone/:id',
+                    loadChildren: '../zone/zone.module#ZoneWithRouteModule',
+                    data: { section: 'Zone' },
+                    canActivate: [ SetLoginGuard ]
+                },
                 { path: 'coverage', loadChildren: '../coverage/coverage.module#CoverageModule' }
             ]}
         ]

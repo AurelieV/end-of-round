@@ -8,7 +8,7 @@ import { UserService } from './user.service';
 import { AccessInfoComponent } from './access-info.component';
 
 @Injectable()
-export class HasLoginGuard implements CanActivate {
+export class AuthenticatedGuard implements CanActivate {
     constructor(
         private userService: UserService,
         private notificationService: NotificationService,
@@ -40,6 +40,29 @@ export class HasLoginGuard implements CanActivate {
                     }
                 })
                 return modalRef.afterClosed().map(data => !!data);
+        })
+    }
+}
+
+@Injectable()
+export class SetLoginGuard implements CanActivate {
+    constructor(
+        private userService: UserService,
+        private md: MatDialog
+    ) {}
+
+    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+        // Wait initialisation
+        return this.userService.user.take(1)
+            .switchMap(user => {
+                const login = this.userService.login;
+                if (login) {
+                    return Observable.of(true);
+                }
+                const modalRef = this.md.open(AccessInfoComponent);
+                modalRef.componentInstance.askLogin = true;
+                modalRef.componentInstance.askPassword = false;
+                return modalRef.afterClosed().map(t => true);
         })
     }
 }
