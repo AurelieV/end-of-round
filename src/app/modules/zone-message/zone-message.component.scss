@@ -10,16 +10,13 @@
 .body {
     .sending {
         display: flex;
-        input {
-            width: 150px;
+        mat-form-field {
+            flex: 1;
         }
         button {
             margin-left: 10px;
         }
         margin-bottom: 20px;
-    }
-    input:not(.null) {
-        border: 1px solid black;
     }
 }
 

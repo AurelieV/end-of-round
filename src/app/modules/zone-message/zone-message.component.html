@@ -5,7 +5,9 @@
     <div class="body">
         <input class="null">
         <form class="sending">
-            <input type="text" name="message" [(ngModel)]="newMessage">
+            <mat-form-field>
+                <input type="text" matInput name="message" placeholder="Type your message" [(ngModel)]="newMessage">
+            </mat-form-field>
             <button type="submit" mat-mini-fab color="primary" (click)="addMessage()"><mat-icon>&#xE163;</mat-icon></button>
         </form>
         <div class="messages-container">
