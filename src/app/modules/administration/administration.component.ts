@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core'
 
 @Component({
-    selector: 'administration',
-    template: '<router-outlet></router-outlet>'
+  selector: 'administration',
+  template: '<router-outlet></router-outlet>',
 })
 export class AdministrationComponent {}

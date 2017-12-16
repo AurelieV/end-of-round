@@ -61,6 +61,7 @@
     padding-left: 10px;
     padding-right: 10px;
     background: $light_purple;
+    z-index: 10;
 
     .first-line {
         display: flex;
@@ -101,60 +102,6 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    color: black;
-    &.hide-button {
-        .table .actions {
-            display: none;
-        }
-    }
-    &.show-warn {
-        .table.done.warn {
-            border: 1px solid red;
-            color: red;
-            font-weight: bold;
-        }
-    }
-}
-.table {
-    user-select: none;
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    -ms-user-select: none;
-    cursor: pointer;
-
-    font-size: 16px;
-    min-height: 40px;
-    min-width: 45px;
-    
-    border: 1px solid black;
-    padding: 10px;
-    
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    .time {
-        font-style: italic;
-    }
-    &.has-time {
-        font-weight: bold;
-    }
-    .actions {
-        margin-top: 20px;
-        flex: 1;
-        display: flex;
-        align-items: flex-end;
-        button:not(:last-child) {
-            margin-right: 10px;
-        }
-    }
-}
-
-.tables.is-team {
-    .table {
-        font-size: 13px;
-        min-width: 55px;
-    }
 }
 
 .call-help {

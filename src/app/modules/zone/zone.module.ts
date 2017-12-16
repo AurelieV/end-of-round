@@ -2,14 +2,15 @@ import { TablesModule } from './../tables/tables.module';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule, MatButtonModule, MatMenuModule, MatSlideToggleModule, MatDialogModule, MatInputModule, MatCheckboxModule } from '@angular/material';
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 
-import { SharedModule } from '../shared/shared.module';
+import { SharedModule } from '../shared/shared.module';
 import { ZoneMessageModule } from './../zone-message/zone-message.module';
 import { TimeModule } from './../time/time.module';
 
 /* Components */
 import { ZoneComponent } from './zone.component';
+import { TableComponent } from './table.component';
 
 const routes: Routes = [
     { path: '', component: ZoneComponent }
@@ -32,7 +33,8 @@ const routes: Routes = [
         TablesModule
     ],
     declarations: [
-        ZoneComponent
+        ZoneComponent,
+        TableComponent
     ],
     exports: [
         ZoneComponent
