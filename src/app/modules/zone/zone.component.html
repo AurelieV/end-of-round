@@ -9,7 +9,7 @@
         </div>
         <mat-menu #otherZones="matMenu">
             <button mat-menu-item *ngFor="let zone of otherZones$ | async" (click)="goToZone(zone.key)">
-                <span [class.need-help]="zone.needHelp">Go to {{zone.name}}</span>
+                <span>Go to {{zone.name}}</span>
                 <span *ngIf="zone.zoneLeaderPlace">(ZL at {{zone.zoneLeaderPlace}})</span>
             </button>
         </mat-menu>
@@ -69,11 +69,11 @@
 </div>
 
 <ng-container *ngIf="zoneId !== 'all'">
-    <button *ngIf="!(zone$ | async)?.needHelp" mat-fab color="primary" class="call-help" [class.other-need-help]="otherNeedHelp$ | async"
+    <button *ngIf="!(zone$ | async)?.needHelp" mat-fab color="primary" class="call-help" [class.other-need-help]="isAnOtherNeedHelp$ | async"
         (click)="callHelp(true)">
         <mat-icon>&#xE91F;</mat-icon>
     </button>
-    <button *ngIf="(zone$ | async)?.needHelp" mat-fab color="warn" class="call-help" (click)="callHelp(false)">
+    <button *ngIf="(needHelp$ | async)" mat-fab color="warn" class="call-help" (click)="callHelp(false)">
         <mat-icon>&#xE14C;</mat-icon>
     </button>
 </ng-container>

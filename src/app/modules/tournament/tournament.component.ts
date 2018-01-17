@@ -28,7 +28,7 @@ export class TournamentComponent implements OnInit, OnDestroy {
     this.tournament$ = this.tournamentService.getTournament()
     this.subscriptions.push(
       this.route.paramMap.subscribe((params) => {
-        const key = params.get('key')
+        const key = params.get('tournamentKey')
         if (key) {
           this.tournamentService.key = key
         }

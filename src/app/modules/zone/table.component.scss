@@ -1,45 +1,46 @@
 :host {
-    padding: 10px;
-    user-select: none;
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    -ms-user-select: none;
-    cursor: pointer;
+  padding: 10px;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  cursor: pointer;
 
-    font-size: 16px;
-    min-height: 40px;
-    min-width: 45px;
+  font-size: 16px;
+  min-height: 40px;
+  min-width: 45px;
 
-    border: 1px solid black;
+  border: 1px solid black;
 
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    &.has-time {
-        font-weight: bold;
-    }
-    &.is-team {
-        font-size: 13px;
-        min-width: 55px;
-    }
-    &.warn {
-        border: 1px solid red;
-        color: red;
-        font-weight: bold;
-    }
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  &.has-time {
+    font-weight: bold;
+  }
+  &.is-team {
+    font-size: 13px;
+    min-width: 55px;
+  }
+  &.warn {
+    border: 1px solid red;
+    padding: 9px;
+    color: red;
+    font-weight: bold;
+  }
 }
 
 .time {
-    font-style: italic;
+  font-style: italic;
 }
 
 .actions {
-    margin-top: 20px;
-    flex: 1;
-    display: flex;
-    align-items: flex-end;
-    button:not(:last-child) {
-        margin-right: 10px;
-    }
+  margin-top: 20px;
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  button:not(:last-child) {
+    margin-right: 10px;
+  }
 }

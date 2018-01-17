@@ -60,8 +60,10 @@ export class ZoneComponent implements OnInit, OnChanges, OnDestroy {
   })
   isOnOutstandingsStep$: Observable<boolean>
   isLoading: boolean = true
-  otherNeedHelp$: Observable<boolean>
+  otherNeedHelp$: Observable<{[key: string]: boolean}>
+  isAnOtherNeedHelp$: Observable<boolean>
   isTeam$: Observable<boolean>
+  needHelp$: Observable<boolean>
 
   @ViewChild('confirm') confirmTemplate: TemplateRef<any>
   confirmation: MatDialogRef<any>
@@ -88,11 +90,12 @@ export class ZoneComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnInit() {
     this.subscription = this.route.params
-      .map((params) => params.id)
+      .map((params) => params.zoneKey)
       .subscribe((id) => {
         if (!id) return
         this.zoneService.key = id
         this.zoneId = id
+        this.needHelp$ = this.tournamentService.getNeedHelp(id)
       })
     this.isOnOutstandingsStep$ = this.tournamentService.isOnOutstandingsStep()
     this.zone$ = this.zoneService.getZone()
@@ -122,6 +125,7 @@ export class ZoneComponent implements OnInit, OnChanges, OnDestroy {
 
         let cursor = 0
         for (let t of tables) {
+          if (!z.tables[cursor]) return
           if (+t.number > z.tables[cursor].end) {
             cursor++
             ;(t as any).isSectionStart = true
@@ -133,9 +137,10 @@ export class ZoneComponent implements OnInit, OnChanges, OnDestroy {
     )
 
     this.tables$.take(1).subscribe((_) => (this.isLoading = false))
-    this.otherNeedHelp$ = this.otherZones$.map(
-      (zones) => zones.filter((z) => z.needHelp).length > 0
-    )
+    this.otherNeedHelp$ = this.zoneService.getOtherNeedHelp()
+    this.isAnOtherNeedHelp$ = this.otherNeedHelp$.map((helps) => {
+      return Object.keys(helps).filter((z) => helps[z]).length > 0
+    })
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -149,7 +154,7 @@ export class ZoneComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   callHelp(needHelp: boolean) {
-    this.tournamentService.updateZone(this.zoneId, {needHelp})
+    this.tournamentService.setNeedHelp(this.zoneId, needHelp)
   }
 
   toggleOnlyPlaying(val: boolean) {

@@ -1,3 +1,4 @@
+import {TableStatus} from './tournament.service'
 import {Injectable, NgZone} from '@angular/core'
 import {
   AngularFireDatabase,
@@ -16,46 +17,41 @@ export {Tournament, TournamentData, Zone, ZoneData, Message}
 import {DatabaseAccessor} from './../../utils/database-accessor'
 import {NotificationService} from './../../notification.service'
 
-export interface Table {
+export interface TableData {
+  zoneId: string
   number: string
+
   status: TableStatus
+  teamStatus?: TeamTableStatus
+
+  time?: number
+  teamTime?: TeamTime
+
   doneTime?: Date
-  hasResult?: boolean
   result?: Result
+  hasResult?: boolean
   assignated?: string
-  information?: string
+
   isTop?: boolean
   isFeatured?: boolean
-  zoneId: string
-  time: TableTime
 }
-
-export interface TeamTableTime {
+export interface Table extends TableData {
+  key: string
+}
+export interface TeamTime {
   A?: number
   B?: number
   C?: number
 }
-export type TableTime = number | TeamTableTime
-
+export interface CoverageData {
+  player1: string
+  player2: string
+  player1Score: number
+  player2Score: number
+}
 export interface CoveredTable extends Table {
-  coverage: {
-    player1: string
-    player2: string
-    player1Score: number
-    player2Score: number
-  }
+  coverage: CoverageData
 }
-
-export interface CoveredDataTable {
-  coverage: {
-    player1: string
-    player2: string
-    player1Score: number
-    player2Score: number
-  }
-  number: string
-}
-
 export interface Result {
   player1: {
     score: number
@@ -70,6 +66,12 @@ export interface Result {
 
 export type TableStatus = 'playing' | 'covered' | 'done' | ''
 
+export interface TeamTableStatus {
+  A: TableStatus
+  B: TableStatus
+  C: TableStatus
+}
+
 export interface TablesInformation {
   playing: number
   covered: number
@@ -81,11 +83,10 @@ export interface TablesInformation {
 export class TournamentService extends DatabaseAccessor {
   constructor(
     db: AngularFireDatabase,
-    zone: NgZone,
     private userService: UserService,
     private notif: NotificationService
   ) {
-    super(db, zone)
+    super(db)
   }
 
   getTournament(): Observable<Tournament> {
@@ -113,7 +114,7 @@ export class TournamentService extends DatabaseAccessor {
 
   getAllTables(): Observable<Table[]> {
     return this.doWithKey<Table[]>(
-      (key) => this.getListFrom<Table>(`/tables/${key}`, 'number'),
+      (key) => this.getListFrom<Table>(`/tables/${key}`),
       []
     )
   }
@@ -164,15 +165,12 @@ export class TournamentService extends DatabaseAccessor {
         list$ = this.db.list(`/tables/${key}/`, (ref) =>
           ref.orderByChild('isFeatured').equalTo(true)
         )
-        return this.getList<Table>(list$, 'number')
       } else {
         list$ = this.db.list(`/tables/${key}/`, (ref) =>
           ref.orderByChild('zoneId').equalTo(zoneId)
         )
-        return this.getList<Table>(list$, 'number').map((tables) =>
-          tables.filter((t) => t.zoneId === zoneId)
-        )
       }
+      return this.getList<Table>(list$)
     }, [])
   }
 
@@ -206,11 +204,12 @@ export class TournamentService extends DatabaseAccessor {
   filterExtraTimedTable(tables: Table[], isTeam: boolean) {
     return (tables || []).filter((t) => {
       if (isTeam) {
-        const time = t.time as any
-        return (time.A > 0 || time.B > 0 || time.C > 0) && t.status !== 'done'
+        return (
+          (t.teamTime.A > 0 || t.teamTime.B > 0 || t.teamTime.C > 0) &&
+          t.status !== 'done'
+        )
       } else {
-        const time = t.time as number
-        return time > 0 && t.status !== 'done'
+        return t.time > 0 && t.status !== 'done'
       }
     })
   }
@@ -219,7 +218,7 @@ export class TournamentService extends DatabaseAccessor {
     zoneId: string
   ): Observable<TablesInformation> {
     const tables$ = this.getActiveTablesByZone(zoneId)
-    const isTeam$ = this.getTournament().map((t) => t.isTeam)
+    const isTeam$ = this.isTeam()
     return Observable.combineLatest(tables$, isTeam$).map(
       ([tables, isTeam]) => {
         if (zoneId !== 'feature') {
@@ -242,6 +241,16 @@ export class TournamentService extends DatabaseAccessor {
     return this.db.object(`/zones/${this.key}/${zoneId}`).update(update)
   }
 
+  setNeedHelp(zoneId: string, value: boolean) {
+    return this.db.object(`/needHelp/${this.key}/${zoneId}`).set(value)
+  }
+
+  getNeedHelp(zoneId: string) {
+    return this.db
+      .object(`/needHelp/${this.key}/${zoneId}`)
+      .valueChanges<boolean>()
+  }
+
   getMessages(zoneId: string): Observable<Message[]> {
     return this.doWithKey(
       (key) =>
@@ -249,8 +258,7 @@ export class TournamentService extends DatabaseAccessor {
           .list<Message>(`/messages/${key}/${zoneId}`, (ref) =>
             ref.orderByChild('timestamp')
           )
-          .valueChanges<Message>()
-          .map((t) => t.reverse()),
+          .valueChanges<Message>(),
       []
     )
   }
@@ -259,7 +267,8 @@ export class TournamentService extends DatabaseAccessor {
     this.db.list<Message>(`/messages/${this.key}/${zoneId}`).push({
       login: this.userService.login || 'Anonymous',
       message,
-      timestamp: new Date().valueOf(),
+      timestamp: -new Date().valueOf(),
+      uid: this.userService.uid,
     })
   }
 
@@ -306,18 +315,30 @@ export class TournamentService extends DatabaseAccessor {
             const newTables = tables.reduce(
               (tables, table) => {
                 tables[table.number] = {
-                  time: tournament.isTeam ? {A: 0, B: 0, C: 0} : 0,
+                  time: 0,
+                  teamTime: {
+                    A: 0,
+                    B: 0,
+                    C: 0,
+                  },
                   status: '',
+                  teamStatus: {
+                    A: '',
+                    B: '',
+                    C: '',
+                  },
                   doneTime: null,
                   hasResult: false,
                   result: null,
                   isFeatured: false,
+                  isTop: false,
                   zoneId: table.zoneId,
+                  number: table.number,
                 }
 
                 return tables
               },
-              {} as {[number: string]: any}
+              {} as {[number: string]: TableData}
             )
             this.db.object(`/tables/${this.key}`).set(newTables)
           })
@@ -328,14 +349,12 @@ export class TournamentService extends DatabaseAccessor {
         zones.forEach((zone) => {
           this.db.object(`/messages/${this.key}/${zone.key}`).set('')
         })
-        this.db.object(`/messages/${this.key}/all`).set('')
       })
   }
 
   getTable(tableId: string): Observable<Table> {
     return this.getObject(
-      this.db.object<Table>(`/tables/${this.key}/${tableId}`),
-      'number'
+      this.db.object<Table>(`/tables/${this.key}/${tableId}`)
     ).take(1)
   }
 
@@ -348,7 +367,7 @@ export class TournamentService extends DatabaseAccessor {
     let action
     if (seat) {
       action = this.db
-        .object(`/tables/${key}/${tableId}/time/${seat}`)
+        .object(`/tables/${key}/${tableId}/teamTime/${seat}`)
         .set(time)
     } else {
       action = this.db.object(`/tables/${key}/${tableId}`).update({time})
@@ -365,8 +384,7 @@ export class TournamentService extends DatabaseAccessor {
       return this.getList<CoveredTable>(
         this.db.list(`/tables/${key}/`, (ref) =>
           ref.orderByChild('isTop').equalTo(true)
-        ),
-        'number'
+        )
       ).map((tables) =>
         tables.sort((a, b) => {
           if (
@@ -389,8 +407,8 @@ export class TournamentService extends DatabaseAccessor {
     }, [])
   }
 
-  addCoverageTable(data: CoveredDataTable) {
-    this.updateTable(data.number, {coverage: data.coverage, isTop: true})
+  addCoverageTable(tableNumber: string, coverage: CoverageData) {
+    this.updateTable(tableNumber, {coverage, isTop: true})
   }
 
   addJudge(judge: string) {
@@ -411,5 +429,15 @@ export class TournamentService extends DatabaseAccessor {
       (key) => this.db.object(`/judges/${this.key}`).valueChanges<string>(),
       []
     ).map((s) => (s ? s.split(' ') : []))
+  }
+
+  getZonesByKey(): Observable<{[key: string]: Zone}> {
+    return this.doWithKey<{[key: string]: Zone}>(
+      (key) =>
+        this.db
+          .object(`/zones/${this.key}`)
+          .valueChanges<{[key: string]: Zone}>(),
+      {}
+    )
   }
 }

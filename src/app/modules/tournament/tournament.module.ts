@@ -49,7 +49,7 @@ export const routes: Routes = [
             canActivate: [AuthenticatedGuard],
           },
           {
-            path: 'zone/:id',
+            path: 'zone/:zoneKey',
             loadChildren: '../zone/zone.module#ZoneWithRouteModule',
             data: {section: 'Zone'},
             canActivate: [SetLoginGuard],

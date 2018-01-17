@@ -4,7 +4,7 @@
         <span>{{ tournament.name }}</span>
     </mat-list-item>
 </mat-nav-list>
-<div class="message" *ngIf="!isLoading && !(hasTournament$ | async)">No tournament available</div>
+<div class="message" *ngIf="!isLoading && (noTournament$ | async)">No tournament available</div>
 <div class="actions">
     <a routerLink="/administration" mat-raised-button color="accent">Add a tournament</a>
 </div>

@@ -1,33 +1,34 @@
 <h3 mat-dialog-title>Add time to a table</h3>
 <input class="null">
 <form mat-dialog-content #form="ngForm">
-    <mat-input-container>
-      <input (ngModelChange)="onTableNumberChange($event)" name="number" matInput placeholder="Table number" type="number" required [(ngModel)]="data.tableNumber">
-    </mat-input-container>
-    <mat-form-field *ngIf="isTeam">
-        <mat-select required [(ngModel)]="data.seat" (ngModelChange)="onSeatChange($event)" name="seat">
-          <mat-option value="A">A</mat-option>
-          <mat-option value="B">B</mat-option>
-          <mat-option value="C">C</mat-option>
-          <mat-option value="all">All</mat-option>
-        </mat-select>
-    </mat-form-field>
-    <mat-input-container>
-      <input name="time" matInput placeholder="Time" type="number" required [(ngModel)]="data.time">
-    </mat-input-container>
-    <div class="choice" *ngIf="(displayMessage | async)">
-      <div class="messages">This table has already a time of extension of 
-        <span *ngIf="!isTeam">{{(currentTable$ | async)?.time}}min</span>
-        <span *ngIf="isTeam">{{(currentTable$ | async)?.time[this.data.seat]}}min</span>
-      </div>
-      <mat-radio-group [(ngModel)]="addOrUpdate" name="addOrUpdate" required color="primary">
-        <mat-radio-button [value]="'add'">Add time</mat-radio-button>
-        <mat-radio-button [value]="'update'">Set time</mat-radio-button>
-      </mat-radio-group>
+  <mat-input-container>
+    <input (ngModelChange)="onTableNumberChange($event)" name="number" matInput placeholder="Table number" type="number" required
+      [(ngModel)]="data.tableNumber">
+  </mat-input-container>
+  <mat-form-field *ngIf="isTeam">
+    <mat-select required [(ngModel)]="data.seat" (ngModelChange)="onSeatChange($event)" name="seat">
+      <mat-option value="A">A</mat-option>
+      <mat-option value="B">B</mat-option>
+      <mat-option value="C">C</mat-option>
+      <mat-option value="all">All</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-input-container>
+    <input name="time" matInput placeholder="Time" type="number" required [(ngModel)]="data.time">
+  </mat-input-container>
+  <div class="choice" *ngIf="(displayMessage | async)">
+    <div class="messages">This table has already a time of extension of
+      <span *ngIf="!isTeam">{{(currentTable$ | async)?.time}}min</span>
+      <span *ngIf="isTeam">{{(currentTable$ | async)?.teamTime[this.data.seat]}}min</span>
     </div>
+    <mat-radio-group [(ngModel)]="addOrUpdate" name="addOrUpdate" required color="primary">
+      <mat-radio-button [value]="'add'">Add time</mat-radio-button>
+      <mat-radio-button [value]="'update'">Set time</mat-radio-button>
+    </mat-radio-group>
+  </div>
 </form>
 <div class="actions" mat-dialog-actions>
-    <button mat-raised-button color="warn" (click)="close()">Cancel</button>
-    <button mat-raised-button color="primary" (click)="submit()" [disabled]="!form.form.valid || (isLoading | async)">Add</button>
-    <button mat-raised-button color="primary" (click)="submit(true)" [disabled]="!form.form.valid || (isLoading | async)">Add and continue</button>
-  </div>
+  <button mat-raised-button color="warn" (click)="close()">Cancel</button>
+  <button mat-raised-button color="primary" (click)="submit()" [disabled]="!form.form.valid || (isLoading | async)">Add</button>
+  <button mat-raised-button color="primary" (click)="submit(true)" [disabled]="!form.form.valid || (isLoading | async)">Add and continue</button>
+</div>

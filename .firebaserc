@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "end-of-round-dev"
+    "default": "end-of-round-dev",
+    "prod": "end-of-round"
   }
 }

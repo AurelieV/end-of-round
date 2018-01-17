@@ -1,62 +1,62 @@
 $mobile: 370px;
 .import-actions {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-    align-items: center;
-    margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 10px;
 }
 textarea {
-    width: 100%;
-    min-height: 200px;
+  width: 100%;
+  min-height: 200px;
 }
 
 form {
-    margin-top: 20px;
+  margin-top: 20px;
 }
 .table {
-    display: flex;
-    align-items: center;
-    padding: 10px;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  @media screen and (max-width: $mobile) {
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  border-bottom: 1px solid black;
+  .number {
+    font-weight: bold;
+    margin-right: 10px;
     @media screen and (max-width: $mobile) {
-        flex-direction: column;
-        justify-content: space-between;
+      margin: 0;
+      margin-bottom: 10px;
     }
-    border-bottom: 1px solid black;
-    .number {
-        font-weight: bold;
-        margin-right: 10px;
-        @media screen and (max-width: $mobile) {
-            margin: 0;
-            margin-bottom: 10px;
-        }
+  }
+  .player {
+    &.win {
+      font-weight: bold;
+      font-size: larger;
     }
-    .player {
-        &.win {
-            font-weight: bold;
-            font-size: larger;
-        }
+  }
+  .separator {
+    margin-left: 10px;
+    margin-right: 10px;
+    @media screen and (max-width: $mobile) {
+      margin: 0;
+      margin-bottom: 5px;
+      margin-top: 5px;
     }
-    .separator {
-        margin-left: 10px;
-        margin-right: 10px;
-        @media screen and (max-width: $mobile) {
-            margin: 0;
-            margin-bottom: 5px;
-            margin-top: 5px;
-        }
+  }
+  .result {
+    margin-left: 10px;
+    @media screen and (max-width: $mobile) {
+      margin: 0px;
+      margin-bottom: 10px;
+      margin-top: 10px;
     }
-    .result {
-        margin-left: 10px;
-        @media screen and (max-width: $mobile) {
-            margin: 0px;
-            margin-bottom: 10px;
-            margin-top: 10px;
-        }
-    }
-    .actions {
-        flex: 1;
-        display: flex;
-        justify-content: flex-end;
-    }
+  }
+  .actions {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+  }
 }

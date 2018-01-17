@@ -1,59 +1,59 @@
 :host {
-    background: white;
-    border-radius: 10px;
-    padding: 5px 10px;
-    &.active {
-        &:active {
-            border: black solid 2px;
-        }
+  background: white;
+  border-radius: 10px;
+  padding: 5px 10px;
+  &.active {
+    &:active {
+      border: black solid 2px;
     }
-    &.need-help {
-        border: red solid 2px;
-    }
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
+  }
+  &.need-help {
+    border: red solid 2px;
+  }
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
 }
 .title {
-    font-size: 18px;
-    font-weight: bold;
-    text-transform: capitalize;
+  font-size: 18px;
+  font-weight: bold;
+  text-transform: capitalize;
 }
 .subtitle {
-    font-style: italic;
-    text-align: center;
+  font-style: italic;
+  text-align: center;
 }
 .status {
+  display: flex;
+  .block {
+    font-size: 14px;
+    margin-right: 5px;
+    margin-left: 5px;
+    width: 30px;
+    height: 30px;
+    border-radius: 25%;
     display: flex;
-    .block {
-        font-size: 14px;
-        margin-right: 5px;
-        margin-left: 5px;
-        width: 30px;
-        height: 30px;
-        border-radius: 25%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        &:not(.remaining) {
-            padding: 1px;
-        }
-    }
-    padding-top: 10px;
-    padding-bottom: 10px;
+    align-items: center;
     justify-content: center;
-    flex: 1;
-    .view-button {
-        margin-top: -7px;
+    &:not(.remaining) {
+      padding: 1px;
     }
+  }
+  padding-top: 10px;
+  padding-bottom: 10px;
+  justify-content: center;
+  flex: 1;
+  .view-button {
+    margin-top: -7px;
+  }
 }
 
 zone-info {
-    display: block;
+  display: block;
 }
 
 .block.remaining {
-    background: white;
-    color: black;
-    border: 1px solid black;
+  background: white;
+  color: black;
+  border: 1px solid black;
 }

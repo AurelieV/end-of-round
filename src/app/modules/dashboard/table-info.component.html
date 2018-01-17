@@ -1,0 +1,29 @@
+<div class="content-wrapper">
+    <div class="header">
+        <mat-checkbox #test="matCheckbox" color="primary" [ngModel]="table.hasResult" (ngModelChange)="setHasResult(table.number, $event)"></mat-checkbox>
+        test: {{test.checked}}
+        <div class="title-block">
+            <div class="title">Table {{table.number}} {{table.hasResult}}</div>
+            <div class="subtitle" *ngIf="!table.isFeatured">({{zones && zones[table.zoneId] && zones[table.zoneId].name}})</div>
+            <div class="subtitle" *ngIf="table.isFeatured">(Feature)</div>
+        </div>
+    </div>
+    <div class="content" *ngIf="!table.hasResult">
+        <div class="extra-time">
+            <display-time [table]="table"></display-time>
+        </div>
+        <div class="time" *ngIf="table.status === 'done' && !table.hasResult">{{table.doneTime | ago}}</div>
+        <div class="assignated" *ngIf="table.assignated">Covered by {{table.assignated}}</div>
+        <div class="result" class="result" *ngIf="table.result">
+            {{table.result | result}}
+        </div>
+    </div>
+</div>
+<div class="table-actions" *ngIf="displayMode === 'full'">
+    <button mat-mini-fab color="primary" (click)="assign($event, table)">
+        <mat-icon>&#xE851;</mat-icon>
+    </button>
+    <button mat-mini-fab color="primary" (click)="addResult($event, table)">
+        <mat-icon>&#xE862;</mat-icon>
+    </button>
+</div>

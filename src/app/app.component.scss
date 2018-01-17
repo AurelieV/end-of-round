@@ -1,40 +1,40 @@
 mat-toolbar.header {
-    height: 60px;
+  height: 60px;
+  display: flex;
+  .header-content {
+    flex: 1;
     display: flex;
-    .header-content {
-        flex: 1;
-        display: flex;
-        justify-content: center;
+    justify-content: center;
+  }
+  position: fixed;
+  z-index: 10;
+  .connection {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    mat-icon {
+      width: 40px;
+      height: 40px;
+      font-size: 40px;
     }
-    position: fixed;
-    z-index: 10;
-    .connection {
-        position: relative;
-        width: 40px;
-        height: 40px;
-        mat-icon {
-            width: 40px;
-            height: 40px;
-            font-size: 40px;
-        }
+  }
+  .connection-status {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: red;
+    &.connected {
+      background: lightgreen;
     }
-    .connection-status {
-        width: 20px;
-        height: 20px;
-        border-radius: 50%;
-        background: red;
-        &.connected {
-            background: lightgreen;
-        }
-        position: absolute;
-        bottom: 0;
-        right: -5px;
-    }
+    position: absolute;
+    bottom: 0;
+    right: -5px;
+  }
 }
 
 .content-with-header {
-    padding-top: 70px;
-    padding-bottom: 20px;
-    padding-left: 10px;
-    padding-right: 10px;
+  padding-top: 70px;
+  padding-bottom: 20px;
+  padding-left: 10px;
+  padding-right: 10px;
 }

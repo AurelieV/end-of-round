@@ -1,22 +1,23 @@
 form {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 textarea {
-    min-height: 100px;
-    margin-top: 10px;
+  min-height: 100px;
+  margin-top: 10px;
 }
 
 .judges {
-    display: flex;
-    flex-wrap: wrap;
-    margin-top: 20px;
-    
-    button:not(:first-child) {
-        margin-left: 10px;
-    }
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 10px;
+
+  button {
+    margin-top: 5px;
+    margin-right: 5px;
+  }
 }
 
 mat-input-container {
-    margin-top: 20px;
+  margin-top: 20px;
 }

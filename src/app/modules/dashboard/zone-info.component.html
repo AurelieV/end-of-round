@@ -1,6 +1,8 @@
-<div class="title">{{zone.name}} <span *ngIf="zone.leader">- {{zone.leader}}</span></div>
+<div class="title">{{zone.name}}
+    <span *ngIf="zone && zone.leader">- {{zone.leader}}</span>
+</div>
 <div class="subtitle" [innerHtml]="subtitle"></div>
-<div class="subtitle" *ngIf="zone.zoneLeaderPlace">ZL at {{zone?.zoneLeaderPlace}}</div>
+<div class="subtitle" *ngIf="zone && zone.zoneLeaderPlace">ZL at {{zone.zoneLeaderPlace}}</div>
 
 <div class="status" *ngIf="!isLoading">
     <div class="block remaining">{{(tablesInformation$ | async)?.remaining}}</div>
@@ -8,6 +10,8 @@
     <div class="block covered">{{(tablesInformation$ | async)?.covered}}</div>
     <div class="block extra-time">{{(tablesInformation$ | async)?.extraTimed}}</div>
     <zone-message class="block" [zone]="zone"></zone-message>
-    <button (click)="onView.emit($event)" mat-icon-button class="view-button"><mat-icon>&#xE5C8;</mat-icon></button>
+    <button (click)="onView.emit($event)" mat-icon-button class="view-button">
+        <mat-icon>&#xE5C8;</mat-icon>
+    </button>
 </div>
 <loader [isLoading]="isLoading"></loader>

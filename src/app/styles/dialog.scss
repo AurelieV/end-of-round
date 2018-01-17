@@ -1,16 +1,31 @@
 [mat-dialog-actions].actions {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 20px;
-    flex-wrap: wrap;
-    button {
-        margin-left: 10px;
-        margin-bottom: 10px;
-    }
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+  flex-wrap: wrap;
+  button {
+    margin-left: 10px;
+    margin-bottom: 10px;
+  }
 }
 
 textarea.full {
-    width: 100%;
-    border: 1px solid black;
-    min-height: 100px;
+  width: 100%;
+  border: 1px solid black;
+  min-height: 100px;
+}
+
+.mat-dialog-container {
+  margin: auto;
+  padding: 20px 15px;
+}
+
+input.null {
+  height: 0;
+  width: 0;
+  border: none;
+  &:focus {
+    background: none;
+    outline: none;
+  }
 }

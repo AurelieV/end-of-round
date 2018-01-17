@@ -1,42 +1,51 @@
 @import '~../../styles/_color.scss';
 
 :host {
-    cursor: pointer;
-    &.new {
-        color: red;
-    }
+  cursor: pointer;
+  &.new {
+    color: red;
+  }
+}
+
+h3 {
+  margin-bottom: 0;
+  margin-top: 0;
 }
 
 .body {
-    .sending {
-        display: flex;
-        mat-form-field {
-            flex: 1;
-        }
-        button {
-            margin-left: 10px;
-        }
-        margin-bottom: 20px;
+  .sending {
+    display: flex;
+    mat-form-field {
+      flex: 1;
     }
+    button {
+      margin-left: 10px;
+    }
+  }
 }
 
 .messages-container {
-    max-height: 300px;
-    overflow: auto;
+  max-height: 300px;
+  overflow: auto;
 }
 .messages {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .message {
-    display: flex;
-    .login {
-        font-weight: bold;
-        color: $dark_purple;
-    }
-    .text {
-        flex: 1;
-        padding-left: 5px;
-    }
+  &:not(:first-child) {
+    margin-top: 10px;
+  }
+  .login {
+    font-weight: bold;
+    color: $dark_purple;
+  }
+  .time {
+    color: $dark_purple;
+    font-style: italic;
+  }
+  .text {
+    padding-left: 20px;
+  }
 }

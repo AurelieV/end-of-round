@@ -13,23 +13,26 @@
         </mat-menu>
     </div>
     <loader [isLoading]="isLoading"></loader>
-    <zone-info 
-        *ngFor="let zone of zones$ | async;trackBy:trackByFn"
-        class="zone"
-        (onView)="$event.stopPropagation(); goToZone(zone.key)"
-        (click)="displayZone(zone.key)"
-        [zone]="zone">
+    <zone-info *ngFor="let zone of zones$ | async;trackBy:trackByFn" class="zone" (onView)="$event.stopPropagation(); goToZone(zone.key)"
+        (click)="displayZone(zone.key)" [zone]="zone">
     </zone-info>
 </div>
 <div class="column2">
     <div class="tables">
         <div *ngIf="(isOnOutstandingsStep$ | async)">
-            <tables-info [tables]="tables$ | async" [displayActions]="true"></tables-info>
+            <div class="tables">
+                <table-info *ngFor="let table of tables$ | async;trackBy:trackByTableFn" [table]="table" class="block" [ngClass]="table.status"
+                    [isOnOutstandingsStep]="isOnOutstandingsStep$ | async" [zones]="zonesByKey$ | async"></table-info>
+            </div>
             <h3>Done</h3>
-            <tables-info [tables]="okTables$ | async" [displayActions]="false"></tables-info>
+            <div class="tables">
+                <table-info *ngFor="let table of okTables$ | async;trackBy:trackByTableFn" [table]="table" class="block" [ngClass]="table.status"
+                    [displayMode]="'minimal'" [isOnOutstandingsStep]="isOnOutstandingsStep$ | async" [zones]="zonesByKey$ | async"></table-info>
+            </div>
         </div>
     </div>
-    <zone [isInserted]="true" (onClose)="displayZoneId = ''" (onZoneChange)="displayZoneId = $event" [zoneId]="displayZoneId" *ngIf="displayZoneId"></zone>
+    <zone [isInserted]="true" (onClose)="displayZoneId = ''" (onZoneChange)="displayZoneId = $event" [zoneId]="displayZoneId"
+        *ngIf="displayZoneId"></zone>
 </div>
 <ng-template #confirmEnd>
     <div class="confirmation">
@@ -38,7 +41,9 @@
             <div class="warning">Are your sure you want this? All current informations will be erased</div>
             <form #confirmEndForm="ngForm">
                 <mat-checkbox [(ngModel)]="agreedToRestart" required name="agreed"></mat-checkbox>
-                <p>I understand the consequences of my act, and I am aware that this action can be really disruptive for all judges</p>
+                <p>I understand the consequences of my act, and I am aware that this action can be really disruptive for all
+                    judges
+                </p>
             </form>
         </div>
         <div class="actions" mat-dialog-actions>
@@ -54,7 +59,7 @@
             <ul>
                 <li *ngFor="let table of extraTimedTables$ | async">
                     <div class="extra-timed-table text" [ngClass]="table.status" [class.featured]="table.isFeatured">Table {{table.number}}:</div>
-                    <display-time [time]="table.time"></display-time>
+                    <display-time [table]="table"></display-time>
                 </li>
             </ul>
             <div *ngIf="(extraTimedTables$ | async)?.length === 0">No tables</div>
@@ -70,7 +75,9 @@
         <div mat-dialog-content>
             <div *ngFor="let zone of remainingTablesByZone$ | async">
                 <h3>{{zone.name}}</h3>
-                <p><span *ngFor="let table of zone.tables" class="text" [ngClass]="table.status">{{table.number}}, </span></p>
+                <p>
+                    <span *ngFor="let table of zone.tables" class="text" [ngClass]="table.status">{{table.number}}, </span>
+                </p>
             </div>
         </div>
         <div class="actions" mat-dialog-actions>

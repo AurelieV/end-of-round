@@ -1,25 +1,25 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core'
 
-import { TournamentService, CoveredTable } from '../tournament/tournament.service';
-import { Observable } from 'rxjs/Observable';
+import {TournamentService, CoveredTable} from '../tournament/tournament.service'
+import {Observable} from 'rxjs/Observable'
 
 @Component({
-    selector: 'coverage',
-    templateUrl: './coverage.component.html',
-    styleUrls: [ './coverage.component.scss' ]
+  selector: 'coverage',
+  templateUrl: './coverage.component.html',
+  styleUrls: ['./coverage.component.scss'],
 })
 export class CoverageComponent implements OnInit {
-    isLoading: boolean = true;
-    tables$: Observable<CoveredTable[]>;
+  isLoading: boolean = true
+  tables$: Observable<CoveredTable[]>
 
-    constructor(private tournamentService: TournamentService) {}
+  constructor(private tournamentService: TournamentService) {}
 
-    ngOnInit() {
-        this.tables$ = this.tournamentService.getCoverageTables();
-        this.tables$.take(1).subscribe(tables => this.isLoading = false);
-    }
+  ngOnInit() {
+    this.tables$ = this.tournamentService.getCoverageTables()
+    this.tables$.take(1).subscribe((tables) => (this.isLoading = false))
+  }
 
-    trackByFn(table: CoveredTable) {
-        return table.number;
-    }
+  trackByFn(table: CoveredTable) {
+    return table.number
+  }
 }

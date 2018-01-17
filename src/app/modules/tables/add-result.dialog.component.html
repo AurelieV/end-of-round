@@ -1,4 +1,6 @@
-<h3>Add result<span *ngIf="!displayTable"> for table {{tableId}}</span></h3>
+<h3>Add result
+    <span *ngIf="!displayTable"> for table {{tableId}}</span>
+</h3>
 <input class="null">
 <div *ngIf="displayTable">
     <mat-form-field>
@@ -30,7 +32,7 @@
         <div class="player">P2</div>
         <div class="result-container">
             <div class="result" (click)="incrementScore(2)">{{result.player2.score}}</div>
-            <button [disabled]="result.player2.score === 0"mat-raised-button color="primary" (click)="decrementScore(2)">-</button>
+            <button [disabled]="result.player2.score === 0" mat-raised-button color="primary" (click)="decrementScore(2)">-</button>
         </div>
         <div class="empty"></div>
         <div class="drop">

@@ -1,5 +1,7 @@
 <div class="number">{{table.number}}</div>
-<div class="time" *ngIf="table.time"><display-time [time]="table.time"></display-time></div>
+<div class="time">
+    <display-time [table]="table"></display-time>
+</div>
 <div class="result">{{table.result | result }}</div>
 <div class="assignated" *ngIf="table.assignated">{{table.assignated}}</div>
 <div class="actions" *ngIf="isOnOutstandingsStep">
@@ -7,6 +9,6 @@
         <mat-icon>&#xE851;</mat-icon>
     </button>
     <button mat-mini-fab color="primary" (click)="addResult($event)">
-            <mat-icon>&#xE862;</mat-icon>
+        <mat-icon>&#xE862;</mat-icon>
     </button>
 </div>

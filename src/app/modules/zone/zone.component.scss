@@ -1,123 +1,124 @@
 @import '~../../styles/_color.scss';
 
 :host {
-    display: block;
-    &:not(.inserted) {
-        padding-bottom: 100px;
-    }
-    &.inserted {
-        border: 1px solid black;
-    }
+  display: block;
+  &:not(.inserted) {
+    padding-bottom: 100px;
+  }
+  &.inserted {
+    border: 1px solid black;
+  }
 }
 
 :host {
-    &.inserted {
-        position: relative;
-        .call-help {
-            display: none;
-        }
-        zone-message {
-            display: none;
-        }
-        .tables {
-            padding-top: 10px;
-        }
-        .close-button {
-            position: absolute;
-            right: -20px;
-            top: -20px;
-            border: 1px solid black;
-            background: white;
-            mat-icon {
-                margin-top: -3px;
-            }
-        }
+  &.inserted {
+    position: relative;
+    .call-help {
+      display: none;
     }
-    &:not(.inserted) {
-        .header {
-            position: fixed;
-            left: 0;
-            right: 0;
-            top: 60px;
-        }
-        zone-message {
-            display: block;
-            margin-bottom: -9px;
-        }
-        .tables {
-            padding-top: 100px;
-            &.outstandings {
-                padding-top: 70px;
-            }
-        }
-        .close-button {
-            display: none;
-        }
+    zone-message {
+      display: none;
     }
+    .tables {
+      padding-top: 10px;
+    }
+    .close-button {
+      position: absolute;
+      right: -20px;
+      top: -20px;
+      border: 1px solid black;
+      background: white;
+      mat-icon {
+        margin-top: -3px;
+      }
+    }
+  }
+  &:not(.inserted) {
+    .header {
+      position: fixed;
+      left: 0;
+      right: 0;
+      top: 60px;
+    }
+    zone-message {
+      display: block;
+      margin-bottom: -9px;
+    }
+    .tables {
+      padding-top: 100px;
+      &.outstandings {
+        padding-top: 70px;
+      }
+    }
+    .close-button {
+      display: none;
+    }
+  }
 }
 .header {
-    padding-top: 5px;
-    padding-bottom: 5px;
-    padding-left: 10px;
-    padding-right: 10px;
-    background: $light_purple;
-    z-index: 10;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  background: $light_purple;
+  z-index: 10;
 
-    .first-line {
-        display: flex;
-        align-items: center;
-        margin-bottom: 4px;
-        margin-top: 4px;
-    }
+  .first-line {
+    display: flex;
+    align-items: center;
+    margin-bottom: 4px;
+    margin-top: 4px;
+  }
 
-    .actions {
-        display: flex;
-        align-items: center;
-        margin-left: 5px;
-        button:not(:last-child), zone-message {
-            margin-right: 15px;
-        }
+  .actions {
+    display: flex;
+    align-items: center;
+    margin-left: 5px;
+    button:not(:last-child),
+    zone-message {
+      margin-right: 15px;
     }
+  }
 }
 
 .message {
-    padding: 10px;
-    margin-top: 20px;
+  padding: 10px;
+  margin-top: 20px;
 }
 .title {
-    flex: 1;
-    .name {
-        font-style: italic;
-        font-weight: bold;
-        font-size: 15px;
-        text-transform: uppercase;
-        margin-right: 5px;
-    }
-    display: flex;
-    align-items: center;
-    cursor: pointer;
+  flex: 1;
+  .name {
+    font-style: italic;
+    font-weight: bold;
+    font-size: 15px;
+    text-transform: uppercase;
+    margin-right: 5px;
+  }
+  display: flex;
+  align-items: center;
+  cursor: pointer;
 }
 
 .tables {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .call-help {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    &.other-need-help {
-        border: 3px solid red;
-    }
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  &.other-need-help {
+    border: 3px solid red;
+  }
 }
 
 span.need-help {
-    color: red;
+  color: red;
 }
 
 .separator {
-    width: 100%;
-    margin-top: 30px;
+  width: 100%;
+  margin-top: 30px;
 }

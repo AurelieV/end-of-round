@@ -3,13 +3,11 @@
 <div class="tables">
     <div class="table block" [ngClass]="table.status" [class.featured]="table.isFeatured" *ngFor="let table of tables$ | async; trackByFn">
         <div class="number">Table {{table.number}}</div>
-        <div class="player"
-            [ngClass]="{ win: table.result && table.result.player1.score > table.result.player2.score}">
+        <div class="player" [ngClass]="{ win: table.result && table.result.player1.score > table.result.player2.score}">
             {{table.coverage.player1}} ({{table.coverage.player1Score}})
         </div>
         <div class="separator">vs</div>
-        <div class="player"
-            [ngClass]="{ win: table.result && table.result.player1.score < table.result.player2.score}">
+        <div class="player" [ngClass]="{ win: table.result && table.result.player1.score < table.result.player2.score}">
             {{table.coverage.player2}} ({{table.coverage.player2Score}})
         </div>
         <div class="result">

@@ -5,14 +5,10 @@
     <form #form="ngForm">
         <ng-template [ngIf]="displayOptions">
             <div>
-                <mat-checkbox
-                color="primary"
-                [(ngModel)]="data.replaceExisting" name="parsing">Replace existing</mat-checkbox>
+                <mat-checkbox color="primary" [(ngModel)]="data.replaceExisting" name="parsing">Replace existing</mat-checkbox>
             </div>
             <div>
-                <mat-checkbox
-                color="primary"
-                [(ngModel)]="data.useWalterParsing" name="parsing">Copy from Walter</mat-checkbox>
+                <mat-checkbox color="primary" [(ngModel)]="data.useWalterParsing" name="parsing">Copy from Walter</mat-checkbox>
             </div>
             <div>
                 <p>If you use the Walter options, please also copy the header of the table</p>

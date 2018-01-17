@@ -8,13 +8,18 @@
             <mat-form-field>
                 <input type="text" matInput name="message" placeholder="Type your message" [(ngModel)]="newMessage">
             </mat-form-field>
-            <button type="submit" mat-mini-fab color="primary" (click)="addMessage()"><mat-icon>&#xE163;</mat-icon></button>
+            <button type="submit" mat-mini-fab color="primary" (click)="addMessage()">
+                <mat-icon>&#xE163;</mat-icon>
+            </button>
         </form>
         <div class="messages-container">
             <div class="messages">
                 <div class="message" *ngFor="let message of messages$ | async">
-                    <span class="login">{{message.login}}:</span>
-                    <span class="text">{{message.message}}</span> 
+                    <div class="info">
+                        <span class="login">{{message.login}}</span>
+                        <span class="time">({{-message.timestamp | ago}}):</span>
+                    </div>
+                    <div class="text">{{message.message}}</div>
                 </div>
             </div>
         </div>

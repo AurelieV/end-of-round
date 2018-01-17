@@ -22,14 +22,17 @@
             </mat-form-field>
             <br>
             <mat-checkbox [(ngModel)]="data.isTeam" name="isTeam">Is a team event?</mat-checkbox>
-            <br><br>
+            <br>
+            <br>
             <label>Information</label>
             <textarea class="full" type="text" [(ngModel)]="data.information" name="information"></textarea>
             <div class="zones">
                 <h4>Zones</h4>
                 <div class="zone" *ngFor="let zone of zones; let i = index;">
                     <div class="zone-actions">
-                        <button type="button" mat-button color="primary" (click)="deleteZone(i)" [disabled]="zones.length === 1"><mat-icon>&#xE872;</mat-icon></button>
+                        <button type="button" mat-button color="primary" (click)="deleteZone(i)" [disabled]="zones.length === 1">
+                            <mat-icon>&#xE872;</mat-icon>
+                        </button>
                     </div>
                     <mat-form-field>
                         <input name="zone-name-{{i}}" matInput placeholder="Name" type="string" required [(ngModel)]="zone.name">
@@ -49,7 +52,9 @@
                             <mat-form-field>
                                 <input name="zone-{{i}}-end-{{j}}" matInput placeholder="End table number" type="number" required [(ngModel)]="section.end">
                             </mat-form-field>
-                            <button type="button" mat-button color="primary" (click)="deleteSection(i, j)" [disabled]="zone.tables.length === 1"><mat-icon>&#xE872;</mat-icon></button>
+                            <button type="button" mat-button color="primary" (click)="deleteSection(i, j)" [disabled]="zone.tables.length === 1">
+                                <mat-icon>&#xE872;</mat-icon>
+                            </button>
                         </div>
                         <div class="section-actions">
                             <button type="button" mat-button color="primary" (click)="addSection(i)">Add section</button>
@@ -62,7 +67,9 @@
         </form>
     </div>
     <div class="actions">
-        <button mat-raised-button *ngIf="!create" color="warn" (click)="delete()"><mat-icon>&#xE872;</mat-icon></button>
+        <button mat-raised-button *ngIf="!create" color="warn" (click)="delete()">
+            <mat-icon>&#xE872;</mat-icon>
+        </button>
         <button mat-raised-button color="accent" (click)="cancel()">Cancel</button>
         <button mat-raised-button color="primary" (click)="addOrEdit()" [disabled]="!createForm.form.valid">
             <span *ngIf="create">Create</span>
