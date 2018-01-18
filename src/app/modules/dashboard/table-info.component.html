@@ -1,9 +1,8 @@
 <div class="content-wrapper">
     <div class="header">
-        <mat-checkbox #test="matCheckbox" color="primary" [ngModel]="table.hasResult" (ngModelChange)="setHasResult(table.number, $event)"></mat-checkbox>
-        test: {{test.checked}}
+        <mat-checkbox #test="matCheckbox" color="primary" [(ngModel)]="table.hasResult" (change)="setHasResult(table.number, $event.checked)"></mat-checkbox>
         <div class="title-block">
-            <div class="title">Table {{table.number}} {{table.hasResult}}</div>
+            <div class="title">Table {{table.number}}</div>
             <div class="subtitle" *ngIf="!table.isFeatured">({{zones && zones[table.zoneId] && zones[table.zoneId].name}})</div>
             <div class="subtitle" *ngIf="table.isFeatured">(Feature)</div>
         </div>

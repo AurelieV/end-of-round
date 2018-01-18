@@ -65,8 +65,9 @@ export class TableInfoComponent implements OnDestroy, OnChanges {
   ) {}
 
   setHasResult(tableId: string, value: boolean) {
-    console.log('pouet', tableId, value)
-    this.tournamentService.updateTable(tableId, {hasResult: value})
+    this.tournamentService.updateTable(tableId, {
+      hasResult: value,
+    })
   }
 
   addResult(e: Event, table: Table) {
@@ -97,7 +98,6 @@ export class TableInfoComponent implements OnDestroy, OnChanges {
       this.cancelTimeout()
     }
     if (changes.table) {
-      console.log('changes', changes.table.currentValue)
       const current = changes.table.currentValue
       const previous = changes.table.previousValue
       if ((!previous || current.doneTime !== previous.doneTime) && !this.warn) {
