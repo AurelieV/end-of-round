@@ -122,3 +122,17 @@ span.need-help {
   width: 100%;
   margin-top: 30px;
 }
+
+.outstandingLoader {
+  position: absolute;
+  top: 170px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  background: white;
+  flex-direction: column;
+}

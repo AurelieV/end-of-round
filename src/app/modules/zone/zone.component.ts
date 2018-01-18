@@ -31,6 +31,7 @@ import {
 } from './../tournament/tournament.service'
 import {TimeService} from '../time/time.service'
 import {ZoneService} from './zone.service'
+import {NotificationService} from '../../notification.service'
 
 interface Filter {
   onlyPlaying: boolean
@@ -49,7 +50,7 @@ export class ZoneComponent implements OnInit, OnChanges, OnDestroy {
   @Output() onClose = new EventEmitter()
   @Output() onZoneChange = new EventEmitter()
 
-  private subscription: Subscription
+  private subscriptions: Subscription[] = []
 
   zone$: Observable<Zone>
   otherZones$: Observable<Zone[]>
@@ -64,6 +65,7 @@ export class ZoneComponent implements OnInit, OnChanges, OnDestroy {
   isAnOtherNeedHelp$: Observable<boolean>
   isTeam$: Observable<boolean>
   needHelp$: Observable<boolean>
+  isLoadingOutstanding: boolean = false
 
   @ViewChild('confirm') confirmTemplate: TemplateRef<any>
   confirmation: MatDialogRef<any>
@@ -85,18 +87,19 @@ export class ZoneComponent implements OnInit, OnChanges, OnDestroy {
     private timeService: TimeService,
     private zoneService: ZoneService,
     private zone: NgZone,
-    private tablesService: TablesService
+    private tablesService: TablesService,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit() {
-    this.subscription = this.route.params
-      .map((params) => params.zoneKey)
-      .subscribe((id) => {
+    this.subscriptions.push(
+      this.route.params.map((params) => params.zoneKey).subscribe((id) => {
         if (!id) return
         this.zoneService.key = id
         this.zoneId = id
         this.needHelp$ = this.tournamentService.getNeedHelp(id)
       })
+    )
     this.isOnOutstandingsStep$ = this.tournamentService.isOnOutstandingsStep()
     this.zone$ = this.zoneService.getZone()
     this.isTeam$ = this.tournamentService.isTeam()
@@ -141,6 +144,29 @@ export class ZoneComponent implements OnInit, OnChanges, OnDestroy {
     this.isAnOtherNeedHelp$ = this.otherNeedHelp$.map((helps) => {
       return Object.keys(helps).filter((z) => helps[z]).length > 0
     })
+
+    this.subscriptions.push(
+      this.zone$.subscribe((zone) => {
+        // Only zone key, object is empty
+        if (Object.keys(zone).length === 1) {
+          this.router.navigate(['/'])
+          this.notificationService.notify(
+            'Zone does not exist any more, redirecting you to home'
+          )
+        }
+      })
+    )
+
+    this.subscriptions.push(
+      this.isOnOutstandingsStep$
+        .distinctUntilChanged((x, y) => x === y)
+        .subscribe((isOnOutstanding) => {
+          if (isOnOutstanding && !this.isLoadingOutstanding) {
+            this.isLoadingOutstanding = true
+            setTimeout(() => (this.isLoadingOutstanding = false), 3000)
+          }
+        })
+    )
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -230,6 +256,6 @@ export class ZoneComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.subscription) this.subscription.unsubscribe()
+    this.subscriptions.forEach((s) => s.unsubscribe())
   }
 }

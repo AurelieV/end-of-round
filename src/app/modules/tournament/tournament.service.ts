@@ -304,7 +304,8 @@ export class TournamentService extends DatabaseAccessor {
   }
 
   restart() {
-    this.db.object(`/outstandings/${this.key}`).set('')
+    const key = this.key
+    this.db.object(`/outstandings/${key}`).set('')
     this.getTournament()
       .take(1)
       .subscribe((tournament) => {
@@ -314,6 +315,7 @@ export class TournamentService extends DatabaseAccessor {
           .subscribe((tables) => {
             const newTables = tables.reduce(
               (tables, table) => {
+                if (table.number === undefined) return tables
                 tables[table.number] = {
                   time: 0,
                   teamTime: {
@@ -340,14 +342,14 @@ export class TournamentService extends DatabaseAccessor {
               },
               {} as {[number: string]: TableData}
             )
-            this.db.object(`/tables/${this.key}`).set(newTables)
+            this.db.object(`/tables/${key}`).set(newTables)
           })
       })
     this.getZones()
       .take(1)
       .subscribe((zones) => {
         zones.forEach((zone) => {
-          this.db.object(`/messages/${this.key}/${zone.key}`).set('')
+          this.db.object(`/messages/${key}/${zone.key}`).set('')
         })
       })
   }

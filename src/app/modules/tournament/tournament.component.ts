@@ -1,3 +1,4 @@
+import {NotificationService} from './../../notification.service'
 import {ConnectionService} from '../user/connection.service'
 import {Observable} from 'rxjs/Observable'
 import {Subscription} from 'rxjs/Subscription'
@@ -21,7 +22,9 @@ export class TournamentComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
-    private tournamentService: TournamentService
+    private tournamentService: TournamentService,
+    private router: Router,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit() {
@@ -31,6 +34,16 @@ export class TournamentComponent implements OnInit, OnDestroy {
         const key = params.get('tournamentKey')
         if (key) {
           this.tournamentService.key = key
+        }
+      })
+    )
+    this.subscriptions.push(
+      this.tournament$.subscribe((tournament) => {
+        if (Object.keys(tournament).length === 1) {
+          this.router.navigate(['/'])
+          this.notificationService.notify(
+            'Tournament does not exist any more, redirecting you to home'
+          )
         }
       })
     )
