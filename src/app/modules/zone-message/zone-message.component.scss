@@ -1,9 +1,24 @@
 @import '~../../styles/_color.scss';
 
+@keyframes bounce {
+  from {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
 :host {
   cursor: pointer;
   &.new {
-    color: red;
+    mat-icon {
+      color: red;
+      animation: bounce 1s ease infinite;
+    }
   }
 }
 
