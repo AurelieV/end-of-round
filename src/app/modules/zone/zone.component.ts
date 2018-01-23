@@ -21,6 +21,7 @@ import {AngularFireDatabase} from 'angularfire2/database'
 import {MatDialog, MatDialogRef} from '@angular/material'
 import 'rxjs/add/operator/take'
 import 'rxjs/add/operator/do'
+import 'rxjs/add/operator/pairwise'
 import {handleReturn} from '../shared/handle-return'
 import {Subscription} from 'rxjs/Subscription'
 
@@ -159,9 +160,15 @@ export class ZoneComponent implements OnInit, OnChanges, OnDestroy {
 
     this.subscriptions.push(
       this.isOnOutstandingsStep$
-        .distinctUntilChanged((x, y) => x === y)
-        .subscribe((isOnOutstanding) => {
-          if (isOnOutstanding && !this.isLoadingOutstanding) {
+        .pairwise()
+        .subscribe(([previousisOnOustanding, currentisOnOutstanding]) => {
+          // Return if we are already in outstanding step
+          if (previousisOnOustanding) return
+
+          // Return if you are currently displaying the loader
+          if (this.isLoadingOutstanding) return
+
+          if (currentisOnOutstanding) {
             this.isLoadingOutstanding = true
             setTimeout(() => (this.isLoadingOutstanding = false), 3000)
           }
