@@ -88,6 +88,7 @@ export class TableInfoComponent implements OnDestroy, OnChanges {
     this.warn =
       this.table &&
       this.isOnOutstandingsStep &&
+      !this.table.hasResult &&
       this.table.status === 'done' &&
       moment().diff(moment(this.table.doneTime), 'minute') > 3
   }
