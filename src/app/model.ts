@@ -8,6 +8,7 @@ export interface TournamentData {
 
 export interface Tournament extends TournamentData {
   key: string
+  clockEnd?: number
 }
 
 export interface Section {

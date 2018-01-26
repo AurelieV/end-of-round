@@ -306,6 +306,7 @@ export class TournamentService extends DatabaseAccessor {
   restart() {
     const key = this.key
     this.db.object(`/outstandings/${key}`).set('')
+    this.setClock(null)
     this.getTournament()
       .take(1)
       .subscribe((tournament) => {
@@ -440,6 +441,17 @@ export class TournamentService extends DatabaseAccessor {
           .object(`/zones/${this.key}`)
           .valueChanges<{[key: string]: Zone}>(),
       {}
+    )
+  }
+
+  setClock(clockEnd: number) {
+    return this.db.object(`/clock/${this.key}`).set(clockEnd)
+  }
+
+  getClock(): Observable<number> {
+    return this.doWithKey<number>(
+      (key) => this.db.object(`/clock/${this.key}`).valueChanges<number>(),
+      null
     )
   }
 }

@@ -28,7 +28,7 @@ $mobile: 370px;
   }
   background: #cccce5;
   position: fixed;
-  top: 60px;
+  top: 90px;
   bottom: 0;
   left: 0;
   padding-top: 10px;
@@ -126,4 +126,10 @@ h3 {
 
 .menu-button {
   margin-right: 10px;
+}
+
+.set-clock {
+  form {
+    margin-top: 40px;
+  }
 }

@@ -1,0 +1,20 @@
+@import '~../../styles/_color.scss';
+
+.clock {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 60px;
+  padding-bottom: 10px;
+  z-index: 10;
+  height: 20px;
+  background: $dark_purple;
+  color: $light_purple;
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.content {
+  padding-top: 20px;
+}

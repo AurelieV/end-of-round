@@ -2,6 +2,7 @@ import {NotificationService} from './../../notification.service'
 import {ConnectionService} from '../user/connection.service'
 import {Observable} from 'rxjs/Observable'
 import {Subscription} from 'rxjs/Subscription'
+import 'rxjs/add/observable/timer'
 import {
   ActivatedRoute,
   Router,
@@ -12,13 +13,18 @@ import {Component, OnInit, OnDestroy} from '@angular/core'
 
 import {TournamentService, Tournament} from './tournament.service'
 
+import * as moment from 'moment'
+
 @Component({
-  template: '<router-outlet></router-outlet>',
+  templateUrl: './tournament.component.html',
   selector: 'tournament',
+  styleUrls: ['./tournament.component.scss'],
 })
 export class TournamentComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = []
   tournament$: Observable<Tournament>
+  clockEnd$: Observable<number>
+  timer$: Observable<string>
 
   constructor(
     private route: ActivatedRoute,
@@ -47,6 +53,22 @@ export class TournamentComponent implements OnInit, OnDestroy {
         }
       })
     )
+    this.clockEnd$ = this.tournamentService.getClock()
+    this.timer$ = this.clockEnd$.switchMap((time) => {
+      if (!time) return Observable.of('50:00')
+      const now = moment().valueOf()
+      return Observable.timer(1, 1000).map((tick) => {
+        const duration = moment.duration(time - now - tick * 1000)
+        let minutes = duration.minutes()
+        let seconds = duration.seconds()
+        const negative = seconds < 0 || minutes < 0
+        minutes = Math.abs(minutes)
+        seconds = Math.abs(seconds)
+        return `${negative ? '-' : ''}${minutes < 10 ? '0' : ''}${minutes}:${
+          seconds < 10 ? '0' : ''
+        }${seconds}`
+      })
+    })
   }
 
   ngOnDestroy() {

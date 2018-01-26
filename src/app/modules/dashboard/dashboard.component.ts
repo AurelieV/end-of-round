@@ -7,6 +7,8 @@ import 'rxjs/add/operator/take'
 import 'rxjs/add/observable/combineLatest'
 import {handleReturn} from '../shared/handle-return'
 
+import * as moment from 'moment'
+
 import {TimeService} from './../time/time.service'
 import {
   TournamentService,
@@ -45,6 +47,11 @@ export class DashboardComponent implements OnInit {
 
   @ViewChild('sendMessage') sendMessageTemplate: TemplateRef<any>
   sendMessageDialog: MatDialogRef<any>
+
+  @ViewChild('clock') clockTemplate: TemplateRef<any>
+  clockDialog: MatDialogRef<any>
+  clockMinutes: number
+  clockSeconds: number
 
   constructor(
     private tournamentService: TournamentService,
@@ -175,6 +182,17 @@ export class DashboardComponent implements OnInit {
     this.remainingTablesDialog.close()
   }
 
+  openClock() {
+    this.clockDialog = this.md.open(this.clockTemplate)
+    handleReturn(this.clockDialog)
+    this.clockMinutes = 50
+    this.clockSeconds = 0
+  }
+
+  closeClock() {
+    this.clockDialog.close()
+  }
+
   trackByFn(val: Zone) {
     return val.key
   }
@@ -201,5 +219,21 @@ export class DashboardComponent implements OnInit {
     form.reset()
     this.tournamentService.sendMessageToAll(message)
     this.sendMessageDialog.close()
+  }
+
+  setClock() {
+    const now = moment()
+    this.tournamentService.setClock(
+      now
+        .add(this.clockMinutes, 'minutes')
+        .add(this.clockSeconds, 'seconds')
+        .valueOf()
+    )
+    this.clockDialog.close()
+  }
+
+  resetClock() {
+    this.tournamentService.setClock(null)
+    this.clockDialog.close()
   }
 }
