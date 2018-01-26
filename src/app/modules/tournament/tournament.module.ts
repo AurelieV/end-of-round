@@ -58,6 +58,12 @@ export const routes: Routes = [
             path: 'coverage',
             loadChildren: '../coverage/coverage.module#CoverageModule',
           },
+          {
+            path: 'scorekeep',
+            loadChildren: '../scorekeeper/scorekeeper.module#ScoreKeeperModule',
+            data: {section: 'Scorekeeper'},
+            canActivate: [AuthenticatedGuard],
+          },
         ],
       },
     ],

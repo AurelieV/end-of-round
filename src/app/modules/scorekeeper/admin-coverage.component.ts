@@ -7,6 +7,7 @@ import {Observable} from 'rxjs/Observable'
 
 import {TournamentService, CoveredTable} from '../tournament/tournament.service'
 import {FormControl} from '@angular/forms'
+import {Printer} from './print.service'
 
 @Component({
   selector: 'admin-coverage',
@@ -30,12 +31,14 @@ export class AdminCoverageComponent implements OnInit {
   private dialogRef: MatDialogRef<any>
 
   @ViewChild('import') importTemplate: TemplateRef<any>
+  @ViewChild('print') printTemplate: TemplateRef<any>
   @ViewChild('form') form
 
   constructor(
     private md: MatDialog,
     private tournamentService: TournamentService,
-    private tablesService: TablesService
+    private tablesService: TablesService,
+    private printer: Printer
   ) {}
 
   ngOnInit() {
@@ -114,5 +117,28 @@ export class AdminCoverageComponent implements OnInit {
 
   trackByFn(table: CoveredTable) {
     return table.number
+  }
+
+  openPrint() {
+    const dialogRef = this.md.open(this.printTemplate)
+    handleReturn(dialogRef)
+    this.dialogRef = dialogRef
+  }
+
+  doPrint(roundNumber: number) {
+    if (this.dialogRef) {
+      this.dialogRef.close()
+    }
+    this.tournamentService
+      .getCoverageTables()
+      .take(1)
+      .subscribe((tables) => {
+        this.tournamentService
+          .getTournament()
+          .take(1)
+          .subscribe((tournament) => {
+            this.printer.print(tournament, tables, roundNumber)
+          })
+      })
   }
 }

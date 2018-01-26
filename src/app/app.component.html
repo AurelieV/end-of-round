@@ -29,11 +29,11 @@
     </a>
     <a mat-menu-item *ngIf="state.isOnTournament && !state.isOnCoverage" [routerLink]="['tournament', state.tournamentKey, 'coverage']">
         <mat-icon>&#xE02C;</mat-icon>
-        <span>Go to coverage page</span>
+        <span>Go to Coverage page</span>
     </a>
-    <a mat-menu-item *ngIf="state.isOnDashboard || state.isOnCoverage" [routerLink]="['tournament', state.tournamentKey, 'coverage', 'admin']">
-        <mat-icon>&#xE02C;</mat-icon>
-        <span>Edit coverage page</span>
+    <a mat-menu-item *ngIf="state.isOnTournament && !state.isOnScorekeeper" [routerLink]="['tournament', state.tournamentKey, 'scorekeep']">
+        <mat-icon>&#xE30A;</mat-icon>
+        <span>Go to Scorekeeper page</span>
     </a>
     <a mat-menu-item routerLink="/documentation">
         <mat-icon>&#xE887;</mat-icon>

@@ -5,6 +5,7 @@ import {Injectable} from '@angular/core'
 import {TournamentService, Table} from '../tournament/tournament.service'
 import {AddResultDialogComponent} from './add-result.dialog.component'
 import {handleReturn} from '../shared/handle-return'
+import {AddTablesDialogComponent} from './add-tables.dialog.component'
 
 @Injectable()
 export class TablesService {
@@ -53,6 +54,41 @@ export class TablesService {
         status: 'covered',
       })
       this.tournamentService.addJudge(judge)
+    })
+  }
+
+  addOutstandings() {
+    const dialogRef = this.md.open(AddTablesDialogComponent)
+    handleReturn(dialogRef)
+    dialogRef.componentInstance.title = 'Add outstandings tables'
+    dialogRef.componentInstance.warning =
+      '/!\\ Be aware that this will delete all others table from the current round'
+    dialogRef.afterClosed().subscribe((val) => {
+      if (!val) return
+      this.tournamentService.addOutstandings(val.tables, val.replaceExisting)
+    })
+  }
+
+  addFeatured() {
+    const dialogRef = this.md.open(AddTablesDialogComponent)
+    handleReturn(dialogRef)
+    dialogRef.componentInstance.title = 'Add featured tables'
+    dialogRef.afterClosed().subscribe((val) => {
+      if (!val) return
+      this.tournamentService.addFeatured(val.tables, val.replaceExisting)
+    })
+  }
+
+  checkOutstandings() {
+    const dialogRef = this.md.open(AddTablesDialogComponent)
+    handleReturn(dialogRef)
+    dialogRef.componentInstance.title = 'Check outstandings tables'
+    dialogRef.componentInstance.displayOptions = false
+    dialogRef.afterClosed().subscribe((val) => {
+      if (!val) return
+      val.tables.forEach((tableId) => {
+        this.tournamentService.updateTable(tableId, {hasResult: true})
+      })
     })
   }
 }

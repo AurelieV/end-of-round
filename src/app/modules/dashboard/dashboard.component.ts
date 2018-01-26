@@ -1,3 +1,4 @@
+import {TablesService} from './../tables/tables.service'
 import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core'
 import {Router, ActivatedRoute} from '@angular/router'
 import {MatDialogRef, MatDialog} from '@angular/material'
@@ -6,7 +7,6 @@ import 'rxjs/add/operator/take'
 import 'rxjs/add/observable/combineLatest'
 import {handleReturn} from '../shared/handle-return'
 
-import {AddTablesDialogComponent} from './add-tables.dialog.component'
 import {TimeService} from './../time/time.service'
 import {
   TournamentService,
@@ -51,7 +51,8 @@ export class DashboardComponent implements OnInit {
     private router: Router,
     private md: MatDialog,
     private route: ActivatedRoute,
-    private timeService: TimeService
+    private timeService: TimeService,
+    private tableService: TablesService
   ) {}
 
   ngOnInit() {
@@ -136,38 +137,15 @@ export class DashboardComponent implements OnInit {
   }
 
   addOutstandings() {
-    const dialogRef = this.md.open(AddTablesDialogComponent)
-    handleReturn(dialogRef)
-    dialogRef.componentInstance.title = 'Add outstandings tables'
-    dialogRef.componentInstance.warning =
-      '/!\\ Be aware that this will delete all others table from the current round'
-    dialogRef.afterClosed().subscribe((val) => {
-      if (!val) return
-      this.tournamentService.addOutstandings(val.tables, val.replaceExisting)
-    })
+    this.tableService.addOutstandings()
   }
 
   addFeatured() {
-    const dialogRef = this.md.open(AddTablesDialogComponent)
-    handleReturn(dialogRef)
-    dialogRef.componentInstance.title = 'Add featured tables'
-    dialogRef.afterClosed().subscribe((val) => {
-      if (!val) return
-      this.tournamentService.addFeatured(val.tables, val.replaceExisting)
-    })
+    this.tableService.addFeatured()
   }
 
   checkOutstandings() {
-    const dialogRef = this.md.open(AddTablesDialogComponent)
-    handleReturn(dialogRef)
-    dialogRef.componentInstance.title = 'Check outstandings tables'
-    dialogRef.componentInstance.displayOptions = false
-    dialogRef.afterClosed().subscribe((val) => {
-      if (!val) return
-      val.tables.forEach((tableId) => {
-        this.tournamentService.updateTable(tableId, {hasResult: true})
-      })
-    })
+    this.tableService.checkOutstandings()
   }
 
   cancelRestart() {

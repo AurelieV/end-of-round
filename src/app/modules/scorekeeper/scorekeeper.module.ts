@@ -1,6 +1,9 @@
 import {TablesModule} from './../tables/tables.module'
 import {FormsModule} from '@angular/forms'
+import {NgModule} from '@angular/core'
+import {RouterModule, Routes} from '@angular/router'
 import {
+  MatTabsModule,
   MatDialogModule,
   MatButtonModule,
   MatInputModule,
@@ -10,46 +13,34 @@ import {
   MatMenuModule,
   MatSelectModule,
 } from '@angular/material'
-import {RouterModule, Routes} from '@angular/router'
-import {NgModule} from '@angular/core'
 
 import {SharedModule} from '../shared/shared.module'
+import {ScorekeeperComponent} from './scorekeeper.component'
+import {AdminCoverageComponent} from './admin-coverage.component'
+import {Printer} from './print.service'
 
 /* Components */
-import {CoverageComponent} from './coverage.component'
 
-export const routes: Routes = [
-  {
-    path: '',
-    children: [
-      {
-        path: '',
-        component: CoverageComponent,
-        pathMatch: 'full',
-        data: {section: 'Coverage'},
-      },
-    ],
-  },
+const routes: Routes = [
+  {path: '', pathMatch: 'full', component: ScorekeeperComponent},
 ]
 
 @NgModule({
   imports: [
     SharedModule,
     RouterModule.forChild(routes),
+    MatTabsModule,
     FormsModule,
-
-    TablesModule,
-
-    /* Angular material */
     MatDialogModule,
     MatButtonModule,
     MatInputModule,
-    MatToolbarModule,
     MatIconModule,
     MatRadioModule,
     MatMenuModule,
     MatSelectModule,
+    TablesModule,
   ],
-  declarations: [CoverageComponent],
+  declarations: [ScorekeeperComponent, AdminCoverageComponent],
+  providers: [Printer],
 })
-export class CoverageModule {}
+export class ScoreKeeperModule {}

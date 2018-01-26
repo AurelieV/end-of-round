@@ -1,0 +1,24 @@
+<mat-tab-group>
+  <mat-tab label="Outstandings">
+    <div class="actions">
+      <button (click)="addFeatured()" mat-raised-button color="primary">Add featured</button>
+      <button (click)="addOutstandings()" mat-raised-button color="primary">Add oustandings</button>
+    </div>
+    <div>
+      <div *ngIf="(isOnOutstandingsStep$ | async)">
+        <div class="tables">
+          <table-info *ngFor="let table of tables$ | async;trackBy:trackByTableFn" [table]="table" class="block" [ngClass]="table.status"
+            displayMode="minimal" [isOnOutstandingsStep]="isOnOutstandingsStep$ | async" [zones]="zonesByKey$ | async"></table-info>
+        </div>
+        <h3>Done</h3>
+        <div class="tables">
+          <table-info *ngFor="let table of okTables$ | async;trackBy:trackByTableFn" [table]="table" class="block" [ngClass]="table.status"
+            displayMode="minimal" [isOnOutstandingsStep]="isOnOutstandingsStep$ | async" [zones]="zonesByKey$ | async"></table-info>
+        </div>
+      </div>
+    </div>
+  </mat-tab>
+  <mat-tab label="Coverage">
+    <admin-coverage></admin-coverage>
+  </mat-tab>
+</mat-tab-group>

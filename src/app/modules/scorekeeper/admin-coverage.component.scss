@@ -60,3 +60,13 @@ form {
     justify-content: flex-end;
   }
 }
+
+:host {
+  display: flex;
+}
+
+.column {
+  flex: 1;
+  padding-left: 10px;
+  padding-right: 10px;
+}

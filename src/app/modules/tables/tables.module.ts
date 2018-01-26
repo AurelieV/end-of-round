@@ -1,3 +1,5 @@
+import {TimeModule} from './../time/time.module'
+import {TableInfoComponent} from './table-info.component'
 import {AssignJudgeComponent} from './assign-judge.component'
 import {
   MatDialogModule,
@@ -13,6 +15,7 @@ import {SharedModule} from '../shared/shared.module'
 import {FormsModule} from '@angular/forms'
 
 import {TablesService} from './tables.service'
+import {AddTablesDialogComponent} from './add-tables.dialog.component'
 
 @NgModule({
   imports: [
@@ -24,10 +27,25 @@ import {TablesService} from './tables.service'
     MatInputModule,
     MatCheckboxModule,
     MatSelectModule,
+    TimeModule,
   ],
-  declarations: [AddResultDialogComponent, AssignJudgeComponent],
+  declarations: [
+    AddResultDialogComponent,
+    AssignJudgeComponent,
+    AddTablesDialogComponent,
+    TableInfoComponent,
+  ],
   providers: [TablesService],
-  exports: [AddResultDialogComponent, AssignJudgeComponent],
-  entryComponents: [AddResultDialogComponent, AssignJudgeComponent],
+  exports: [
+    AddResultDialogComponent,
+    AssignJudgeComponent,
+    AddTablesDialogComponent,
+    TableInfoComponent,
+  ],
+  entryComponents: [
+    AddResultDialogComponent,
+    AssignJudgeComponent,
+    AddTablesDialogComponent,
+  ],
 })
 export class TablesModule {}

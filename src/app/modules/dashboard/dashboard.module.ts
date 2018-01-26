@@ -1,3 +1,4 @@
+import {TablesModule} from './../tables/tables.module'
 import {
   MatDialogModule,
   MatInputModule,
@@ -18,9 +19,7 @@ import {TimeModule} from './../time/time.module'
 
 /* Components */
 import {DashboardComponent} from './dashboard.component'
-import {AddTablesDialogComponent} from './add-tables.dialog.component'
 import {ZoneInfoComponent} from './zone-info.component'
-import {TableInfoComponent} from './table-info.component'
 
 const routes: Routes = [
   {path: '', pathMatch: 'full', component: DashboardComponent},
@@ -34,6 +33,7 @@ const routes: Routes = [
     ZoneMessageModule,
     ZoneModule,
     TimeModule,
+    TablesModule,
 
     // Angular material
     MatDialogModule,
@@ -43,12 +43,6 @@ const routes: Routes = [
     MatCheckboxModule,
     MatMenuModule,
   ],
-  declarations: [
-    DashboardComponent,
-    AddTablesDialogComponent,
-    ZoneInfoComponent,
-    TableInfoComponent,
-  ],
-  entryComponents: [AddTablesDialogComponent],
+  declarations: [DashboardComponent, ZoneInfoComponent],
 })
 export class DashboardModule {}

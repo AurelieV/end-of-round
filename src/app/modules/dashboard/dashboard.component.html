@@ -27,7 +27,7 @@
             <h3>Done</h3>
             <div class="tables">
                 <table-info *ngFor="let table of okTables$ | async;trackBy:trackByTableFn" [table]="table" class="block" [ngClass]="table.status"
-                    [displayMode]="'minimal'" [isOnOutstandingsStep]="isOnOutstandingsStep$ | async" [zones]="zonesByKey$ | async"></table-info>
+                    displayMode="minimal" [isOnOutstandingsStep]="isOnOutstandingsStep$ | async" [zones]="zonesByKey$ | async"></table-info>
             </div>
         </div>
     </div>

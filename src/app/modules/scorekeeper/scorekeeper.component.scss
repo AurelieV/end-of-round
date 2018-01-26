@@ -1,0 +1,22 @@
+.actions {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  button:not(:first-child) {
+    margin-left: 10px;
+  }
+}
+
+.tables {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: center;
+
+  table-info {
+    margin: 5px;
+  }
+}
+
+admin-coverage {
+  margin-top: 20px;
+}
