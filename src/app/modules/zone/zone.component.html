@@ -33,6 +33,10 @@
             <mat-icon>&#xE862;</mat-icon>
             <span>Add result</span>
         </button>
+        <button mat-menu-item (click)="markAsDone()">
+            <mat-icon>&#xE876;</mat-icon>
+            <span>Mark several tables as done</span>
+        </button>
         <button mat-menu-item (click)="allGreen()" *ngIf="!(isOnOutstandingsStep$ | async)">
             <mat-icon>&#xE877;</mat-icon>
             <span>Mark all empty as done</span>

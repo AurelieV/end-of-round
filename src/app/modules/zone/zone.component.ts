@@ -241,6 +241,10 @@ export class ZoneComponent implements OnInit, OnChanges, OnDestroy {
     this.tablesService.assign()
   }
 
+  markAsDone() {
+    this.tablesService.markAsDone()
+  }
+
   addTime() {
     this.timeService.openDialog()
   }

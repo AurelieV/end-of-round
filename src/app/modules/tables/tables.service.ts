@@ -91,4 +91,21 @@ export class TablesService {
       })
     })
   }
+
+  markAsDone() {
+    const dialogRef = this.md.open(AddTablesDialogComponent)
+    handleReturn(dialogRef)
+    dialogRef.componentInstance.title = 'Mark tables as done'
+    dialogRef.componentInstance.displayOptions = false
+    dialogRef.afterClosed().subscribe((val) => {
+      if (!val) return
+      const now = new Date()
+      val.tables.forEach((tableId) => {
+        this.tournamentService.updateTable(tableId, {
+          status: 'done',
+          doneTime: now,
+        })
+      })
+    })
+  }
 }
