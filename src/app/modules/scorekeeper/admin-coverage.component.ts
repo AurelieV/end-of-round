@@ -132,11 +132,11 @@ export class AdminCoverageComponent implements OnInit {
           number: table['Table'],
           result: {
             player1: {
-              score: score1,
+              score: Number(score1),
               drop: false,
             },
             player2: {
-              score: score2,
+              score: Number(score2),
               drop: false,
             },
           },
