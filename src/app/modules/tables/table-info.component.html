@@ -2,7 +2,9 @@
     <div class="header">
         <mat-checkbox #test="matCheckbox" color="primary" [(ngModel)]="table.hasResult" (change)="setHasResult(table.number, $event.checked)"></mat-checkbox>
         <div class="title-block">
-            <div class="title">Table {{table.number}}</div>
+            <div class="title">Table {{table.number}}
+                <span *ngIf="table.isFeatured">*</span>
+            </div>
             <div class="subtitle" *ngIf="!table.isFeatured">({{zones && zones[table.zoneId] && zones[table.zoneId].name}})</div>
             <div class="subtitle" *ngIf="table.isFeatured">(Feature)</div>
         </div>

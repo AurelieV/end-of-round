@@ -73,6 +73,9 @@ export class ZoneComponent implements OnInit, OnChanges, OnDestroy {
 
   @ViewChild('help') helpTemplate: TemplateRef<any>
 
+  @ViewChild('remainingTables') remainingTablesTemplate: TemplateRef<any>
+  remainingTablesDialog: MatDialogRef<any>
+
   @HostBinding('class.inserted')
   get inserted() {
     return this.isInserted
@@ -264,6 +267,15 @@ export class ZoneComponent implements OnInit, OnChanges, OnDestroy {
         key,
       ])
     }
+  }
+
+  openRemainingTables() {
+    this.remainingTablesDialog = this.md.open(this.remainingTablesTemplate)
+    handleReturn(this.remainingTablesDialog)
+  }
+
+  closeRemainingTables() {
+    this.remainingTablesDialog.close()
   }
 
   ngOnDestroy() {

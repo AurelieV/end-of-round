@@ -1,4 +1,6 @@
-<div class="number">{{table.number}}</div>
+<div class="number">{{table.number}}
+    <span *ngIf="table.isFeatured">*</span>
+</div>
 <div class="time">
     <display-time [table]="table"></display-time>
 </div>

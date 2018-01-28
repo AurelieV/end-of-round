@@ -25,6 +25,10 @@
             <mat-icon>&#xE856;</mat-icon>
             <span>Add time</span>
         </button>
+        <button mat-menu-item (click)="openRemainingTables()">
+            <mat-icon>&#xE417;</mat-icon>
+            <span>Overview of the zone</span>
+        </button>
         <button mat-menu-item (click)="assign()">
             <mat-icon>&#xE851;</mat-icon>
             <span>Assign judge</span>
@@ -107,6 +111,22 @@
             <div class="text covered">Covered</div>
             <div class="text done">Done (nobody at the table)</div>
             <div class="text featured">Featured</div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #remainingTables>
+    <div class="remaining-tables">
+        <h3>Overview of {{(zone$ | async)?.name}}</h3>
+        <div mat-dialog-content>
+            <div>
+                <p>
+                    <span *ngFor="let table of tables$ | async" class="text" [ngClass]="table.status">{{table.number}}, </span>
+                </p>
+            </div>
+        </div>
+        <div class="actions" mat-dialog-actions>
+            <button mat-raised-button color="primary" (click)="closeRemainingTables()">Closed</button>
         </div>
     </div>
 </ng-template>
