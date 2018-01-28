@@ -25,6 +25,7 @@ export class AdminCoverageComponent implements OnInit {
     number: '',
   }
   importTables: string = ''
+  results: string = ''
   tables$: Observable<CoveredTable[]>
   isLoading: boolean = true
 
@@ -32,6 +33,7 @@ export class AdminCoverageComponent implements OnInit {
 
   @ViewChild('import') importTemplate: TemplateRef<any>
   @ViewChild('print') printTemplate: TemplateRef<any>
+  @ViewChild('result') resultsTemplate: TemplateRef<any>
   @ViewChild('form') form
 
   constructor(
@@ -68,6 +70,12 @@ export class AdminCoverageComponent implements OnInit {
 
   openImport() {
     const dialogRef = this.md.open(this.importTemplate)
+    handleReturn(dialogRef)
+    this.dialogRef = dialogRef
+  }
+
+  openResults() {
+    const dialogRef = this.md.open(this.resultsTemplate)
     handleReturn(dialogRef)
     this.dialogRef = dialogRef
   }
@@ -109,6 +117,42 @@ export class AdminCoverageComponent implements OnInit {
       this.dialogRef.close()
     }
     this.importTables = ''
+  }
+
+  importResults() {
+    window['Papa']
+      .parse(this.results, {
+        header: true,
+      })
+      .data.map((table) => {
+        const result = table['Result']
+        if (!result || result === 'pending' || result === 'BYE') return null
+        const [score1, score2] = (result.split(' ')[1] || '').split('-')
+        return {
+          number: table['Table'],
+          result: {
+            player1: {
+              score: score1,
+              drop: false,
+            },
+            player2: {
+              score: score2,
+              drop: false,
+            },
+          },
+        }
+      })
+      .filter((t) => t && !isNaN(t.number))
+      .forEach((table) => {
+        this.tournamentService.updateTable(table.number, {
+          result: table.result,
+          status: 'done',
+        })
+      })
+    if (this.dialogRef) {
+      this.dialogRef.close()
+    }
+    this.results = ''
   }
 
   addResult(table: CoveredTable) {

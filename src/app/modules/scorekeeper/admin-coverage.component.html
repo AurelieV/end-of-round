@@ -22,7 +22,8 @@
     </div>
 </div>
 <div class="column">
-    <button mat-raised-button color="primary" (click)="openImport()">Import</button>
+    <button mat-raised-button color="primary" (click)="openImport()">Import tables</button>
+    <button mat-raised-button color="primary" (click)="openResults()">Import results</button>
     <button mat-raised-button color="primary" (click)="openPrint()">Print</button>
     <form #form="ngForm">
         <div>
@@ -62,6 +63,18 @@
     </div>
     <div class="import-actions">
         <button mat-raised-button color="primary" (click)="doImport()" [disabled]="!importForm.form.valid">Import</button>
+    </div>
+</ng-template>
+
+<ng-template #result>
+    <h3>Import results from Walter</h3>
+    <div>
+        <form #resultForm="ngForm">
+            <textarea required type="text" [(ngModel)]="results" name="results"></textarea>
+        </form>
+    </div>
+    <div class="import-actions">
+        <button mat-raised-button color="primary" (click)="importResults()" [disabled]="!resultForm.form.valid">Import</button>
     </div>
 </ng-template>
 

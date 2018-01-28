@@ -3,7 +3,7 @@
         <button (click)="openExtraTimed()" mat-raised-button color="warn">Show extra timed</button>
         <button mat-raised-button color="primary" class="menu-button" [matMenuTriggerFor]="actions">Actions</button>
         <mat-menu #actions="matMenu">
-            <button (click)="openClock()" mat-menu-item>Set clock</button>
+            <button (click)="openClock()" mat-menu-item>Clock</button>
             <button (click)="addFeatured()" mat-menu-item>Add featured</button>
             <button (click)="openRemainingTables()" mat-menu-item>See remaining</button>
             <button (click)="addOutstandings()" mat-menu-item>Add outstanding</button>
@@ -89,7 +89,7 @@
 
 <ng-template #clock>
     <div class="set-clock">
-        <h3>Set clock</h3>
+        <h3>Start clock</h3>
         <div mat-dialog-content>
             <form #form="ngForm">
                 <mat-form-field>
@@ -103,7 +103,7 @@
         <button mat-raised-button color="warn" (click)="resetClock()">Stop clock</button>
         <div class="actions" mat-dialog-actions>
             <button mat-raised-button color="warn" (click)="closeClock()">Cancel</button>
-            <button mat-raised-button color="primary" [disabled]="form.form.invalid" (click)="setClock()">Set</button>
+            <button mat-raised-button color="primary" [disabled]="form.form.invalid" (click)="setClock()">Start</button>
         </div>
     </div>
 </ng-template>
