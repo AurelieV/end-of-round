@@ -1,3 +1,5 @@
+@import './styles/_color';
+
 mat-toolbar.header {
   height: 60px;
   display: flex;
@@ -9,26 +11,30 @@ mat-toolbar.header {
   position: fixed;
   z-index: 10;
   .connection {
+    cursor: pointer;
     position: relative;
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
+    padding: 3px;
+    border: 2px solid $light_purple;
+    border-radius: 50%;
     mat-icon {
-      width: 40px;
-      height: 40px;
-      font-size: 40px;
+      width: 30px;
+      height: 30px;
+      font-size: 30px;
     }
   }
   .connection-status {
-    width: 20px;
-    height: 20px;
+    width: 15px;
+    height: 15px;
     border-radius: 50%;
     background: red;
     &.connected {
       background: lightgreen;
     }
     position: absolute;
-    bottom: 0;
-    right: -5px;
+    top: 0;
+    right: -3px;
   }
 }
 

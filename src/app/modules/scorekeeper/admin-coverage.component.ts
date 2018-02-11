@@ -147,6 +147,7 @@ export class AdminCoverageComponent implements OnInit {
         this.tournamentService.updateTable(table.number, {
           result: table.result,
           status: 'done',
+          hasResult: true,
         })
       })
     if (this.dialogRef) {

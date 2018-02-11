@@ -34,6 +34,8 @@ export interface TableData {
 
   isTop?: boolean
   isFeatured?: boolean
+
+  coverage?: CoverageData
 }
 export interface Table extends TableData {
   key: string
@@ -337,6 +339,7 @@ export class TournamentService extends DatabaseAccessor {
                   isTop: false,
                   zoneId: table.zoneId,
                   number: table.number,
+                  coverage: null,
                 }
 
                 return tables

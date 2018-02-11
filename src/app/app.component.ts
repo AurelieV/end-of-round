@@ -1,3 +1,4 @@
+import {ProfileComponent} from './modules/user/profile.component'
 import {TournamentData} from './model'
 import {AngularFireDatabase} from 'angularfire2/database'
 import {Observable} from 'rxjs/Observable'
@@ -6,6 +7,7 @@ import {Router, PRIMARY_OUTLET, NavigationEnd} from '@angular/router'
 import {UserService} from './modules/user/user.service'
 import {Component} from '@angular/core'
 import {Subscription} from 'rxjs/Subscription'
+import {MatDialog} from '@angular/material'
 
 interface State {
   isOnDashboard: boolean
@@ -36,12 +38,14 @@ export class AppComponent {
   }
   subscriptions: Subscription[] = []
   title$: Observable<string>
+  isStrongConnected$: Observable<boolean>
 
   constructor(
     private userService: UserService,
     private router: Router,
     public connectionService: ConnectionService,
-    private db: AngularFireDatabase
+    private db: AngularFireDatabase,
+    private md: MatDialog
   ) {
     this.subscriptions.push(
       this.router.events.subscribe((event) => {
@@ -52,6 +56,10 @@ export class AppComponent {
       })
     )
     this.title$ = Observable.of('')
+    this.isStrongConnected$ = this.userService.user.map(
+      (user) => user && !user.isAnonymous
+    )
+    this.openProfile()
   }
 
   private analyseState(): State {
@@ -95,6 +103,10 @@ export class AppComponent {
     } else {
       this.title$ = Observable.of('')
     }
+  }
+
+  openProfile() {
+    this.md.open(ProfileComponent)
   }
 
   ngOnDestroy() {

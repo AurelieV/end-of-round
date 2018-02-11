@@ -1,3 +1,5 @@
+import {ChangePseudoComponent} from './change-pseudo.component'
+import {CreateAccountComponent} from './create-account.component'
 import {FormsModule} from '@angular/forms'
 import {
   MatDialogModule,
@@ -12,6 +14,8 @@ import {ConnectionService} from './connection.service'
 import {AccessInfoComponent} from './access-info.component'
 import {SharedModule} from '../shared/shared.module'
 import {HttpModule} from '@angular/http'
+import {ProfileComponent} from './profile.component'
+import {LoginComponent} from './login.component'
 
 @NgModule({
   imports: [
@@ -22,8 +26,14 @@ import {HttpModule} from '@angular/http'
     SharedModule,
     HttpModule,
   ],
-  declarations: [AccessInfoComponent],
-  entryComponents: [AccessInfoComponent],
+  declarations: [
+    AccessInfoComponent,
+    ProfileComponent,
+    CreateAccountComponent,
+    LoginComponent,
+    ChangePseudoComponent,
+  ],
+  entryComponents: [AccessInfoComponent, ProfileComponent],
   providers: [
     ConnectionService,
     UserService,

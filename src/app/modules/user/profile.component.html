@@ -1,0 +1,32 @@
+<h3>{{title$ | async}}</h3>
+<div mat-dialog-content>
+  <ng-template [ngIf]="page === 'home'">
+    <p *ngIf="(typeOfUser$ | async) === 'anonymous'">
+      You are using an anonymous account. This is fine for most use cases, but for advances usage and for better experience, I
+      encourage you to create a email/password acount.
+      <br>
+      <button mat-button color="primary" (click)="goToCreation()">Create an account</button>
+      <br>
+      <br> If you already have an account
+      <br>
+      <button mat-button color="primary" (click)="goToLogin()">Click here to connect</button>
+      <br>
+      <br> Information and access are stored in your device.
+      <br>
+      <button mat-button color="primary" (click)="logout()">Erase information</button>
+    </p>
+    <p *ngIf="(typeOfUser$ | async) === 'strong-connected'" class="content">
+      If your pseudo is wrong, you can change it
+      <br>
+      <br>
+      <button mat-button color="primary" (click)="changePseudo()">Change my pseudo</button>
+      <br>
+      <br>
+      <button mat-raised-button color="primary" (click)="logout()" class="center">Logout</button>
+    </p>
+  </ng-template>
+  <create-account #creation (onCreation)="onAccountCreation()" *ngIf="page === 'creation'"></create-account>
+  <login #login (onLoginSuccess)="onLoginSuccess()" *ngIf="page === 'login'"></login>
+  <change-pseudo #pseudo (onSuccess)="onChangePseudoSuccess()" *ngIf="page === 'pseudo'"></change-pseudo>
+  <button *ngIf="page !== 'home'" (click)="cancel()" mat-raised-button color="warn">Cancel</button>
+</div>
