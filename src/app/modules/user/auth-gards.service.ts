@@ -20,7 +20,6 @@ export class AuthenticatedGuard implements CanActivate {
   ) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    // Wait initialisation
     let root = state.root
     let params: any = Object.assign({}, root.params)
     while (root.children.length > 0) {
@@ -54,7 +53,6 @@ export class SetLoginGuard implements CanActivate {
   constructor(private userService: UserService, private md: MatDialog) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    // Wait initialisation
     return this.userService.user.take(1).switchMap((user) => {
       const login = this.userService.login
       if (login) {

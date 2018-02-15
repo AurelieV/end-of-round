@@ -59,7 +59,6 @@ export class AppComponent {
     this.isStrongConnected$ = this.userService.user.map(
       (user) => user && !user.isAnonymous
     )
-    this.openProfile()
   }
 
   private analyseState(): State {

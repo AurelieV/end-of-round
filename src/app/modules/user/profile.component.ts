@@ -67,10 +67,10 @@ export class ProfileComponent {
   }
 
   cancel() {
+    this.page = 'home'
     if (this.page !== 'home') {
       this[this.page].clear()
     }
-    this.page = 'home'
   }
 
   logout() {

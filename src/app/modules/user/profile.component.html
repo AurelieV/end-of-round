@@ -28,5 +28,5 @@
   <create-account #creation (onCreation)="onAccountCreation()" *ngIf="page === 'creation'"></create-account>
   <login #login (onLoginSuccess)="onLoginSuccess()" *ngIf="page === 'login'"></login>
   <change-pseudo #pseudo (onSuccess)="onChangePseudoSuccess()" *ngIf="page === 'pseudo'"></change-pseudo>
-  <button *ngIf="page !== 'home'" (click)="cancel()" mat-raised-button color="warn">Cancel</button>
+  <button class="cancelButton" *ngIf="page !== 'home'" (click)="cancel()" mat-raised-button color="warn">Cancel</button>
 </div>
