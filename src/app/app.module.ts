@@ -12,6 +12,7 @@ import {
   MatIconModule,
   MatMenuModule,
   MatSnackBarModule,
+  MatDialogModule,
 } from '@angular/material'
 import {AngularFireModule} from 'angularfire2'
 import {AngularFireDatabaseModule} from 'angularfire2/database'
@@ -29,6 +30,8 @@ import {UserModule} from './modules/user/user.module'
 
 /* Service */
 import {NotificationService} from './notification.service'
+import {ErrorService} from './error.service'
+import {ErrorComponent} from './error.component'
 
 const appRoutes: Routes = [
   {
@@ -56,7 +59,12 @@ const appRoutes: Routes = [
 ]
 
 @NgModule({
-  declarations: [AppComponent, TournamentListComponent, DocumentationComponent],
+  declarations: [
+    AppComponent,
+    TournamentListComponent,
+    DocumentationComponent,
+    ErrorComponent,
+  ],
   imports: [
     /* Angular */
     BrowserModule,
@@ -73,6 +81,7 @@ const appRoutes: Routes = [
     MatIconModule,
     MatMenuModule,
     MatSnackBarModule,
+    MatDialogModule,
 
     /* FireBase */
     AngularFireModule.initializeApp(environment.firebaseConfig),
@@ -82,7 +91,8 @@ const appRoutes: Routes = [
     /* Custom */
     UserModule,
   ],
-  providers: [NotificationService],
+  providers: [NotificationService, ErrorService],
   bootstrap: [AppComponent],
+  entryComponents: [ErrorComponent]
 })
 export class AppModule {}

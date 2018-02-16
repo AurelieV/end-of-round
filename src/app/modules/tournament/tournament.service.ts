@@ -16,6 +16,7 @@ import {TournamentData, Tournament, Zone, ZoneData, Message} from '../../model'
 export {Tournament, TournamentData, Zone, ZoneData, Message}
 import {DatabaseAccessor} from './../../utils/database-accessor'
 import {NotificationService} from './../../notification.service'
+import { ErrorService } from '../../error.service';
 
 export interface TableData {
   zoneId: string
@@ -86,7 +87,8 @@ export class TournamentService extends DatabaseAccessor {
   constructor(
     db: AngularFireDatabase,
     private userService: UserService,
-    private notif: NotificationService
+    private notif: NotificationService,
+    private errorService: ErrorService
   ) {
     super(db)
   }
@@ -354,7 +356,12 @@ export class TournamentService extends DatabaseAccessor {
               },
               {} as {[number: string]: TableData}
             )
-            this.db.object(`/tables/${key}`).set(newTables)
+            try {
+              this.db.object(`/tables/${key}`).set(newTables)
+            }
+            catch (e) {
+              this.errorService.raise(e.toString())
+            }
           })
       })
     this.getZones()
@@ -373,6 +380,7 @@ export class TournamentService extends DatabaseAccessor {
   }
 
   updateTable(tableId: string, update: any) {
+    if (!tableId) return
     return this.db.object(`/tables/${this.key}/${tableId}`).update(update)
   }
 
