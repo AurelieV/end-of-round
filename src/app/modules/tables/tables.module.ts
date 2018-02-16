@@ -16,6 +16,7 @@ import {FormsModule} from '@angular/forms'
 
 import {TablesService} from './tables.service'
 import {AddTablesDialogComponent} from './add-tables.dialog.component'
+import {AdminFeaturedComponent} from './admin-featured.component'
 
 @NgModule({
   imports: [
@@ -34,6 +35,7 @@ import {AddTablesDialogComponent} from './add-tables.dialog.component'
     AssignJudgeComponent,
     AddTablesDialogComponent,
     TableInfoComponent,
+    AdminFeaturedComponent,
   ],
   providers: [TablesService],
   exports: [
@@ -41,11 +43,13 @@ import {AddTablesDialogComponent} from './add-tables.dialog.component'
     AssignJudgeComponent,
     AddTablesDialogComponent,
     TableInfoComponent,
+    AdminFeaturedComponent,
   ],
   entryComponents: [
     AddResultDialogComponent,
     AssignJudgeComponent,
     AddTablesDialogComponent,
+    AdminFeaturedComponent,
   ],
 })
 export class TablesModule {}

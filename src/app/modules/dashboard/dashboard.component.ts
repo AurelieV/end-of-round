@@ -147,8 +147,8 @@ export class DashboardComponent implements OnInit {
     this.tableService.addOutstandings()
   }
 
-  addFeatured() {
-    this.tableService.addFeatured()
+  setFeatured() {
+    this.tableService.administrateFeatured()
   }
 
   checkOutstandings() {

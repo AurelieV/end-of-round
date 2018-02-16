@@ -24,6 +24,7 @@ export class ScorekeeperComponent {
     this.tables$ = this.tournamentService.getActiveTables()
     this.isOnOutstandingsStep$ = this.tournamentService.isOnOutstandingsStep()
     this.okTables$ = this.tournamentService.getOkTables()
+    // this.setFeatured()
   }
 
   trackByTableFn(table: Table) {
@@ -34,8 +35,8 @@ export class ScorekeeperComponent {
     this.tableService.addOutstandings()
   }
 
-  addFeatured() {
-    this.tableService.addFeatured()
+  setFeatured() {
+    this.tableService.administrateFeatured()
   }
 
   checkOutstandings() {

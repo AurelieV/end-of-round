@@ -1,0 +1,22 @@
+<h3>Administrate featured tables</h3>
+<input class="null">
+<div mat-dialog-content>
+  <loader [isLoading]="isLoading"></loader>
+  <div class="tables">
+    <div class="table" *ngFor="let table of tables$ | async; trackBy:trackByFn">
+      <span class="label">Table {{table.number}}</span>
+      <button (click)="delete(table.number)" mat-button color="warn">
+        <mat-icon>&#xE872;</mat-icon>
+      </button>
+    </div>
+  </div>
+  <form>
+    <mat-input-container>
+      <input matInput type="text" #tableInput placeholder="Tables numbers">
+    </mat-input-container>
+    <button mat-button color="primary" type="submit" (click)="add(tableInput.value); tableInput.value = ''">Add</button>
+  </form>
+</div>
+<div class="actions" mat-dialog-actions>
+  <button mat-raised-button color="warn" mat-dialog-close>Close</button>
+</div>

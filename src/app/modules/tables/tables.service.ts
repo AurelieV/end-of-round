@@ -1,3 +1,4 @@
+import {NotificationService} from './../../notification.service'
 import {AssignJudgeComponent} from './assign-judge.component'
 import {MatDialog} from '@angular/material'
 import {Injectable} from '@angular/core'
@@ -6,6 +7,7 @@ import {TournamentService, Table} from '../tournament/tournament.service'
 import {AddResultDialogComponent} from './add-result.dialog.component'
 import {handleReturn} from '../shared/handle-return'
 import {AddTablesDialogComponent} from './add-tables.dialog.component'
+import {AdminFeaturedComponent} from './admin-featured.component'
 
 @Injectable()
 export class TablesService {
@@ -69,14 +71,9 @@ export class TablesService {
     })
   }
 
-  addFeatured() {
-    const dialogRef = this.md.open(AddTablesDialogComponent)
+  administrateFeatured() {
+    const dialogRef = this.md.open(AdminFeaturedComponent)
     handleReturn(dialogRef)
-    dialogRef.componentInstance.title = 'Add featured tables'
-    dialogRef.afterClosed().subscribe((val) => {
-      if (!val) return
-      this.tournamentService.addFeatured(val.tables, val.replaceExisting)
-    })
   }
 
   checkOutstandings() {

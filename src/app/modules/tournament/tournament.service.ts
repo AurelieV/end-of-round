@@ -297,12 +297,20 @@ export class TournamentService extends DatabaseAccessor {
       })
   }
 
-  addFeatured(tableIds: string[], replaceExisting: boolean) {
+  addFeatured(tableIds: string[]) {
     Promise.all(
       tableIds.map((id) =>
         this.db.object(`/tables/${this.key}/${id}`).update({isFeatured: true})
       )
     ).then((_) => this.notif.notify('Featured tables added'))
+  }
+
+  removeFeatured(tableIds: string[]) {
+    Promise.all(
+      tableIds.map((id) =>
+        this.db.object(`/tables/${this.key}/${id}`).update({isFeatured: false})
+      )
+    ).then((_) => this.notif.notify('Featured tables removed'))
   }
 
   restart() {

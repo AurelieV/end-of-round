@@ -64,7 +64,7 @@
     <div class="loader-text">Going to outstanding step ...</div>
 </div>
 <div class="tables">
-    <loader [isLoading]="isLoading || isLoading"></loader>
+    <loader [isLoading]="isLoading"></loader>
     <ng-template ngFor let-table [ngForOf]="tables$ | async" [ngForTrackBy]="trackByFn">
         <div class="separator" *ngIf="table.isSectionStart"></div>
         <zone-table class="block" [ngClass]="table.status" [canInteractWithFeaturedTables]="zoneId === 'feature' || zoneId === 'all'"

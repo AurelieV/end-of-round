@@ -4,7 +4,7 @@
         <button mat-raised-button color="primary" class="menu-button" [matMenuTriggerFor]="actions">Actions</button>
         <mat-menu #actions="matMenu">
             <button (click)="openClock()" mat-menu-item>Clock</button>
-            <button (click)="addFeatured()" mat-menu-item>Add featured</button>
+            <button (click)="setFeatured()" mat-menu-item>Set featured</button>
             <button (click)="openRemainingTables()" mat-menu-item>See remaining</button>
             <button (click)="addOutstandings()" mat-menu-item>Add outstanding</button>
             <button (click)="endRound()" mat-menu-item>End round</button>
@@ -100,7 +100,9 @@
                 </mat-form-field>
             </form>
         </div>
-        <button mat-raised-button color="warn" (click)="resetClock()">Stop clock</button>
+        <div class="center">
+            <button mat-raised-button color="warn" (click)="resetClock()">Stop clock</button>
+        </div>
         <div class="actions" mat-dialog-actions>
             <button mat-raised-button color="warn" (click)="closeClock()">Cancel</button>
             <button mat-raised-button color="primary" [disabled]="form.form.invalid" (click)="setClock()">Start</button>
