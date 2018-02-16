@@ -4,14 +4,14 @@ import * as jspdf from 'jspdf'
 import {
   TournamentService,
   Tournament,
-  CoveredTable,
+  Table,
 } from '../tournament/tournament.service'
 
 @Injectable()
 export class Printer {
   constructor() {}
 
-  print(tournament: Tournament, tables: CoveredTable[], round: number) {
+  print(tournament: Tournament, tables: Table[], round: number) {
     const pdf = new jspdf()
     pdf.setFontSize(10)
     const initialX = 10

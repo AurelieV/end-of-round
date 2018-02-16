@@ -4,10 +4,10 @@ import {MatDialog, MatDialogRef} from '@angular/material'
 import {Component, ViewChild, TemplateRef, OnInit} from '@angular/core'
 import {handleReturn} from '../shared/handle-return'
 import {Observable} from 'rxjs/Observable'
+import {BehaviorSubject} from 'rxjs/BehaviorSubject'
 
-import {TournamentService, CoveredTable} from '../tournament/tournament.service'
+import {TournamentService, Table, Result} from '../tournament/tournament.service'
 import {FormControl} from '@angular/forms'
-import {Printer} from './print.service'
 
 @Component({
   selector: 'admin-coverage',
@@ -15,57 +15,34 @@ import {Printer} from './print.service'
   styleUrls: ['./admin-coverage.component.scss'],
 })
 export class AdminCoverageComponent implements OnInit {
-  data = {
-    coverage: {
-      player1: '',
-      player2: '',
-      player1Score: null,
-      player2Score: null,
-    },
-    number: '',
-  }
   importTables: string = ''
   results: string = ''
-  tables$: Observable<CoveredTable[]>
+  tables$: Observable<Table[]>
   isLoading: boolean = true
+  filter$ = new BehaviorSubject<string>('');
 
   private dialogRef: MatDialogRef<any>
 
   @ViewChild('import') importTemplate: TemplateRef<any>
-  @ViewChild('print') printTemplate: TemplateRef<any>
   @ViewChild('result') resultsTemplate: TemplateRef<any>
-  @ViewChild('form') form
 
   constructor(
     private md: MatDialog,
     private tournamentService: TournamentService,
-    private tablesService: TablesService,
-    private printer: Printer
+    private tablesService: TablesService
   ) {}
 
   ngOnInit() {
-    this.tables$ = this.tournamentService.getCoverageTables(true)
+    this.tables$ = this.filter$.switchMap(filter => this.tournamentService.getFilteredTables({player: filter}))
     this.tables$.take(1).subscribe((tables) => (this.isLoading = false))
   }
 
-  addTable(data: CoverageData = null, number = null) {
-    if (!number) {
-      number = this.data.number
-    }
-    if (!data) {
-      data = this.data.coverage
-    }
+  onFilterChange(value: string) {
+    this.filter$.next(value)
+  }
+
+  addTable(data: CoverageData, number) {
     this.tournamentService.addCoverageTable(number, data)
-    this.data = {
-      coverage: {
-        player1: '',
-        player2: '',
-        player1Score: null,
-        player2Score: null,
-      },
-      number: '',
-    }
-    this.form.reset()
   }
 
   openImport() {
@@ -125,21 +102,36 @@ export class AdminCoverageComponent implements OnInit {
         header: true,
       })
       .data.map((table) => {
-        const result = table['Result']
-        if (!result || result === 'pending' || result === 'BYE') return null
-        const [score1, score2] = (result.split(' ')[1] || '').split('-')
-        return {
-          number: table['Table'],
-          result: {
-            player1: {
-              score: Number(score1),
-              drop: false,
+        try {
+          const result = table['Result']
+          if (!result || result === 'pending' || result === 'BYE') {
+            return null
+          }
+          const [type, scores] = result.split(' ');
+          let score1, score2, draw;
+          if (type === 'Draw') {
+            score1 = score2 = draw = 1;
+          }
+          else {
+            [score1, score2] = scores.split('-').map(Number)
+          }
+          const coverage: {number: number, result: Result} = {
+            number: table['Table'],
+            result: {
+              player1: {
+                score: Number(score1),
+                drop: false,
+              },
+              player2: {
+                score: Number(score2),
+                drop: false,
+              },
+              draw: draw || 0
             },
-            player2: {
-              score: Number(score2),
-              drop: false,
-            },
-          },
+          }
+          return coverage
+        } catch (e) {
+          return null
         }
       })
       .filter((t) => t && !isNaN(t.number))
@@ -156,34 +148,11 @@ export class AdminCoverageComponent implements OnInit {
     this.results = ''
   }
 
-  addResult(table: CoveredTable) {
+  addResult(table: Table) {
     this.tablesService.addResult(table)
   }
 
-  trackByFn(table: CoveredTable) {
+  trackByFn(table: Table) {
     return table.number
-  }
-
-  openPrint() {
-    const dialogRef = this.md.open(this.printTemplate)
-    handleReturn(dialogRef)
-    this.dialogRef = dialogRef
-  }
-
-  doPrint(roundNumber: number) {
-    if (this.dialogRef) {
-      this.dialogRef.close()
-    }
-    this.tournamentService
-      .getCoverageTables()
-      .take(1)
-      .subscribe((tables) => {
-        this.tournamentService
-          .getTournament()
-          .take(1)
-          .subscribe((tournament) => {
-            this.printer.print(tournament, tables, roundNumber)
-          })
-      })
   }
 }

@@ -33,7 +33,6 @@ export interface TableData {
   hasResult?: boolean
   assignated?: string
 
-  isTop?: boolean
   isFeatured?: boolean
 
   coverage?: CoverageData
@@ -51,9 +50,6 @@ export interface CoverageData {
   player2: string
   player1Score: number
   player2Score: number
-}
-export interface CoveredTable extends Table {
-  coverage: CoverageData
 }
 export interface Result {
   player1: {
@@ -80,6 +76,11 @@ export interface TablesInformation {
   covered: number
   extraTimed: number
   remaining: number
+}
+
+export interface TableFilter {
+  player?: string;
+  atLeastPoints?: number;
 }
 
 @Injectable()
@@ -346,7 +347,6 @@ export class TournamentService extends DatabaseAccessor {
                   hasResult: false,
                   result: null,
                   isFeatured: false,
-                  isTop: false,
                   zoneId: table.zoneId,
                   number: table.number,
                   coverage: null,
@@ -381,7 +381,12 @@ export class TournamentService extends DatabaseAccessor {
 
   updateTable(tableId: string, update: any) {
     if (!tableId) return
-    return this.db.object(`/tables/${this.key}/${tableId}`).update(update)
+    try {
+      return this.db.object(`/tables/${this.key}/${tableId}`).update(update)
+    } catch (e) {
+      this.errorService.raise(e.toString())
+    }
+    
   }
 
   setTime(time: number, tableId: string, seat?: string) {
@@ -401,36 +406,31 @@ export class TournamentService extends DatabaseAccessor {
     return action
   }
 
-  getCoverageTables(resultLast?: boolean): Observable<CoveredTable[]> {
-    return this.doWithKey((key) => {
-      return this.getList<CoveredTable>(
-        this.db.list(`/tables/${key}/`, (ref) =>
-          ref.orderByChild('isTop').equalTo(true)
+  getFilteredTables({player, atLeastPoints}: TableFilter) {
+    return this.getAllTables().map(tables => {
+      if (player) {
+        player = player.toLowerCase();
+        tables = tables.filter(table => 
+          table.coverage && (
+            (table.coverage.player1 && table.coverage.player1.toLowerCase().match(player)) || 
+            (table.coverage.player2 && table.coverage.player2.toLowerCase().match(player))
+          )
         )
-      ).map((tables) =>
-        tables.sort((a, b) => {
-          if (
-            !resultLast ||
-            (a.result && b.result) ||
-            (!a.result && !b.result)
-          ) {
-            return Number(a.number) < Number(b.number) ? -1 : 1
-          }
-          if (a.result && !b.result) {
-            return 1
-          }
-          if (!a.result && b.result) {
-            return -1
-          }
-
-          return 0
-        })
-      )
-    }, [])
+      }
+      if (atLeastPoints) {
+        tables = tables.filter(table => 
+          table.coverage && (
+            (table.coverage.player1Score && table.coverage.player1Score >= atLeastPoints) || 
+            (table.coverage.player2Score && table.coverage.player2Score >= atLeastPoints)
+          )
+        )
+      }
+      return tables;
+    })
   }
 
   addCoverageTable(tableNumber: string, coverage: CoverageData) {
-    this.updateTable(tableNumber, {coverage, isTop: true})
+    this.updateTable(tableNumber, {coverage})
   }
 
   addJudge(judge: string) {
@@ -450,7 +450,7 @@ export class TournamentService extends DatabaseAccessor {
     return this.doWithKey<string>(
       (key) => this.db.object(`/judges/${this.key}`).valueChanges<string>(),
       []
-    ).map((s) => (s ? s.split(' ') : []))
+    ).map((s) => (s ? s.split(' ').sort((a, b) => a.toLowerCase() < b.toLowerCase() ? -1 : 1) : []))
   }
 
   getZonesByKey(): Observable<{[key: string]: Zone}> {

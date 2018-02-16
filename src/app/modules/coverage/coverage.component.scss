@@ -40,3 +40,9 @@ $mobile: 370px;
     }
   }
 }
+
+form {
+  mat-input-container {
+    margin-left: 10px;
+  }
+}

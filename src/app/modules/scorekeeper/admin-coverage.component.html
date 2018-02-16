@@ -1,15 +1,25 @@
 <div class="column">
     <loader [isLoading]="isLoading"></loader>
+    <mat-input-container>
+        <input #filterInput (change)="onFilterChange($event.srcElement.value)" matInput placeholder="Search for a player and press enter">
+        <button mat-button *ngIf="filterInput.value" matSuffix mat-icon-button aria-label="Clear" (click)="filterInput.value='';onFilterChange('')">
+            <mat-icon>&#xE5CD;</mat-icon>
+        </button>
+    </mat-input-container>
     <div class="tables">
         <div class="table block" [ngClass]="table.status" [class.featured]="table.isFeatured" *ngFor="let table of tables$ | async; trackByFn">
             <div class="number">Table {{table.number}}</div>
-            <div class="player" [ngClass]="{ win: table.result && table.result.player1.score > table.result.player2.score}">
-                {{table.coverage.player1}} ({{table.coverage.player1Score}})
-            </div>
-            <div class="separator">vs</div>
-            <div class="player" [ngClass]="{ win: table.result && table.result.player1.score < table.result.player2.score}">
-                {{table.coverage.player2}} ({{table.coverage.player2Score}})
-            </div>
+            <ng-template [ngIf]="table.coverage">
+                <div class="player" [ngClass]="{ win: table.result && table.result.player1.score > table.result.player2.score}">
+                    <div>
+                        {{table.coverage.player1}} ({{table.coverage.player1Score}})
+                    </div>
+                </div>
+                <div class="separator">vs</div>
+                <div class="player" [ngClass]="{ win: table.result && table.result.player1.score < table.result.player2.score}">
+                    {{table.coverage.player2}} ({{table.coverage.player2Score}})
+                </div>
+            </ng-template>
             <div class="result">
                 <span *ngIf="table.result">{{table.result | result}}</span>
                 <span *ngIf="table.hasResult && !table.result">Judge station for result</span>
@@ -24,36 +34,11 @@
 <div class="column">
     <button mat-raised-button color="primary" (click)="openImport()">Import tables</button>
     <button mat-raised-button color="primary" (click)="openResults()">Import results</button>
-    <button mat-raised-button color="primary" (click)="openPrint()">Print</button>
-    <form #form="ngForm">
-        <div>
-            <mat-form-field>
-                <input name="number" matInput placeholder="Table number" type="string" required [(ngModel)]="data.number">
-            </mat-form-field>
-        </div>
-        <div>
-            <mat-form-field>
-                <input name="player1" matInput placeholder="Player1" type="string" required [(ngModel)]="data.coverage.player1">
-            </mat-form-field>
-            <mat-form-field>
-                <input name="player1Score" matInput placeholder="Player1 current score" type="number" [(ngModel)]="data.coverage.player1Score">
-            </mat-form-field>
-        </div>
-        <div>
-            <mat-form-field>
-                <input name="player2" matInput placeholder="Player2" type="string" required [(ngModel)]="data.coverage.player2">
-            </mat-form-field>
-            <mat-form-field>
-                <input name="player2Score" matInput placeholder="Player2 current score" type="number" [(ngModel)]="data.coverage.player2Score">
-            </mat-form-field>
-        </div>
-        <div class="actions">
-            <button mat-raised-button color="primary" [disabled]="form.form.invalid" (click)="addTable()">Add</button>
-        </div>
-    </form>
 </div>
 
-
+<ng-template #noData>
+    <div>No data</div>
+</ng-template>
 <ng-template #import>
     <h3>Import coverage tables from Walter</h3>
     <div>
@@ -75,19 +60,5 @@
     </div>
     <div class="import-actions">
         <button mat-raised-button color="primary" (click)="importResults()" [disabled]="!resultForm.form.valid">Import</button>
-    </div>
-</ng-template>
-
-<ng-template #print>
-    <h3>Print result slips</h3>
-    <div>
-        <form>
-            <mat-form-field>
-                <input type="number" matInput #round placeholder="Round number" required>
-            </mat-form-field>
-        </form>
-    </div>
-    <div class="import-actions">
-        <button mat-raised-button color="primary" (click)="doPrint(round.value)" [disabled]="!round.value">Print</button>
     </div>
 </ng-template>

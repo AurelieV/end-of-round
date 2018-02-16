@@ -1,17 +1,29 @@
 <h3>Top tables result</h3>
+<form>
+    Filter the tables
+    <mat-input-container>
+        <input matInput placeholder="Player name" [(ngModel)]="playerFilter" name="playerFilter">
+    </mat-input-container>
+    <mat-input-container>
+        <input [(ngModel)]="scoreFilter" name="scoreFilter" type="number" placeholder="Minimal score" matInput>
+    </mat-input-container>
+    <button mat-raised-button color="primary" (click)="search()">Search</button>
+</form>
 <loader [isLoading]="isLoading"></loader>
 <div class="tables">
     <div class="table block" [ngClass]="table.status" *ngFor="let table of tables$ | async; trackBy: trackByFn">
         <div class="number">Table {{table.number}}
             <span *ngIf="table.isFeatured">*</span>
         </div>
-        <div class="player" [ngClass]="{ win: table.result && table.result.player1.score > table.result.player2.score}">
-            {{table.coverage.player1}} ({{table.coverage.player1Score}})
-        </div>
-        <div class="separator">vs</div>
-        <div class="player" [ngClass]="{ win: table.result && table.result.player1.score < table.result.player2.score}">
-            {{table.coverage.player2}} ({{table.coverage.player2Score}})
-        </div>
+        <ng-template [ngIf]="table.coverage">
+            <div class="player" [ngClass]="{ win: table.result && table.result.player1.score > table.result.player2.score}">
+                {{table.coverage.player1}} ({{table.coverage.player1Score}})
+            </div>
+            <div class="separator">vs</div>
+            <div class="player" [ngClass]="{ win: table.result && table.result.player1.score < table.result.player2.score}">
+                {{table.coverage.player2}} ({{table.coverage.player2Score}})
+            </div>
+        </ng-template>
         <div class="result">
             <span *ngIf="table.result">{{table.result | result}}</span>
             <span *ngIf="table.hasResult && !table.result">Result at judge station, but not entered</span>

@@ -77,8 +77,7 @@ export class AdministrationService {
           doneTime: null,
           hasResult: false,
           result: null,
-          isFeatured: false,
-          isTop: false,
+          isFeatured: false
         }
       }
       zones.forEach((z) => {

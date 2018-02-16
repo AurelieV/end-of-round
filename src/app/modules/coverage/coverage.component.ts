@@ -1,7 +1,8 @@
-import {Component, OnInit} from '@angular/core'
+import {Component, OnInit, ViewChild} from '@angular/core'
 
-import {TournamentService, CoveredTable} from '../tournament/tournament.service'
+import {TournamentService, Table, TableFilter} from '../tournament/tournament.service'
 import {Observable} from 'rxjs/Observable'
+import {BehaviorSubject} from 'rxjs/BehaviorSubject'
 
 @Component({
   selector: 'coverage',
@@ -10,16 +11,31 @@ import {Observable} from 'rxjs/Observable'
 })
 export class CoverageComponent implements OnInit {
   isLoading: boolean = true
-  tables$: Observable<CoveredTable[]>
+  tables$: Observable<Table[]>
+  filters$ = new BehaviorSubject<TableFilter>({})
+
+  playerFilter: string;
+  scoreFilter: number;
 
   constructor(private tournamentService: TournamentService) {}
 
   ngOnInit() {
-    this.tables$ = this.tournamentService.getCoverageTables()
+    this.tables$ = this.filters$.switchMap(filters => this.tournamentService.getFilteredTables(filters))
     this.tables$.take(1).subscribe((tables) => (this.isLoading = false))
   }
 
-  trackByFn(table: CoveredTable) {
+  search() {
+    const filters: TableFilter = {};
+    if (this.playerFilter) {
+      filters.player = this.playerFilter
+    }
+    if (this.scoreFilter) {
+      filters.atLeastPoints = this.scoreFilter
+    }
+    this.filters$.next(filters);
+  }
+
+  trackByFn(table: Table) {
     return table.number
   }
 }
