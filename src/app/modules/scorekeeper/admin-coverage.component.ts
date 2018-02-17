@@ -115,6 +115,9 @@ export class AdminCoverageComponent implements OnInit {
           else {
             [score1, score2] = scores.split('-').map(Number)
           }
+          if (isNaN(score1) || isNaN(score2)) {
+            return null;
+          }
           const coverage: {number: number, result: Result} = {
             number: table['Table'],
             result: {
