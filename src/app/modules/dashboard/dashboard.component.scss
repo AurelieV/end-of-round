@@ -77,8 +77,15 @@ zone-info {
   li {
     display: flex;
     flex-direction: row;
+    align-items: center;
+    button {
+      margin-top: 2px;
+      margin-bottom: 2px;
+      margin-left: 10px;
+    }
     display-time {
       margin-left: 10px;
+      flex: 1;
     }
   }
   .is-team {

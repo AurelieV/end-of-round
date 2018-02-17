@@ -59,8 +59,14 @@
         <div mat-dialog-content [class.is-team]="isTeam$ | async">
             <ul>
                 <li *ngFor="let table of extraTimedTables$ | async">
-                    <div class="extra-timed-table text" [ngClass]="table.status" [class.featured]="table.isFeatured">Table {{table.number}}:</div>
+                    <div 
+                        class="extra-timed-table text"
+                        [ngClass]="table.status"
+                        [class.featured]="table.isFeatured">Table {{table.number}}:</div>
                     <display-time [table]="table"></display-time>
+                    <button *ngIf="(!table.status || table.status === 'playing') && table.time >= 9" mat-mini-fab color="warn" (click)="askStatus(table)">
+                        <mat-icon>&#xEB49;</mat-icon>
+                    </button>
                 </li>
             </ul>
             <div *ngIf="(extraTimedTables$ | async)?.length === 0">No tables</div>

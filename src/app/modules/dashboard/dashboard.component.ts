@@ -236,4 +236,8 @@ export class DashboardComponent implements OnInit {
     this.tournamentService.setClock(null)
     this.clockDialog.close()
   }
+
+  askStatus(table: Table) {
+    this.tournamentService.sendMessage(table.zoneId, `Status for ${table.number}?`)
+  }
 }
