@@ -76,14 +76,11 @@ export class CreateTournamentComponent implements OnInit {
   }
 
   deleteZone(index: number) {
-    this.zones = this.zones.splice(index, 1)
+    this.zones = this.zones.filter((zone, i) => i !== index)
   }
 
   deleteSection(zoneIndex: number, sectionIndex: number) {
-    this.zones[zoneIndex].tables = this.zones[zoneIndex].tables.splice(
-      sectionIndex,
-      1
-    )
+    this.zones[zoneIndex].tables = this.zones[zoneIndex].tables.filter((section, i) => i !== sectionIndex)
   }
 
   cancel() {
