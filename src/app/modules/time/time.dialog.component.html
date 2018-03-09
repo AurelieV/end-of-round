@@ -19,7 +19,14 @@
   <div class="choice" *ngIf="(displayMessage | async)">
     <div class="messages">This table has already a time of extension of
       <span *ngIf="!isTeam">{{(currentTable$ | async)?.time}}min</span>
-      <span *ngIf="isTeam">{{(currentTable$ | async)?.teamTime[this.data.seat]}}min</span>
+      <span *ngIf="isTeam && data.seat === 'all'">
+        <span>A: {{(currentTable$ | async)?.teamTime.A}}min, </span>
+        <span>B: {{(currentTable$ | async)?.teamTime.B}}min, </span>
+        <span>C: {{(currentTable$ | async)?.teamTime.C}}min</span>
+      </span>
+      <span *ngIf="isTeam && data.seat !== 'all'">
+        {{(currentTable$ | async)?.teamTime[data.seat]}}min
+      </span>
     </div>
     <mat-radio-group [(ngModel)]="addOrUpdate" name="addOrUpdate" required color="primary">
       <mat-radio-button [value]="'add'">Add time</mat-radio-button>

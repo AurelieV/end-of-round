@@ -57,13 +57,17 @@ export class TimeDialogComponent implements OnInit {
       this.isLoading,
       this.currentTable$
     ).map(([isLoading, table]) => {
-      return (
-        !isLoading &&
-        table &&
-        this.data.seat !== 'all' &&
-        ((!this.isTeam && table.time > 0) ||
-          (this.isTeam && table.teamTime[this.data.seat] > 0))
-      )
+      if (isLoading) return false
+      if (!table) return false
+      if (this.data.seat === 'all') {
+        return (
+          table.teamTime.A > 0 || table.teamTime.B > 0 || table.teamTime.C > 0
+        )
+      }
+      if (this.isTeam) {
+        return table.teamTime[this.data.seat] > 0
+      }
+      return table.time > 0
     })
   }
 
@@ -75,9 +79,6 @@ export class TimeDialogComponent implements OnInit {
     this.currentTableId$
       .take(1)
       .subscribe((id) => this.currentTableId$.next(id))
-    if (value === 'all') {
-      this.addOrUpdate = 'add'
-    }
   }
 
   submit(wantToContinue?: boolean) {
@@ -94,17 +95,20 @@ export class TimeDialogComponent implements OnInit {
         )
       } else {
         this.tournamentService.setTime(
-          this.data.time + (table.time['A'] || 0),
+          this.data.time +
+            (this.addOrUpdate === 'add' ? table.teamTime['A'] || 0 : 0),
           this.data.tableNumber,
           'A'
         )
         this.tournamentService.setTime(
-          this.data.time + (table.time['B'] || 0),
+          this.data.time +
+            (this.addOrUpdate === 'add' ? table.teamTime['B'] || 0 : 0),
           this.data.tableNumber,
           'B'
         )
         this.tournamentService.setTime(
-          this.data.time + (table.time['C'] || 0),
+          this.data.time +
+            (this.addOrUpdate === 'add' ? table.teamTime['C'] || 0 : 0),
           this.data.tableNumber,
           'C'
         )
