@@ -6,8 +6,13 @@ import {handleReturn} from '../shared/handle-return'
 import {Observable} from 'rxjs/Observable'
 import {BehaviorSubject} from 'rxjs/BehaviorSubject'
 
-import {TournamentService, Table, Result} from '../tournament/tournament.service'
+import {
+  TournamentService,
+  Table,
+  Result,
+} from '../tournament/tournament.service'
 import {FormControl} from '@angular/forms'
+import {NotificationService} from '../../notification.service'
 
 @Component({
   selector: 'admin-coverage',
@@ -19,7 +24,8 @@ export class AdminCoverageComponent implements OnInit {
   results: string = ''
   tables$: Observable<Table[]>
   isLoading: boolean = true
-  filter$ = new BehaviorSubject<string>('');
+  filter$ = new BehaviorSubject<string>('')
+  outstandingsTrigger = 50
 
   private dialogRef: MatDialogRef<any>
 
@@ -29,11 +35,14 @@ export class AdminCoverageComponent implements OnInit {
   constructor(
     private md: MatDialog,
     private tournamentService: TournamentService,
-    private tablesService: TablesService
+    private tablesService: TablesService,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit() {
-    this.tables$ = this.filter$.switchMap(filter => this.tournamentService.getFilteredTables({player: filter}))
+    this.tables$ = this.filter$.switchMap((filter) =>
+      this.tournamentService.getFilteredTables({player: filter})
+    )
     this.tables$.take(1).subscribe((tables) => (this.isLoading = false))
   }
 
@@ -97,28 +106,29 @@ export class AdminCoverageComponent implements OnInit {
   }
 
   importResults() {
-    window['Papa']
-      .parse(this.results, {
-        header: true,
-      })
-      .data.map((table) => {
+    const data = window['Papa'].parse(this.results, {
+      header: true,
+    }).data
+
+    // Update tables
+    data
+      .map((table) => {
         try {
           const result = table['Result']
           if (!result || result === 'pending' || result === 'BYE') {
             return null
           }
-          const [type, scores] = result.split(' ');
-          let score1, score2, draw;
+          const [type, scores] = result.split(' ')
+          let score1, score2, draw
           if (type === 'Draw') {
-            score1 = score2 = draw = 1;
-          }
-          else {
-            [score1, score2] = scores.split('-').map(Number)
+            score1 = score2 = draw = 1
+          } else {
+            ;[score1, score2] = scores.split('-').map(Number)
           }
           if (isNaN(score1) || isNaN(score2)) {
-            return null;
+            return null
           }
-          const coverage: {number: number, result: Result} = {
+          const coverage: {number: number; result: Result} = {
             number: table['Table'],
             result: {
               player1: {
@@ -129,7 +139,7 @@ export class AdminCoverageComponent implements OnInit {
                 score: Number(score2),
                 drop: false,
               },
-              draw: draw || 0
+              draw: draw || 0,
             },
           }
           return coverage
@@ -145,6 +155,30 @@ export class AdminCoverageComponent implements OnInit {
           hasResult: true,
         })
       })
+
+    // Update outstandings?
+    const remainings = data
+      .map((table) => {
+        try {
+          const result = table['Result']
+          if (result === 'pending') {
+            return Number(table['Table'])
+          }
+        } catch (e) {
+          return null
+        }
+      })
+      .filter((id) => id && !isNaN(id))
+
+    this.notificationService.notify(
+      `Import done. ${remainings.length} tables with no result yet.`
+    )
+
+    if (remainings.length <= this.outstandingsTrigger) {
+      this.tournamentService.addOutstandings(remainings, true)
+      this.notificationService.notify('Outstandings phase strated')
+    }
+
     if (this.dialogRef) {
       this.dialogRef.close()
     }

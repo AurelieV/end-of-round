@@ -54,6 +54,10 @@
 <ng-template #result>
     <h3>Import results from Walter</h3>
     <div>
+        <p>Choose the number of tables below wich outstandings phase will start</p>
+        <mat-input-container>
+            <input matInput [(ngModel)]="outstandingsTrigger" type="number">
+        </mat-input-container>
         <form #resultForm="ngForm">
             <textarea required type="text" [(ngModel)]="results" name="results"></textarea>
         </form>
