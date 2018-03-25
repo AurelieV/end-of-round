@@ -13,6 +13,7 @@ const tournamentFields = [
   'passwords',
   'access',
   'judges',
+  'needHelp',
 ]
 exports.deleteTournament = functions.database
   .ref('/tournaments/{id}')

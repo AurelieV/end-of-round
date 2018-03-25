@@ -42,3 +42,7 @@ Thumbs.db
 
 # Functions
 functions/node_modules
+
+# Private keys
+admin/keys/*
+admin/node_modules
