@@ -5,9 +5,10 @@ import {Component, OnInit} from '@angular/core'
 
 @Component({
   selector: 'authent-redirect',
-  template: '<loader [isLoading]="true"></loader>',
+  template: '<loader [isLoading]="isLoading"></loader>',
 })
 export class AuthentRedirectComponent implements OnInit {
+  isLoading = true
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -21,11 +22,18 @@ export class AuthentRedirectComponent implements OnInit {
         this.notificationService.notify('Incorrect authentification')
         return this.router.navigate(['/'])
       }
-      this.userService
-        .processJudgeAppsToken(params.get('code'))
-        .subscribe(() => {
+      this.userService.processJudgeAppsToken(params.get('code')).subscribe(
+        () => {
           this.router.navigate(['/'])
-        })
+        },
+        () => {
+          this.isLoading = false
+          this.notificationService.notify(
+            'Impossible to process authentification'
+          )
+          this.router.navigate(['/'])
+        }
+      )
     })
   }
 }
