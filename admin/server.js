@@ -58,8 +58,13 @@ app.post('/authenticate', async function(req, res) {
     const info = await client.userinfo(tokenSet.access_token)
     const uid = info.sub
     delete info.sub
-    const token = await admin.auth().createCustomToken(uid)
+    try {
+      await admin.auth().getUser(uid)
+    } catch (e) {
+      await admin.auth().createUser({uid})
+    }
     await admin.auth().setCustomUserClaims(uid, info)
+    const token = await admin.auth().createCustomToken(uid)
 
     return res.json({token})
   } catch (e) {
