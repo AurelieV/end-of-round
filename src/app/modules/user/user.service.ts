@@ -4,7 +4,11 @@ import {Injectable} from '@angular/core'
 import {AngularFireAuth} from 'angularfire2/auth'
 import * as firebase from 'firebase'
 import {Observable} from 'rxjs/Observable'
+import 'rxjs/add/operator/share'
 import {Http} from '@angular/http'
+
+import * as Oidc from 'oidc-client'
+import jwt_decode from 'jwt-decode'
 
 import {environment} from '../../../environments/environment'
 
@@ -15,6 +19,18 @@ export interface AccountData {
 }
 
 export type User = firebase.User
+export interface UserInfo {
+  name: string
+  given_name: string
+  family_name: string
+  nickname: string
+  preferred_username: string
+  email: string
+  level: number
+  dci_number: number
+  region: string
+  picture: string
+}
 
 @Injectable()
 export class UserService {
@@ -22,26 +38,26 @@ export class UserService {
     return this.afAuth.authState
   }
 
+  get userInfo(): Observable<UserInfo> {
+    return this.user
+      .switchMap((user) => (user ? user.getIdToken() : Observable.of(null)))
+      .map((token) => (token ? jwt_decode(token) : null))
+  }
+
   constructor(
     private afAuth: AngularFireAuth,
     private db: AngularFireDatabase,
     private http: Http,
     private notificationService: NotificationService
-  ) {
-    this.user.take(1).subscribe((u) => {
-      if (!u) this.afAuth.auth.signInAnonymously()
-    })
-  }
+  ) {}
 
   isStrongConnected(): boolean {
     if (this.afAuth.auth.currentUser) return false
-    return this.afAuth.auth.currentUser.isAnonymous
+    return !this.afAuth.auth.currentUser.isAnonymous
   }
 
   logout(): Promise<any> {
-    return this.afAuth.auth.signOut().then(() => {
-      this.afAuth.auth.signInAnonymously()
-    })
+    return this.afAuth.auth.signOut()
   }
 
   signIn(email: string, password: string): Promise<any> {
@@ -50,13 +66,6 @@ export class UserService {
       .then(() => {
         this.notificationService.notify('You were successfully logged in')
       })
-  }
-
-  set login(login: string) {
-    this.afAuth.auth.currentUser.updateProfile({
-      displayName: login,
-      photoURL: null,
-    })
   }
 
   get login(): string {
@@ -101,5 +110,25 @@ export class UserService {
           photoURL: null,
         })
       })
+  }
+
+  loginWithJudgeApps() {
+    const client = new Oidc.UserManager(environment.authenticateSettings)
+    client.signinRedirect()
+  }
+
+  processJudgeAppsToken(code: string): Observable<any> {
+    const result = this.http
+      .post(environment.authenticateUrl, {
+        code,
+      })
+      .share()
+    result.map((res) => res.json().token).subscribe((token) =>
+      this.afAuth.auth.signInWithCustomToken(token).then(() => {
+        this.notificationService.notify('You were successfully logged in')
+      })
+    )
+
+    return result
   }
 }

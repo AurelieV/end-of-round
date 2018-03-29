@@ -9,14 +9,9 @@ import {UserService} from './user.service'
   styleUrls: ['./access-info.component.scss'],
 })
 export class AccessInfoComponent {
-  login: string
   password: string
-
-  askLogin: boolean
-  askPassword: boolean
-
   tournamentId: string
-  displayError: boolean
+  displayError: string
   loading: boolean
 
   constructor(
@@ -25,23 +20,18 @@ export class AccessInfoComponent {
   ) {}
 
   submit() {
-    this.displayError = false
+    this.displayError = null
     this.loading = true
-    if (this.askLogin) {
-      this.userService.login = this.login
-    }
-    if (this.askPassword) {
-      this.userService.access(this.tournamentId, this.password).subscribe(
-        (data) => this.md.close(true),
-        (err) => {
-          this.loading = false
-          this.displayError = true
-        }
-      )
-    } else {
-      this.loading = false
-      this.md.close(true)
-    }
+    this.userService.access(this.tournamentId, this.password).subscribe(
+      (data) => this.md.close(true),
+      (err) => {
+        this.loading = false
+        this.displayError =
+          err.status === 403
+            ? 'This password is incorrect'
+            : 'Something wrong happned, try later'
+      }
+    )
   }
 
   close() {

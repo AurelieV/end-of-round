@@ -1,3 +1,4 @@
+import {UserService, User} from './../user/user.service'
 import {Router} from '@angular/router'
 import {TimeService} from './../time/time.service'
 import {Observable} from 'rxjs/Observable'
@@ -16,6 +17,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   information: Observable<string>
   isLoading: boolean = true
   zones$: Observable<Zone[]>
+  user$: Observable<User>
 
   zoneId: string
   private subcription: Subscription
@@ -23,7 +25,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   constructor(
     private tournamentService: TournamentService,
     private timeService: TimeService,
-    private router: Router
+    private router: Router,
+    private userService: UserService
   ) {}
 
   ngOnInit() {
@@ -37,6 +40,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.zoneId = zones[0].key
       }
     })
+    this.user$ = this.userService.user
   }
 
   addTime() {
@@ -49,6 +53,14 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.tournamentService.key,
       'zone',
       this.zoneId,
+    ])
+  }
+
+  goToCoverage() {
+    this.router.navigate([
+      '/tournament',
+      this.tournamentService.key,
+      'coverage',
     ])
   }
 

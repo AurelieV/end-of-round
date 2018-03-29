@@ -13,6 +13,14 @@ export const environment = {
     storageBucket: '',
     messagingSenderId: '525436489918',
   },
-  accessUrl:
-    'https://us-central1-end-of-round-dev.cloudfunctions.net/app/addAccess',
+  accessUrl: '/api/addAccess',
+  authenticateUrl: '/api/authenticate',
+  authenticateSettings: {
+    authority: 'https://apps.magicjudges.org/openid/',
+    client_id: '495440',
+    redirect_uri: 'http://localhost:4200/authent-redirect',
+    post_logout_redirect_uri: 'http://localhost:4200',
+    response_type: 'code',
+    scope: 'openid profile email dciprofile',
+  },
 }

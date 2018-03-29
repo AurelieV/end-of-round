@@ -17,6 +17,7 @@ interface State {
   isOnMainPage: boolean
   isOnCoverage: boolean
   isOnScorekeeper: boolean
+  isOnLogin: boolean
   tournamentKey: string
 }
 
@@ -35,6 +36,7 @@ export class AppComponent {
     isOnMainPage: false,
     isOnCoverage: false,
     isOnScorekeeper: false,
+    isOnLogin: false,
   }
   subscriptions: Subscription[] = []
   title$: Observable<string>
@@ -85,6 +87,7 @@ export class AppComponent {
       isOnMainPage: sections.includes('Home'),
       isOnCoverage: sections.includes('Coverage'),
       isOnScorekeeper: sections.includes('Scorekeeper'),
+      isOnLogin: sections.includes('Login'),
       tournamentKey: params.tournamentKey,
     }
   }
@@ -99,6 +102,8 @@ export class AppComponent {
       this.title$ = Observable.of('Select a tournament')
     } else if (this.state.isOnAdministration) {
       this.title$ = Observable.of('Administration')
+    } else if (this.state.isOnLogin) {
+      this.title$ = Observable.of('Login page')
     } else {
       this.title$ = Observable.of('')
     }

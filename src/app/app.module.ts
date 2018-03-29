@@ -1,3 +1,4 @@
+import {AuthentRedirectComponent} from './authent-redirect.component'
 import {SharedModule} from './modules/shared/shared.module'
 import {BrowserModule} from '@angular/platform-browser'
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations'
@@ -24,6 +25,7 @@ import {environment} from '../environments/environment'
 import {AppComponent} from './app.component'
 import {TournamentListComponent} from './tournament-list.component'
 import {DocumentationComponent} from './documentation.component'
+import {LoginComponent} from './login.component'
 
 /* Modules */
 import {UserModule} from './modules/user/user.module'
@@ -39,6 +41,16 @@ const appRoutes: Routes = [
     component: TournamentListComponent,
     pathMatch: 'full',
     data: {section: 'TournamentList'},
+  },
+  {
+    path: 'login',
+    component: LoginComponent,
+    data: {section: 'Login'},
+  },
+  {
+    path: 'authent-redirect',
+    component: AuthentRedirectComponent,
+    data: {section: 'Login'},
   },
   {
     path: 'tournament/:tournamentKey',
@@ -64,6 +76,8 @@ const appRoutes: Routes = [
     TournamentListComponent,
     DocumentationComponent,
     ErrorComponent,
+    LoginComponent,
+    AuthentRedirectComponent,
   ],
   imports: [
     /* Angular */
@@ -93,6 +107,6 @@ const appRoutes: Routes = [
   ],
   providers: [NotificationService, ErrorService],
   bootstrap: [AppComponent],
-  entryComponents: [ErrorComponent]
+  entryComponents: [ErrorComponent],
 })
 export class AppModule {}

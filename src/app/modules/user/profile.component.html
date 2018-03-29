@@ -1,32 +1,28 @@
-<h3>{{title$ | async}}</h3>
-<div mat-dialog-content>
-  <ng-template [ngIf]="page === 'home'">
-    <p *ngIf="(typeOfUser$ | async) === 'anonymous'">
-      You are using an anonymous account. This is fine for most use cases, but for advances usage and for better experience, I
-      encourage you to create a email/password acount.
-      <br>
-      <button mat-button color="primary" (click)="goToCreation()">Create an account</button>
-      <br>
-      <br> If you already have an account
-      <br>
-      <button mat-button color="primary" (click)="goToLogin()">Click here to connect</button>
-      <br>
-      <br> Information and access are stored in your device.
-      <br>
-      <button mat-button color="primary" (click)="logout()">Erase information</button>
-    </p>
-    <p *ngIf="(typeOfUser$ | async) === 'strong-connected'" class="content">
-      If your pseudo is wrong, you can change it
-      <br>
-      <br>
-      <button mat-button color="primary" (click)="changePseudo()">Change my pseudo</button>
-      <br>
-      <br>
-      <button mat-raised-button color="primary" (click)="logout()" class="center">Logout</button>
-    </p>
-  </ng-template>
-  <create-account #creation (onCreation)="onAccountCreation()" *ngIf="page === 'creation'"></create-account>
-  <login #login (onLoginSuccess)="onLoginSuccess()" *ngIf="page === 'login'"></login>
-  <change-pseudo #pseudo (onSuccess)="onChangePseudoSuccess()" *ngIf="page === 'pseudo'"></change-pseudo>
-  <button class="cancelButton" *ngIf="page !== 'home'" (click)="cancel()" mat-raised-button color="warn">Cancel</button>
+<h3>Profile</h3>
+<div mat-dialog-content class="container">
+  <div *ngIf="!(user$ | async)" class="content">
+    <div>You are not connected.
+      <br> Click the button to connect via Judge Apps account
+    </div>
+    <button mat-raised-button color="primary" [disabled]="isLoading" (click)="login()">Connect me</button>
+  </div>
+  <div *ngIf="userInfo$ | async as userInfo" class="content">
+    <div>
+      <p>Welcome to your profile page,
+        <br>
+        <span>{{userInfo.given_name}}
+          <span class="uppercase">{{userInfo.family_name}}</span>
+        </span>
+      </p>
+      <p>
+        Here are the information we know about you. If this is not correct, try to logout then relogin or check your judge apps profile
+      </p>
+      <ul>
+        <li>Level: {{userInfo.level}}</li>
+        <li>Region: {{userInfo.region}}</li>
+        <li>DCI: {{userInfo.dci_number}}</li>
+      </ul>
+    </div>
+    <button mat-raised-button color="primary" [disabled]="isLoading" (click)="logout()" class="center">Logout</button>
+  </div>
 </div>

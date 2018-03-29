@@ -17,4 +17,5 @@ const prodApp = admin.initializeApp(
 module.exports = {
   prod: prodApp,
   dev: devApp,
+  admin,
 }

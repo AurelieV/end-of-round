@@ -1,8 +1,0 @@
-<form #form="ngForm">
-  <mat-input-container>
-    <input [(ngModel)]="pseudo" name="pseudo" matInput type="text" minlength="4" maxlength="20" required placeholder="New pseudo">
-  </mat-input-container>
-  <div class="actions">
-    <button mat-raised-button color="primary" (click)="changePseudo()" [disabled]="form.form.invalid || loading">Change pseudo</button>
-  </div>
-</form>

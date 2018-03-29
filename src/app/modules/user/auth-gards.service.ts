@@ -5,6 +5,7 @@ import {
   CanActivate,
   RouterStateSnapshot,
   ActivatedRouteSnapshot,
+  Router,
 } from '@angular/router'
 
 import {NotificationService} from '../../notification.service'
@@ -16,7 +17,8 @@ export class AuthenticatedGuard implements CanActivate {
   constructor(
     private userService: UserService,
     private notificationService: NotificationService,
-    private md: MatDialog
+    private md: MatDialog,
+    private router: Router
   ) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
@@ -28,15 +30,22 @@ export class AuthenticatedGuard implements CanActivate {
     }
     return this.userService.user
       .take(1)
-      .switchMap((user) => this.userService.isAuthorized(params.tournamentKey))
+      .switchMap((user) => {
+        if (!user) {
+          this.router.navigate(['/login'])
+          this.notificationService.notify('You must be connected')
+          return Observable.of(null)
+        }
+        return this.userService.isAuthorized(params.tournamentKey)
+      })
       .switchMap((hasAccess) => {
-        const login = this.userService.login
-        if (hasAccess && login) {
+        if (hasAccess === null) {
+          return Observable.of(false)
+        }
+        if (hasAccess) {
           return Observable.of(true)
         }
         const modalRef = this.md.open(AccessInfoComponent)
-        modalRef.componentInstance.askLogin = !login
-        modalRef.componentInstance.askPassword = !hasAccess
         modalRef.componentInstance.tournamentId = params.tournamentKey
         modalRef.afterClosed().subscribe((data) => {
           if (!data) {
@@ -49,19 +58,21 @@ export class AuthenticatedGuard implements CanActivate {
 }
 
 @Injectable()
-export class SetLoginGuard implements CanActivate {
-  constructor(private userService: UserService, private md: MatDialog) {}
+export class ConnectedGuard implements CanActivate {
+  constructor(
+    private userService: UserService,
+    private notificationService: NotificationService,
+    private router: Router
+  ) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     return this.userService.user.take(1).switchMap((user) => {
-      const login = this.userService.login
-      if (login) {
-        return Observable.of(true)
+      if (!user) {
+        this.router.navigate(['/login'])
+        this.notificationService.notify('You must be connected')
+        return Observable.of(false)
       }
-      const modalRef = this.md.open(AccessInfoComponent)
-      modalRef.componentInstance.askLogin = true
-      modalRef.componentInstance.askPassword = false
-      return modalRef.afterClosed().map((t) => true)
+      return Observable.of(true)
     })
   }
 }

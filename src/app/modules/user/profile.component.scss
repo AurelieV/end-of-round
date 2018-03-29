@@ -3,15 +3,21 @@
   display: block;
 }
 
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .content {
   display: flex;
   flex-direction: column;
-  align-content: flex-start;
-  .center {
-    align-self: center;
+  align-content: center;
+  max-width: 300px;
+  button {
+    margin-top: 20px;
   }
 }
 
-.cancelButton {
-  margin-top: 10px;
+.uppercase {
+  text-transform: uppercase;
 }

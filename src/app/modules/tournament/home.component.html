@@ -1,22 +1,26 @@
-<button mat-raised-button color="accent" (click)="addTime()" class="time-button">
+<ng-template [ngIf]="(user$ | async)">
+  <button mat-raised-button color="accent" (click)="addTime()" class="time-button">
     <div class="time-button-content">
-        <mat-icon>&#xE856;</mat-icon>
-        <span>Add time</span>
+      <mat-icon>&#xE856;</mat-icon>
+      <span>Add time</span>
     </div>
-</button>
-<hr>
-<div class="information">{{information | async}}</div>
-<hr *ngIf="information | async">
-<loader [isLoading]="isLoading"></loader>
-
-<div class="zone-lead">
+  </button>
+  <hr>
+  <div class="information">{{information | async}}</div>
+  <hr *ngIf="information | async">
+  <loader [isLoading]="isLoading"></loader>
+  <div class="zone-lead">
     <p>Zone leader: access to your page</p>
     <mat-form-field>
-        <mat-select placeholder="Choose a zone" [(ngModel)]="zoneId">
-            <mat-option *ngFor="let zone of zones$ | async" [value]="zone.key">
-                {{zone.name}}
-            </mat-option>
-        </mat-select>
+      <mat-select placeholder="Choose a zone" [(ngModel)]="zoneId">
+        <mat-option *ngFor="let zone of zones$ | async" [value]="zone.key">
+          {{zone.name}}
+        </mat-option>
+      </mat-select>
     </mat-form-field>
     <button (click)="goToZone()" [disabled]="!zoneId" mat-raised-button color="primary">Go</button>
-</div>
+  </div>
+</ng-template>
+
+<p *ngIf="!(user$ | async)">You are not connected, please logged in on clicking the icon upper left if you want to use judge feature</p>
+<button mat-raised-button color="primary" (click)="goToCoverage()">Go to coverage page</button>

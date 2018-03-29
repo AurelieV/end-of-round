@@ -43,6 +43,7 @@ Thumbs.db
 # Functions
 functions/node_modules
 
-# Private keys
+# Admin
 admin/keys/*
 admin/node_modules
+admin/server.config.js

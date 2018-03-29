@@ -25,7 +25,7 @@ import {ZoneModule} from '../zone/zone.module'
 import {TimeModule} from './../time/time.module'
 
 /* Guards */
-import {AuthenticatedGuard, SetLoginGuard} from '../user/auth-gards.service'
+import {AuthenticatedGuard, ConnectedGuard} from '../user/auth-gards.service'
 
 export const routes: Routes = [
   {
@@ -52,7 +52,7 @@ export const routes: Routes = [
             path: 'zone/:zoneKey',
             loadChildren: '../zone/zone.module#ZoneWithRouteModule',
             data: {section: 'Zone'},
-            canActivate: [SetLoginGuard],
+            canActivate: [ConnectedGuard],
           },
           {
             path: 'coverage',

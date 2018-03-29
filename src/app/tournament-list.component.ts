@@ -15,6 +15,7 @@ export class TournamentListComponent implements OnInit {
   tournaments$: Observable<Tournament[]>
   noTournament$: Observable<boolean>
   isLoading: boolean = true
+  client: any
 
   constructor(private db: AngularFireDatabase, private router: Router) {}
 
