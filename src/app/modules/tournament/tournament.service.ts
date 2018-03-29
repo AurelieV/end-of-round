@@ -269,11 +269,15 @@ export class TournamentService extends DatabaseAccessor {
   }
 
   sendMessage(zoneId: string, message: string) {
-    this.db.list<Message>(`/messages/${this.key}/${zoneId}`).push({
-      login: this.userService.login || 'Anonymous',
-      message,
-      timestamp: -new Date().valueOf(),
-      uid: this.userService.uid,
+    this.userService.userInfo.take(1).subscribe((info) => {
+      this.db.list<Message>(`/messages/${this.key}/${zoneId}`).push({
+        login: info
+          ? `${info.given_name}.${(info.family_name || '').slice(0, 2)}`
+          : 'Anonymous',
+        message,
+        timestamp: -new Date().valueOf(),
+        uid: this.userService.uid,
+      })
     })
   }
 

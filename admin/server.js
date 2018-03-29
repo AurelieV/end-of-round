@@ -46,7 +46,7 @@ app.post('/authenticate', async function(req, res) {
   }
   try {
     const issuer = await Issuer.discover(config.judgeAppCredential.issuer)
-    Issuer.defaultHttpOptions = {timeout: 25000}
+    Issuer.defaultHttpOptions = {timeout: 250000}
     const client = new issuer.Client({
       client_id: config.judgeAppCredential.client_id,
       client_secret: config.judgeAppCredential.client_secret,
@@ -60,10 +60,6 @@ app.post('/authenticate', async function(req, res) {
     delete info.sub
     const token = await admin.auth().createCustomToken(uid)
     await admin.auth().setCustomUserClaims(uid, info)
-    await admin.auth().updateUser(uid, {
-      displayName: `${info.given_name}.${(info.family_name || '').slice(0, 2)}`,
-      photoURL: config.profileBaseUrl + info.picture,
-    })
 
     return res.json({token})
   } catch (e) {
