@@ -1,24 +1,47 @@
-<mat-tab-group>
-  <mat-tab label="Outstandings">
-    <div class="actions">
-      <button (click)="setFeatured()" mat-raised-button color="primary">Set featured</button>
-      <button (click)="addOutstandings()" mat-raised-button color="primary">Add oustandings</button>
+<div class="actions">
+  <button mat-raised-button color="primary" (click)="openImport()">Import tables</button>
+  <button (click)="setFeatured()" mat-raised-button color="primary">Set featured</button>
+  <button mat-raised-button color="primary" (click)="openResults()">Import results</button>
+  <button (click)="addOutstandings()" mat-raised-button color="primary">Add oustandings manually</button>
+</div>
+<div>
+  <div *ngIf="(isOnOutstandingsStep$ | async)">
+    <div class="tables">
+      <table-info *ngFor="let table of tables$ | async;trackBy:trackByTableFn" [table]="table" class="block" [ngClass]="table.status"
+        displayMode="minimal" [isOnOutstandingsStep]="isOnOutstandingsStep$ | async" [zones]="zonesByKey$ | async"></table-info>
     </div>
-    <div>
-      <div *ngIf="(isOnOutstandingsStep$ | async)">
-        <div class="tables">
-          <table-info *ngFor="let table of tables$ | async;trackBy:trackByTableFn" [table]="table" class="block" [ngClass]="table.status"
-            displayMode="minimal" [isOnOutstandingsStep]="isOnOutstandingsStep$ | async" [zones]="zonesByKey$ | async"></table-info>
-        </div>
-        <h3>Done</h3>
-        <div class="tables">
-          <table-info *ngFor="let table of okTables$ | async;trackBy:trackByTableFn" [table]="table" class="block" [ngClass]="table.status"
-            displayMode="minimal" [isOnOutstandingsStep]="isOnOutstandingsStep$ | async" [zones]="zonesByKey$ | async"></table-info>
-        </div>
-      </div>
+    <h3>Done</h3>
+    <div class="tables">
+      <table-info *ngFor="let table of okTables$ | async;trackBy:trackByTableFn" [table]="table" class="block" [ngClass]="table.status"
+        displayMode="minimal" [isOnOutstandingsStep]="isOnOutstandingsStep$ | async" [zones]="zonesByKey$ | async"></table-info>
     </div>
-  </mat-tab>
-  <mat-tab label="Coverage">
-    <admin-coverage></admin-coverage>
-  </mat-tab>
-</mat-tab-group>
+  </div>
+</div>
+
+<ng-template #import>
+  <h3>Import coverage tables from Walter</h3>
+  <div>
+    <form #importForm="ngForm">
+      <textarea required type="text" [(ngModel)]="importTables" name="importTables"></textarea>
+    </form>
+  </div>
+  <div class="import-actions">
+    <button mat-raised-button color="primary" (click)="doImport()" [disabled]="!importForm.form.valid">Import</button>
+  </div>
+</ng-template>
+
+<ng-template #result>
+  <h3>Import results from Walter</h3>
+  <div>
+    <p>Choose the number of tables below wich outstandings phase will start</p>
+    <mat-input-container>
+      <input matInput [(ngModel)]="outstandingsTrigger" type="number">
+    </mat-input-container>
+    <form #resultForm="ngForm">
+      <textarea #resultTextArea required type="text" [(ngModel)]="results" name="results"></textarea>
+    </form>
+  </div>
+  <div class="import-actions">
+    <button mat-raised-button color="primary" (click)="importResults()" [disabled]="!resultForm.form.valid">Import</button>
+  </div>
+</ng-template>

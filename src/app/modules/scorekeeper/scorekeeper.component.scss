@@ -17,6 +17,14 @@
   }
 }
 
-admin-coverage {
-  margin-top: 20px;
+.import-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 10px;
+}
+textarea {
+  width: 100%;
+  min-height: 200px;
 }

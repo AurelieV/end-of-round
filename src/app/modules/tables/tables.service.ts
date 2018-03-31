@@ -9,6 +9,8 @@ import {handleReturn} from '../shared/handle-return'
 import {AddTablesDialogComponent} from './add-tables.dialog.component'
 import {AdminFeaturedComponent} from './admin-featured.component'
 
+import * as moment from 'moment'
+
 @Injectable()
 export class TablesService {
   constructor(
@@ -28,14 +30,14 @@ export class TablesService {
     dialogRef.afterClosed().subscribe((data) => {
       if (!data) return
       const {result, number} = data
-      let doneTime = new Date()
+      let doneTime = moment.utc().valueOf()
       if (table && table.doneTime) {
         doneTime = table.doneTime
       }
       this.tournamentService.updateTable(number, {
         result,
         status: 'done',
-        doneTime: doneTime,
+        doneTime,
       })
     })
   }
@@ -96,7 +98,7 @@ export class TablesService {
     dialogRef.componentInstance.displayOptions = false
     dialogRef.afterClosed().subscribe((val) => {
       if (!val) return
-      const now = new Date()
+      const now = moment.utc().valueOf()
       val.tables.forEach((tableId) => {
         this.tournamentService.updateTable(tableId, {
           status: 'done',

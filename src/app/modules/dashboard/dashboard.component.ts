@@ -222,7 +222,7 @@ export class DashboardComponent implements OnInit {
   }
 
   setClock() {
-    const now = moment()
+    const now = moment.utc()
     this.tournamentService.setClock(
       now
         .add(this.clockMinutes, 'minutes')
@@ -238,6 +238,9 @@ export class DashboardComponent implements OnInit {
   }
 
   askStatus(table: Table) {
-    this.tournamentService.sendMessage(table.zoneId, `Status for ${table.number}?`)
+    this.tournamentService.sendMessage(
+      table.zoneId,
+      `Status for ${table.number}?`
+    )
   }
 }

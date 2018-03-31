@@ -68,7 +68,7 @@ export class TableComponent implements OnChanges, OnDestroy {
         update = {status: 'covered'}
         break
       case 'covered':
-        update = {status: 'done', doneTime: new Date()}
+        update = {status: 'done', doneTime: moment.utc().valueOf()}
         break
       case 'done':
         update = {status: 'playing', doneTime: null}
@@ -111,7 +111,7 @@ export class TableComponent implements OnChanges, OnDestroy {
       this.table &&
       this.isOnOutstandingsStep &&
       this.table.status === 'done' &&
-      moment().diff(moment(this.table.doneTime), 'minute') > 3
+      moment.utc().diff(moment.utc(this.table.doneTime), 'minute') > 3
   }
 
   assign($event: Event) {

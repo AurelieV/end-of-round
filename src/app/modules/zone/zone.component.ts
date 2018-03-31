@@ -33,6 +33,7 @@ import {
 import {TimeService} from '../time/time.service'
 import {ZoneService} from './zone.service'
 import {NotificationService} from '../../notification.service'
+import * as moment from 'moment'
 
 interface Filter {
   onlyPlaying: boolean
@@ -225,7 +226,7 @@ export class ZoneComponent implements OnInit, OnChanges, OnDestroy {
         tables.forEach((table) => {
           this.tournamentService.updateTable(table.number, {
             status: 'done',
-            doneTime: new Date(),
+            doneTime: moment.utc().valueOf(),
           })
         })
         this.cd.reattach()

@@ -28,7 +28,7 @@ export interface TableData {
   time?: number
   teamTime?: TeamTime
 
-  doneTime?: Date
+  doneTime?: number
   result?: Result
   hasResult?: boolean
   assignated?: string

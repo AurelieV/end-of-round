@@ -57,7 +57,9 @@ export class TournamentComponent implements OnInit, OnDestroy {
     this.timer$ = this.clockEnd$.switchMap((time) => {
       if (!time) return Observable.of('50:00')
       return Observable.timer(1, 1000).map((tick) => {
-        const now = moment().valueOf()
+        const now = moment()
+          .utc()
+          .valueOf()
         const duration = moment.duration(time - now)
         let minutes = duration.minutes()
         let seconds = duration.seconds()
