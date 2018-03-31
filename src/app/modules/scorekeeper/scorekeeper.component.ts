@@ -28,7 +28,6 @@ export class ScorekeeperComponent {
 
   @ViewChild('import') importTemplate: TemplateRef<any>
   @ViewChild('result') resultsTemplate: TemplateRef<any>
-  @ViewChild('resultTextArea') resultTextArea: ElementRef
 
   constructor(
     private tableService: TablesService,

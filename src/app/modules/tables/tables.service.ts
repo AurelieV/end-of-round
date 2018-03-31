@@ -19,7 +19,9 @@ export class TablesService {
   ) {}
 
   addResult(table?: Table) {
-    const dialogRef = this.md.open(AddResultDialogComponent, {width: '90%'})
+    const dialogRef = this.md.open(AddResultDialogComponent, {
+      width: '90%',
+    })
     handleReturn(dialogRef)
     if (table) {
       dialogRef.componentInstance.setTableId(table.number)

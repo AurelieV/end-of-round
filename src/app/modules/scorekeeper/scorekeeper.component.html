@@ -38,7 +38,7 @@
       <input matInput [(ngModel)]="outstandingsTrigger" type="number">
     </mat-input-container>
     <form #resultForm="ngForm">
-      <textarea #resultTextArea required type="text" [(ngModel)]="results" name="results"></textarea>
+      <textarea cdk-focus-region-start required type="text" [(ngModel)]="results" name="results"></textarea>
     </form>
   </div>
   <div class="import-actions">
