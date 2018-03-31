@@ -20,6 +20,7 @@ export interface AccountData {
 
 export type User = firebase.User
 export interface UserInfo {
+  sub: number
   name: string
   given_name: string
   family_name: string
@@ -83,11 +84,16 @@ export class UserService {
     const userId = this.afAuth.auth.currentUser.uid
     if (!userId) return Observable.of(false)
 
-    return this.db
-      .object(`access/${tournamentId}/${userId}`)
-      .valueChanges()
-      .take(1)
-      .map((access) => access !== null && access !== null)
+    return this.userInfo.take(1).switchMap((userInfo) => {
+      if (userInfo.level >= 3) {
+        return Observable.of(true)
+      }
+      return this.db
+        .object(`access/${tournamentId}/${userId}`)
+        .valueChanges()
+        .take(1)
+        .map((access) => Boolean(access))
+    })
   }
 
   access(tournamentId: string, password: string) {
