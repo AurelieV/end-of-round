@@ -334,6 +334,12 @@ export class TournamentService extends DatabaseAccessor {
             const newTables = tables.reduce(
               (tables, table) => {
                 if (table.number === undefined) return tables
+                const tableNumber = Number(table.number) || 0
+                if (
+                  tableNumber > tournament.end ||
+                  tableNumber < tournament.start
+                )
+                  return tables
                 tables[table.number] = {
                   time: 0,
                   teamTime: {
@@ -351,7 +357,7 @@ export class TournamentService extends DatabaseAccessor {
                   hasResult: false,
                   result: null,
                   isFeatured: false,
-                  zoneId: table.zoneId,
+                  zoneId: table.zoneId || '',
                   number: table.number,
                   coverage: null,
                 }

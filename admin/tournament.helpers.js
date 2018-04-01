@@ -15,7 +15,8 @@ class TournamentHelper {
     return tournaments
   }
 
-  async restart(id) {
+  async restart(tournament) {
+    const id = tournament.id
     const tablesRef = this.db.ref(`tables/${id}`)
     const snapshot = await tablesRef.once('value')
     const val = snapshot.val()
@@ -25,6 +26,10 @@ class TournamentHelper {
       tables.push({...val[key], key})
     })
     tables.forEach((table) => {
+      if (table.number > tournament.end || table.number < tournament.start) {
+        this.db.ref(`tables/${id}/${table.number}`).remove()
+        return
+      }
       this.db.ref(`tables/${id}/${table.key}`).set({
         number: table.number,
         time: table.time,

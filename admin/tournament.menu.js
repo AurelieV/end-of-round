@@ -73,7 +73,7 @@ async function menu(options) {
       break
     case 'restart':
       console.log(`Restart ${tournament.name}`)
-      await tournamentHelper.restart(tournament.key)
+      await tournamentHelper.restart(tournament)
     default:
       process.exit()
   }
