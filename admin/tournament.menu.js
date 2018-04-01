@@ -42,6 +42,7 @@ async function menu(options) {
     choices: [
       {value: 'delete', name: 'Delete this tournament'},
       {value: 'detail', name: 'View more information'},
+      {value: 'restart', name: 'Restart'},
     ],
   })
   if (!action) return process.exit()
@@ -70,6 +71,9 @@ async function menu(options) {
         `${tournament.start}-${tournament.end}`
       )
       break
+    case 'restart':
+      console.log(`Restart ${tournament.name}`)
+      await tournamentHelper.restart(tournament.key)
     default:
       process.exit()
   }
