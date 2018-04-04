@@ -1,21 +1,22 @@
 <h3>Profile</h3>
 <div mat-dialog-content class="container">
   <div *ngIf="!(user$ | async)" class="content">
-    <div>You are not connected.
-      <br> Click the button to connect via Judge Apps account
-    </div>
+      Click the button to connect via Judge Apps account
+      <br> This will redirect you to a judge apps consent page. We will ask the permission to access
+      <ul>
+        <li>Your profile: This will be used to identify you on the app</li>
+        <li>DCI profil: This will be used to give you special access and action using you current judge level</li>
+        <li>Events: This will be used to give you special access depending on your staffed events</li>
+      </ul>
     <button mat-raised-button color="primary" [disabled]="isLoading" (click)="login()">Connect me</button>
   </div>
   <div *ngIf="userInfo$ | async as userInfo" class="content">
     <div>
       <p>Welcome to your profile page,
-        <br>
-        <span>{{userInfo.given_name}}
-          <span class="uppercase">{{userInfo.family_name}}</span>
-        </span>
+        <br>{{userInfo.given_name}} {{userInfo.family_name}}
       </p>
       <p>
-        Here are the information we know about you. If this is not correct, try to logout then relogin or check your judge apps profile
+        This is the information we recieved from JudgeApps about you. If this is not correct, try to logout then relogin or check your judge apps profile
       </p>
       <ul>
         <li>Level: {{userInfo.level}}</li>

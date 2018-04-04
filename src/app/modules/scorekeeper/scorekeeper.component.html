@@ -2,7 +2,7 @@
   <button mat-raised-button color="primary" (click)="openImport()">Import tables</button>
   <button (click)="setFeatured()" mat-raised-button color="primary">Set featured</button>
   <button mat-raised-button color="primary" (click)="openResults()">Import results</button>
-  <button (click)="addOutstandings()" mat-raised-button color="primary">Add oustandings manually</button>
+  <button (click)="addOutstandings()" mat-raised-button color="primary">Add outstanding tables manually</button>
 </div>
 <div>
   <div *ngIf="(isOnOutstandingsStep$ | async)">
@@ -33,7 +33,7 @@
 <ng-template #result>
   <h3>Import results from Walter</h3>
   <div>
-    <p>Choose the number of tables below wich outstandings phase will start</p>
+    <p>Choose the number of tables below where outstandings phase will start</p>
     <mat-input-container>
       <input matInput [(ngModel)]="outstandingsTrigger" type="number">
     </mat-input-container>

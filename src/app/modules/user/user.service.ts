@@ -26,7 +26,6 @@ export interface UserInfo {
   family_name: string
   nickname: string
   preferred_username: string
-  email: string
   level: number
   dci_number: number
   region: string

@@ -68,7 +68,7 @@ export class TablesService {
     handleReturn(dialogRef)
     dialogRef.componentInstance.title = 'Add outstandings tables'
     dialogRef.componentInstance.warning =
-      '/!\\ Be aware that this will delete all others table from the current round'
+      '/!\\ Be aware that this will delete all other tables from the current round'
     dialogRef.afterClosed().subscribe((val) => {
       if (!val) return
       this.tournamentService.addOutstandings(val.tables, val.replaceExisting)

@@ -16,6 +16,6 @@ export const environment = {
     redirect_uri: 'http://eor.purple-fox.fr/authent-redirect',
     post_logout_redirect_uri: 'http://eor.purple-fox.fr',
     response_type: 'code',
-    scope: 'openid profile email dciprofile',
+    scope: 'openid profile dciprofile',
   },
 }

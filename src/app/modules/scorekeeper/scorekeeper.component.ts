@@ -188,7 +188,7 @@ export class ScorekeeperComponent {
 
     if (remainings.length <= this.outstandingsTrigger) {
       this.tournamentService.addOutstandings(remainings, true)
-      this.notificationService.notify('Outstandings phase strated')
+      this.notificationService.notify('Outstandings phase started')
     }
 
     if (this.dialogRef) {

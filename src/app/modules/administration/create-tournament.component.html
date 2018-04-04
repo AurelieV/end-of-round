@@ -4,7 +4,7 @@
     <div mat-dialog-content>
         <form #createForm="ngForm">
             <div class="message" *ngIf="!create">
-                Be aware that by editing, you will probably lost most of the current data, similar to what will be done with an end of round.
+                If any changes are saved, the current round will be reset, losing all entered table data
             </div>
             <mat-form-field>
                 <input name="name" maxlength="17" matInput placeholder="Name" type="string" required [(ngModel)]="data.name">
@@ -21,7 +21,7 @@
                 <input name="password" matInput placeholder="Password" type="text" required [(ngModel)]="password">
             </mat-form-field>
             <br>
-            <mat-checkbox [(ngModel)]="data.isTeam" name="isTeam">Is a team event?</mat-checkbox>
+            <mat-checkbox [(ngModel)]="data.isTeam" name="isTeam">This is a Team Event</mat-checkbox>
             <br>
             <br>
             <label>Information</label>

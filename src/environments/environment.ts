@@ -21,6 +21,6 @@ export const environment = {
     redirect_uri: 'http://localhost:4200/authent-redirect',
     post_logout_redirect_uri: 'http://localhost:4200',
     response_type: 'code',
-    scope: 'openid profile email dciprofile',
+    scope: 'openid profile dciprofile',
   },
 }

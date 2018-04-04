@@ -75,7 +75,7 @@
 <div class="message" *ngIf="(tables$ | async)?.length === 0">
     No tables.
     <span *ngIf="isOnOutstandingsStep$ | async">
-        <br/>your team leader has all result</span>
+        <br/>your team leader has all results</span>
     <span *ngIf="!(isOnOutstandingsStep$ | async)">
         <br/>If this is not normal, check your filters</span>
 </div>
@@ -92,25 +92,25 @@
 
 <ng-template #confirm>
     <div class="confirmation">
-        <h3>Are you sure</h3>
+        <h3>Mark all empty as done?</h3>
         <div mat-dialog-content>
             All current empty tables (white) will become done (green). Filters will NOT be taken in account.
         </div>
         <div class="actions" mat-dialog-actions>
             <button mat-raised-button color="warn" (click)="cancelAllGreen()">Cancel</button>
-            <button mat-raised-button color="primary" (click)="confirmAllGreen()">Go</button>
+            <button mat-raised-button color="primary" (click)="confirmAllGreen()">Ok</button>
         </div>
     </div>
 </ng-template>
 
 <ng-template #help>
     <div class="help">
-        <h3>Reminder</h3>
+        <h3>Color Codes</h3>
         <div mat-dialog-content>
-            <div class="text playing">Playing</div>
-            <div class="text covered">Covered</div>
-            <div class="text done">Done (nobody at the table)</div>
-            <div class="text featured">Featured</div>
+            <div class="text playing">Playing (players at the table)</div>
+            <div class="text covered">Covered (player and a judge at the table)</div>
+            <div class="text done">Done (no player as the table)</div>
+            <div class="text featured">Featured (this table is on the feature area)</div>
         </div>
     </div>
 </ng-template>

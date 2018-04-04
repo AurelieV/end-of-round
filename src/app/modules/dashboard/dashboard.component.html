@@ -1,13 +1,13 @@
 <div class="column1">
     <div class="column2-header">
-        <button (click)="openExtraTimed()" mat-raised-button color="warn">Show extra timed</button>
+        <button (click)="openExtraTimed()" mat-raised-button color="warn">Show extra time</button>
         <button mat-raised-button color="primary" class="menu-button" [matMenuTriggerFor]="actions">Actions</button>
         <mat-menu #actions="matMenu">
             <button (click)="openClock()" mat-menu-item>Clock</button>
             <button (click)="setFeatured()" mat-menu-item>Set featured</button>
             <button (click)="openRemainingTables()" mat-menu-item>See remaining</button>
             <button (click)="addOutstandings()" mat-menu-item>Add outstanding</button>
-            <button (click)="endRound()" mat-menu-item>End round</button>
+            <button (click)="endRound()" mat-menu-item>Start with new round</button>
             <button (click)="addTime()" mat-menu-item>Add time</button>
             <button (click)="checkOutstandings()" *ngIf="(isOnOutstandingsStep$ | async)" mat-menu-item>Check several tables</button>
             <button (click)="openSendMessageToAll()" mat-menu-item>Send message to all</button>
@@ -37,9 +37,9 @@
 </div>
 <ng-template #confirmEnd>
     <div class="confirmation">
-        <h3>End round?</h3>
+        <h3>Start with new round?</h3>
         <div mat-dialog-content>
-            <div class="warning">Are your sure you want this? All current informations will be erased</div>
+            <div class="warning">Are your sure you want to reset all tables? All current information will be erased.</div>
             <form #confirmEndForm="ngForm">
                 <mat-checkbox [(ngModel)]="agreedToRestart" required name="agreed"></mat-checkbox>
                 <p>I understand the consequences of my act, and I am aware that this action can be really disruptive for all
@@ -55,7 +55,7 @@
 </ng-template>
 <ng-template #extraTimed>
     <div class="extra-timed">
-        <h3>Extra timed tables</h3>
+        <h3>Extra time tables</h3>
         <div mat-dialog-content [class.is-team]="isTeam$ | async">
             <ul>
                 <li *ngFor="let table of extraTimedTables$ | async">
