@@ -1,12 +1,12 @@
 <h3>Profile</h3>
 <div mat-dialog-content class="container">
   <div *ngIf="!(user$ | async)" class="content">
-      Click the button to connect via Judge Apps account
-      <br> This will redirect you to a judge apps consent page. We will ask the permission to access
+      Click the button to connect through your Judge Apps account
+      <br> This will redirect you to the JudgeApps Login page. If you continue, we will get the following data:
       <ul>
         <li>Your profile: This will be used to identify you on the app</li>
-        <li>DCI profil: This will be used to give you special access and action using you current judge level</li>
-        <li>Events: This will be used to give you special access depending on your staffed events</li>
+        <li>DCI profile: This will be used to give you special access and action based on you current judge level</li>
+        <li>Events: This will be used to give you special access based on which events you are staffed for.</li>
       </ul>
     <button mat-raised-button color="primary" [disabled]="isLoading" (click)="login()">Connect me</button>
   </div>
