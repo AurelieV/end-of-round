@@ -59,31 +59,29 @@ export class AdministrationService {
       )
     ).then((zones) => {
       const tables: {[id: string]: any} = {}
-      for (let i = start; i <= end; i++) {
-        tables[i] = {
-          number: '' + i,
-          time: 0,
-          teamTime: {
-            A: 0,
-            B: 0,
-            C: 0,
-          },
-          status: '',
-          teamStatus: {
-            A: '',
-            B: '',
-            C: '',
-          },
-          doneTime: null,
-          hasResult: false,
-          result: null,
-          isFeatured: false
-        }
-      }
       zones.forEach((z) => {
         ;(z.tables || []).forEach((section) => {
           for (let i = section.start; i <= section.end; i++) {
-            if (tables[i]) tables[i].zoneId = z.key
+            tables[i] = {
+              number: '' + i,
+              time: 0,
+              teamTime: {
+                A: 0,
+                B: 0,
+                C: 0,
+              },
+              status: '',
+              teamStatus: {
+                A: '',
+                B: '',
+                C: '',
+              },
+              doneTime: null,
+              hasResult: false,
+              result: null,
+              isFeatured: false,
+              zoneId: z.key
+            }
           }
         })
       })

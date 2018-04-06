@@ -335,11 +335,6 @@ export class TournamentService extends DatabaseAccessor {
               (tables, table) => {
                 if (table.number === undefined) return tables
                 const tableNumber = Number(table.number) || 0
-                if (
-                  tableNumber > tournament.end ||
-                  tableNumber < tournament.start
-                )
-                  return tables
                 tables[table.number] = {
                   time: 0,
                   teamTime: {
