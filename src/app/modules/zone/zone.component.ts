@@ -219,7 +219,7 @@ export class ZoneComponent implements OnInit, OnChanges, OnDestroy {
     this.confirmation.close()
     this.tournamentService
       .getAllTablesByZone(this.zoneService.key)
-      .map((tables) => tables.filter((t) => !t.status))
+      .map((tables) => tables.filter((t) => !t.status && !t.isFeatured))
       .take(1)
       .subscribe((tables) => {
         this.cd.detach()
