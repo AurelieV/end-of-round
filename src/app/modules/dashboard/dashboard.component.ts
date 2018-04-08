@@ -3,6 +3,7 @@ import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core'
 import {Router, ActivatedRoute} from '@angular/router'
 import {MatDialogRef, MatDialog} from '@angular/material'
 import {Observable} from 'rxjs/Observable'
+import {BehaviorSubject} from 'rxjs/BehaviorSubject'
 import 'rxjs/add/operator/take'
 import 'rxjs/add/observable/combineLatest'
 import {handleReturn} from '../shared/handle-return'
@@ -25,8 +26,10 @@ import {NgForm} from '@angular/forms'
 export class DashboardComponent implements OnInit {
   zones$: Observable<Zone[]>
   tables$: Observable<Table[]>
+  filteredTables$: Observable<Table[]>
   isOnOutstandingsStep$: Observable<boolean>
   okTables$: Observable<Table[]>
+  filteredOkTables$: Observable<Table[]>
   remainingTables$: Observable<Table[]>
   remainingTablesByZone$: Observable<any>
   extraTimedTables$: Observable<Table[]>
@@ -35,6 +38,15 @@ export class DashboardComponent implements OnInit {
   agreedToRestart: boolean = false
   isTeam$: Observable<boolean>
   zonesByKey$: Observable<{[key: string]: Zone}>
+  filter$ = new BehaviorSubject<number>(null)
+
+  get filter(): number {
+    return this.filter$.getValue()
+  }
+
+  set filter(value: number) {
+    this.filter$.next(value)
+  }
 
   @ViewChild('confirmEnd') confirmEnd: TemplateRef<any>
   confirmation: MatDialogRef<any>
@@ -121,6 +133,28 @@ export class DashboardComponent implements OnInit {
     })
     this.isTeam$ = this.tournamentService.isTeam()
     this.zonesByKey$ = this.tournamentService.getZonesByKey()
+    this.filteredTables$ = Observable.combineLatest(
+      this.filter$,
+      this.tables$
+    ).map(
+      ([filter, tables]) =>
+        filter
+          ? (tables || []).filter((t) =>
+              String(t.number).includes(String(filter))
+            )
+          : tables
+    )
+    this.filteredOkTables$ = Observable.combineLatest(
+      this.filter$,
+      this.okTables$
+    ).map(
+      ([filter, tables]) =>
+        filter
+          ? (tables || []).filter((t) =>
+              String(t.number).includes(String(filter))
+            )
+          : tables
+    )
   }
 
   goToZone(key: string) {

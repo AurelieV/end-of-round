@@ -19,19 +19,28 @@
     </zone-info>
 </div>
 <div class="column2">
-    <div class="tables">
-        <div *ngIf="(isOnOutstandingsStep$ | async)">
-            <div class="tables">
-                <table-info *ngFor="let table of tables$ | async;trackBy:trackByTableFn" [table]="table" class="block" [ngClass]="table.status"
-                    [isOnOutstandingsStep]="isOnOutstandingsStep$ | async" [zones]="zonesByKey$ | async"></table-info>
-            </div>
-            <h3>Done</h3>
-            <div class="tables">
-                <table-info *ngFor="let table of okTables$ | async;trackBy:trackByTableFn" [table]="table" class="block" [ngClass]="table.status"
-                    displayMode="minimal" [isOnOutstandingsStep]="isOnOutstandingsStep$ | async" [zones]="zonesByKey$ | async"></table-info>
+    <ng-template [ngIf]="isOnOutstandingsStep$ | async">
+        <mat-form-field>
+            <input matInput type="number" placeholder="Filter tables" [(ngModel)]="filter" />
+            <button mat-button *ngIf="filter" matSuffix mat-icon-button aria-label="Clear" (click)="filter=null">
+                <mat-icon>&#xE5CD;</mat-icon>
+            </button>
+        </mat-form-field>
+        <div class="tables">
+            <div>
+                <div class="tables">
+                    <table-info *ngFor="let table of filteredTables$ | async;trackBy:trackByTableFn" [table]="table" class="block" [ngClass]="table.status"
+                        [isOnOutstandingsStep]="true" [zones]="zonesByKey$ | async"></table-info>
+                </div>
+                <h3>Done</h3>
+                <div class="tables">
+                    <table-info *ngFor="let table of filteredOkTables$ | async;trackBy:trackByTableFn" [table]="table" class="block" [ngClass]="table.status"
+                        displayMode="minimal" [isOnOutstandingsStep]="true" [zones]="zonesByKey$ | async"></table-info>
+                </div>
             </div>
         </div>
-    </div>
+    </ng-template>
+
     <zone [isInserted]="true" (onClose)="displayZoneId = ''" (onZoneChange)="displayZoneId = $event" [zoneId]="displayZoneId"
         *ngIf="displayZoneId"></zone>
 </div>
@@ -59,10 +68,7 @@
         <div mat-dialog-content [class.is-team]="isTeam$ | async">
             <ul>
                 <li *ngFor="let table of extraTimedTables$ | async">
-                    <div 
-                        class="extra-timed-table text"
-                        [ngClass]="table.status"
-                        [class.featured]="table.isFeatured">Table {{table.number}}:</div>
+                    <div class="extra-timed-table text" [ngClass]="table.status" [class.featured]="table.isFeatured">Table {{table.number}}:</div>
                     <display-time [table]="table"></display-time>
                     <button *ngIf="(!table.status || table.status === 'playing') && table.time >= 9" mat-mini-fab color="warn" (click)="askStatus(table)">
                         <mat-icon>&#xEB49;</mat-icon>
