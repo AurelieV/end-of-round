@@ -3,6 +3,7 @@
   <button (click)="setFeatured()" mat-raised-button color="primary">Set featured</button>
   <button mat-raised-button color="primary" (click)="openResults()">Import results</button>
   <button (click)="addOutstandings()" mat-raised-button color="primary">Add outstanding tables manually</button>
+  <button (click)="openResetMissing()" mat-raised-button color="primary">Reset missing players report</button>
 </div>
 <div>
   <div *ngIf="(isOnOutstandingsStep$ | async)">
@@ -43,5 +44,14 @@
   </div>
   <div class="import-actions">
     <button mat-raised-button color="primary" (click)="importResults()" [disabled]="!resultForm.form.valid">Import</button>
+  </div>
+</ng-template>
+
+<ng-template #confirm>
+  <h3>Reset missing players report</h3>
+  <p>Are you sure you want to delete information about missing players?</p>
+  <div class="import-actions">
+    <button mat-raised-button color="primary" (click)="cancel()">Cancel</button>
+    <button mat-raised-button color="primary" (click)="resetMissing()">Reset</button>
   </div>
 </ng-template>

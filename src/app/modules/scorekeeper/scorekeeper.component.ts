@@ -28,6 +28,7 @@ export class ScorekeeperComponent {
 
   @ViewChild('import') importTemplate: TemplateRef<any>
   @ViewChild('result') resultsTemplate: TemplateRef<any>
+  @ViewChild('confirm') confirmTemplate: TemplateRef<any>
 
   constructor(
     private tableService: TablesService,
@@ -195,5 +196,26 @@ export class ScorekeeperComponent {
       this.dialogRef.close()
     }
     this.results = ''
+  }
+
+  openResetMissing() {
+    this.dialogRef = this.md.open(this.confirmTemplate)
+    handleReturn(this.dialogRef)
+  }
+
+  resetMissing() {
+    this.tournamentService.resetMissingTables().then(
+      () => {
+        this.dialogRef.close()
+        this.notificationService.notify(
+          'Missing players report successfully reset'
+        )
+      },
+      () => this.notificationService.notify('Something goes wrong', true)
+    )
+  }
+
+  cancel() {
+    this.dialogRef.close()
   }
 }

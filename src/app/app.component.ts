@@ -18,6 +18,7 @@ interface State {
   isOnCoverage: boolean
   isOnScorekeeper: boolean
   isOnLogin: boolean
+  isOnMissingTables: boolean
   tournamentKey: string
 }
 
@@ -37,6 +38,7 @@ export class AppComponent {
     isOnCoverage: false,
     isOnScorekeeper: false,
     isOnLogin: false,
+    isOnMissingTables: false,
   }
   subscriptions: Subscription[] = []
   title$: Observable<string>
@@ -88,6 +90,7 @@ export class AppComponent {
       isOnCoverage: sections.includes('Coverage'),
       isOnScorekeeper: sections.includes('Scorekeeper'),
       isOnLogin: sections.includes('Login'),
+      isOnMissingTables: sections.includes('Missing tables'),
       tournamentKey: params.tournamentKey,
     }
   }

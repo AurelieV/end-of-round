@@ -1,3 +1,4 @@
+import {MissingTablesComponent} from './missing-tables.component'
 import {FormsModule} from '@angular/forms'
 import {
   MatDialogModule,
@@ -8,6 +9,7 @@ import {
   MatRadioModule,
   MatMenuModule,
   MatSelectModule,
+  MatCheckboxModule,
 } from '@angular/material'
 import {RouterModule, Routes} from '@angular/router'
 import {NgModule} from '@angular/core'
@@ -49,6 +51,12 @@ export const routes: Routes = [
             canActivate: [AuthenticatedGuard],
           },
           {
+            path: 'missing-tables',
+            component: MissingTablesComponent,
+            data: {section: 'Missing tables'},
+            canActivate: [AuthenticatedGuard],
+          },
+          {
             path: 'zone/:zoneKey',
             loadChildren: '../zone/zone.module#ZoneWithRouteModule',
             data: {section: 'Zone'},
@@ -85,11 +93,17 @@ export const routes: Routes = [
     MatRadioModule,
     MatMenuModule,
     MatSelectModule,
+    MatCheckboxModule,
 
     ZoneModule,
     TimeModule.forRoot(),
   ],
-  declarations: [TournamentComponent, HomeComponent, MainComponent],
+  declarations: [
+    TournamentComponent,
+    HomeComponent,
+    MainComponent,
+    MissingTablesComponent,
+  ],
   providers: [TournamentService],
 })
 export class TournamentModule {}

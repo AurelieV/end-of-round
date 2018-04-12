@@ -32,6 +32,10 @@
         <mat-icon>&#xE02C;</mat-icon>
         <span>Go to Coverage page</span>
     </a>
+    <a mat-menu-item *ngIf="state.isOnTournament && !state.isOnMissingTables" [routerLink]="['tournament', state.tournamentKey, 'missing-tables']">
+        <mat-icon>&#xE637;</mat-icon>
+        <span>Go to Missing players page</span>
+    </a>
     <a mat-menu-item *ngIf="state.isOnTournament && !state.isOnScorekeeper" [routerLink]="['tournament', state.tournamentKey, 'scorekeep']">
         <mat-icon>&#xE30A;</mat-icon>
         <span>Go to Scorekeeper page</span>

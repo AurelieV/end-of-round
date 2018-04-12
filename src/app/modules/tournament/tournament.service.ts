@@ -51,6 +51,17 @@ export interface CoverageData {
   player1Score: number
   player2Score: number
 }
+export interface MissingTableData {
+  key: string
+  player1: {
+    name: string
+    isMissing: boolean
+  }
+  player2: {
+    name: string
+    isMissing: boolean
+  }
+}
 export interface Result {
   player1: {
     score: number
@@ -486,5 +497,20 @@ export class TournamentService extends DatabaseAccessor {
       (key) => this.db.object(`/clock/${this.key}`).valueChanges<number>(),
       null
     )
+  }
+
+  addMissingTable(data: MissingTableData): Promise<any> {
+    return this.db.object(`/missing/${this.key}/${data.key}`).set(data)
+  }
+
+  getMissingTables(): Observable<MissingTableData[]> {
+    return this.doWithKey<MissingTableData[]>(
+      (key) => this.getListFrom<MissingTableData>(`/missing/${key}`),
+      []
+    )
+  }
+
+  resetMissingTables(): Promise<any> {
+    return this.db.object(`/missing/${this.key}`).remove()
   }
 }
