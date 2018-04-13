@@ -22,6 +22,7 @@ export class ScorekeeperComponent {
   zonesByKey$: Observable<{[key: string]: Zone}>
   results: string = ''
   importTables: string = ''
+  importSeatAll: string = ''
   outstandingsTrigger = 50
 
   private dialogRef: MatDialogRef<any>
@@ -29,6 +30,7 @@ export class ScorekeeperComponent {
   @ViewChild('import') importTemplate: TemplateRef<any>
   @ViewChild('result') resultsTemplate: TemplateRef<any>
   @ViewChild('confirm') confirmTemplate: TemplateRef<any>
+  @ViewChild('seatAll') seatAllTemplate: TemplateRef<any>
 
   constructor(
     private tableService: TablesService,
@@ -62,6 +64,12 @@ export class ScorekeeperComponent {
 
   openImport() {
     const dialogRef = this.md.open(this.importTemplate)
+    handleReturn(dialogRef)
+    this.dialogRef = dialogRef
+  }
+
+  openImportSeatAll() {
+    const dialogRef = this.md.open(this.seatAllTemplate)
     handleReturn(dialogRef)
     this.dialogRef = dialogRef
   }
@@ -112,6 +120,42 @@ export class ScorekeeperComponent {
       this.dialogRef.close()
     }
     this.importTables = ''
+  }
+
+  doImportSeatAll() {
+    const lines = window['Papa']
+      .parse(this.importSeatAll, {
+        header: true,
+      })
+      .data.map((player) => {
+        return {
+          table: Number(player['Table']),
+          player: player['Name'],
+        }
+      })
+      .filter((t) => t.table && !isNaN(t.table))
+    const tables = {}
+    lines.forEach((line) => {
+      if (tables[line.table]) {
+        tables[line.table].player2 = line.player
+        tables[line.table].player2Score = 0
+      } else {
+        tables[line.table] = {
+          player1: line.player,
+          player1Score: 0,
+        }
+      }
+    })
+    Object.keys(tables).forEach((table) => {
+      this.tournamentService.addCoverageTable(String(table), tables[table])
+    })
+    this.notificationService.notify(
+      `Import successfully ${Object.keys(tables).length} tables`
+    )
+    if (this.dialogRef) {
+      this.dialogRef.close()
+    }
+    this.importSeatAll = ''
   }
 
   addTable(data: CoverageData, number) {

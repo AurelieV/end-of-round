@@ -3,6 +3,7 @@
   <button (click)="setFeatured()" mat-raised-button color="primary">Set featured</button>
   <button mat-raised-button color="primary" (click)="openResults()">Import results</button>
   <button (click)="addOutstandings()" mat-raised-button color="primary">Add outstanding tables manually</button>
+  <button mat-raised-button color="primary" (click)="openImportSeatAll()">Import seat all</button>
   <button (click)="openResetMissing()" mat-raised-button color="primary">Reset missing players report</button>
 </div>
 <div>
@@ -28,6 +29,18 @@
   </div>
   <div class="import-actions">
     <button mat-raised-button color="primary" (click)="doImport()" [disabled]="!importForm.form.valid">Import</button>
+  </div>
+</ng-template>
+
+<ng-template #seatAll>
+  <h3>Import seat all from Walter</h3>
+  <div>
+    <form #importSeatAllForm="ngForm">
+      <textarea required type="text" [(ngModel)]="importSeatAll" name="importSeatAll"></textarea>
+    </form>
+  </div>
+  <div class="import-actions">
+    <button mat-raised-button color="primary" (click)="doImportSeatAll()" [disabled]="!importSeatAllForm.form.valid">Import</button>
   </div>
 </ng-template>
 
