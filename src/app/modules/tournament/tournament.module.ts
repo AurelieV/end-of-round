@@ -54,7 +54,7 @@ export const routes: Routes = [
             path: 'missing-tables',
             component: MissingTablesComponent,
             data: {section: 'Missing tables'},
-            canActivate: [AuthenticatedGuard],
+            canActivate: [ConnectedGuard],
           },
           {
             path: 'zone/:zoneKey',
