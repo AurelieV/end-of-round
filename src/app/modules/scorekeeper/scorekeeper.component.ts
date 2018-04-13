@@ -129,11 +129,12 @@ export class ScorekeeperComponent {
       })
       .data.map((player) => {
         return {
-          table: Number(player['Table']),
-          player: player['Name'],
+          table: Number(player['Table Number']),
+          player: player['Team Name'],
+          seat: player['Player Seat'],
         }
       })
-      .filter((t) => t.table && !isNaN(t.table))
+      .filter((t) => t.table && !isNaN(t.table) && t.seat === 'A')
     const tables = {}
     lines.forEach((line) => {
       if (tables[line.table]) {
