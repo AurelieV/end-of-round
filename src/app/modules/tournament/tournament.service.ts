@@ -201,6 +201,19 @@ export class TournamentService extends DatabaseAccessor {
     })
   }
 
+  getDisplayTablesByZone(zoneId: string): Observable<Table[]> {
+    return Observable.combineLatest(
+      this.getOutstandings(),
+      this.getAllTablesByZone(zoneId)
+    ).map(([outstandings, tables]) => {
+      if (outstandings.length === 0) return tables
+
+      return tables.filter(
+        (t) => outstandings.includes(t.number) && !t.hasResult
+      )
+    })
+  }
+
   getActiveTablesByZone(zoneId: string): Observable<Table[]> {
     return this.getOutstandingsTablesByZone(zoneId).map((tables) =>
       tables.filter((t) => !t.hasResult)

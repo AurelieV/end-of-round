@@ -1,4 +1,4 @@
-import {Result} from './../tournament/tournament.service'
+import {Result, Table} from './../tournament/tournament.service'
 import {Component} from '@angular/core'
 
 @Component({

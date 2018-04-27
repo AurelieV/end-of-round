@@ -37,7 +37,7 @@ export class ZoneService extends DatabaseAccessor implements OnDestroy {
 
   getTables(): Observable<Table[]> {
     return this.doWithKey<Table[]>((key) => {
-      return this.tournamentService.getActiveTablesByZone(key)
+      return this.tournamentService.getDisplayTablesByZone(key)
     }, [])
   }
 

@@ -123,8 +123,7 @@ export class ZoneComponent implements OnInit, OnChanges, OnDestroy {
       return tables.filter(
         (t) =>
           !filters.onlyPlaying ||
-          t.status === 'playing' ||
-          t.status === 'covered'
+          t.status !== 'done'
       )
     })
     this.tables$ = Observable.combineLatest(filteredTables$, this.zone$).map(
