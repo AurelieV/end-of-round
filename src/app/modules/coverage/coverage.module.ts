@@ -1,3 +1,5 @@
+import {TimeModule} from './../time/time.module'
+import {ZoneModule} from './../zone/zone.module'
 import {TablesModule} from './../tables/tables.module'
 import {FormsModule} from '@angular/forms'
 import {
@@ -39,6 +41,7 @@ export const routes: Routes = [
     FormsModule,
 
     TablesModule,
+    TimeModule,
 
     /* Angular material */
     MatDialogModule,

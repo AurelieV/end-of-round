@@ -18,6 +18,7 @@ export class AddResultDialogComponent {
     draw: 0,
   }
   tableId: string
+  table: Table
   displayTable: boolean = true
 
   setTableId(id: string) {

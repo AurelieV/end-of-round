@@ -46,3 +46,27 @@ form {
     margin-left: 10px;
   }
 }
+
+.container {
+  display: flex;
+}
+
+.status-tables {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 10px;
+}
+
+.status-table {
+  min-width: 30px;
+  min-height: 30px;
+  padding: 3px;
+  border: 1px solid black;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+}
+display-time {
+  font-size: 11px;
+}

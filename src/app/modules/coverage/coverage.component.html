@@ -10,24 +10,36 @@
     <button mat-raised-button color="primary" (click)="search()">Search</button>
 </form>
 <loader [isLoading]="isLoading"></loader>
-<div class="tables">
-    <div class="table block" [ngClass]="table.status" *ngFor="let table of tables$ | async; trackBy: trackByFn">
-        <div class="number">Table {{table.number}}
-            <span *ngIf="table.isFeatured">*</span>
+<div class="container">
+    <div class="column">
+        <div class="tables">
+            <div class="table block" [ngClass]="table.status" *ngFor="let table of tables$ | async; trackBy: trackByFn">
+                <div class="number">Table {{table.number}}
+                    <span *ngIf="table.isFeatured">*</span>
+                </div>
+                <ng-template [ngIf]="table.coverage">
+                    <div class="player" [ngClass]="{ win: table.result && table.result.player1.score > table.result.player2.score}">
+                        {{table.coverage.player1}} ({{table.coverage.player1Score}})
+                    </div>
+                    <div class="separator">vs</div>
+                    <div class="player" [ngClass]="{ win: table.result && table.result.player1.score < table.result.player2.score}">
+                        {{table.coverage.player2}} ({{table.coverage.player2Score}})
+                    </div>
+                </ng-template>
+                <div class="result">
+                    <span *ngIf="table.result">{{table.result | result}}</span>
+                    <span *ngIf="table.hasResult && !table.result">Result at judge station, but not entered</span>
+                    <span *ngIf="!table.hasResult && !table.result">Waiting result</span>
+                </div>
+            </div>
         </div>
-        <ng-template [ngIf]="table.coverage">
-            <div class="player" [ngClass]="{ win: table.result && table.result.player1.score > table.result.player2.score}">
-                {{table.coverage.player1}} ({{table.coverage.player1Score}})
+    </div>
+    <div class="column">
+        <div class="status-tables">
+            <div *ngFor="let table of zoneTables$ | async; trackBy: trackByFn" class="block status-table" [ngClass]="table.status">
+                <span>{{table.number}}</span>
+                <display-time [table]="table"></display-time>
             </div>
-            <div class="separator">vs</div>
-            <div class="player" [ngClass]="{ win: table.result && table.result.player1.score < table.result.player2.score}">
-                {{table.coverage.player2}} ({{table.coverage.player2Score}})
-            </div>
-        </ng-template>
-        <div class="result">
-            <span *ngIf="table.result">{{table.result | result}}</span>
-            <span *ngIf="table.hasResult && !table.result">Result at judge station, but not entered</span>
-            <span *ngIf="!table.hasResult && !table.result">Waiting result</span>
         </div>
     </div>
 </div>
