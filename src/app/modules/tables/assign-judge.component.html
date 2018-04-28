@@ -7,7 +7,7 @@
         </mat-input-container>
         <div *ngIf="!displayTableInput">Table {{tableId}}</div>
         <mat-input-container>
-            <input maxLength="4" name="judge" matInput placeholder="Judge" type="text" required [(ngModel)]="judge">
+            <input maxLength="6" name="judge" matInput placeholder="Judge" type="text" required [(ngModel)]="judge">
         </mat-input-container>
         <div class="judges">
             <button (click)="onJudgeClick(name)" *ngFor="let name of judges$ | async" type="button" mat-raised-button color="primary">{{name}}</button>
