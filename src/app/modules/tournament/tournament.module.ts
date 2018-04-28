@@ -1,3 +1,4 @@
+import {SetClockComponent} from './set-clock.component'
 import {MissingTablesComponent} from './missing-tables.component'
 import {FormsModule} from '@angular/forms'
 import {
@@ -103,7 +104,9 @@ export const routes: Routes = [
     HomeComponent,
     MainComponent,
     MissingTablesComponent,
+    SetClockComponent,
   ],
+  entryComponents: [SetClockComponent],
   providers: [TournamentService],
 })
 export class TournamentModule {}

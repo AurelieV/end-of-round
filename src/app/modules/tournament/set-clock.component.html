@@ -1,0 +1,18 @@
+<h3>Start clock</h3>
+<div mat-dialog-content>
+  <form #form="ngForm">
+    <mat-form-field>
+      <input matInput placeholder="MM" required [(ngModel)]="clockMinutes" name="clock-minutes">
+    </mat-form-field>:
+    <mat-form-field>
+      <input matInput placeholder="SS" required [(ngModel)]="clockSeconds" name="clock-seconds">
+    </mat-form-field>
+  </form>
+</div>
+<div class="center">
+  <button mat-raised-button color="warn" (click)="resetClock()">Stop clock</button>
+</div>
+<div class="actions" mat-dialog-actions>
+  <button mat-raised-button color="warn" mat-dialog-close>Cancel</button>
+  <button mat-raised-button color="primary" [disabled]="form.form.invalid" (click)="setClock()">Start</button>
+</div>

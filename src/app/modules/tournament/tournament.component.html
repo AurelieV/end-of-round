@@ -1,4 +1,4 @@
-<div class="clock">{{timer$ | async}}</div>
+<div class="clock" (click)="openClock()">{{timer$ | async}}</div>
 <div class="content">
   <router-outlet></router-outlet>
 </div>
