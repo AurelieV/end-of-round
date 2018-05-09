@@ -56,6 +56,11 @@ class TournamentHelper {
   delete(id) {
     return this.db.ref(`tournaments/${id}`).remove()
   }
+
+  async getPassword(id) {
+    const snapshot = await this.db.ref(`passwords/${id}`).once('value')
+    return snapshot.val()
+  }
 }
 
 module.exports = TournamentHelper

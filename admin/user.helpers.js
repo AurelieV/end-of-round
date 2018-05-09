@@ -25,6 +25,10 @@ class UserHelper {
       return this.deleteAll(users.slice(9))
     }
   }
+
+  async disconnect(uid) {
+    return await this.app.auth().revokeRefreshTokens(uid)
+  }
 }
 
 module.exports = UserHelper
