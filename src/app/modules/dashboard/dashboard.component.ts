@@ -1,23 +1,20 @@
-import {SetClockComponent} from './../tournament/set-clock.component'
-import {TablesService} from './../tables/tables.service'
 import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core'
-import {Router, ActivatedRoute} from '@angular/router'
-import {MatDialogRef, MatDialog} from '@angular/material'
-import {Observable} from 'rxjs/Observable'
-import {BehaviorSubject} from 'rxjs/BehaviorSubject'
-import 'rxjs/add/operator/take'
+import {NgForm} from '@angular/forms'
+import {MatDialog, MatDialogRef} from '@angular/material'
+import {ActivatedRoute, Router} from '@angular/router'
 import 'rxjs/add/observable/combineLatest'
+import 'rxjs/add/operator/take'
+import {BehaviorSubject} from 'rxjs/BehaviorSubject'
+import {Observable} from 'rxjs/Observable'
 import {handleReturn} from '../shared/handle-return'
-
-import * as moment from 'moment'
-
+import {TablesService} from './../tables/tables.service'
 import {TimeService} from './../time/time.service'
+import {SetClockComponent} from './../tournament/set-clock.component'
 import {
+  Table,
   TournamentService,
   Zone,
-  Table,
 } from './../tournament/tournament.service'
-import {NgForm} from '@angular/forms'
 
 @Component({
   selector: 'dashboard',
@@ -185,6 +182,10 @@ export class DashboardComponent implements OnInit {
 
   checkOutstandings() {
     this.tableService.checkOutstandings()
+  }
+
+  markAsHavingResult() {
+    this.tableService.markAsHavingResult()
   }
 
   cancelRestart() {

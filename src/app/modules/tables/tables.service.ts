@@ -1,15 +1,12 @@
-import {NotificationService} from './../../notification.service'
-import {AssignJudgeComponent} from './assign-judge.component'
-import {MatDialog} from '@angular/material'
 import {Injectable} from '@angular/core'
-
-import {TournamentService, Table} from '../tournament/tournament.service'
-import {AddResultDialogComponent} from './add-result.dialog.component'
+import {MatDialog} from '@angular/material'
+import * as moment from 'moment'
 import {handleReturn} from '../shared/handle-return'
+import {Table, TournamentService} from '../tournament/tournament.service'
+import {AddResultDialogComponent} from './add-result.dialog.component'
 import {AddTablesDialogComponent} from './add-tables.dialog.component'
 import {AdminFeaturedComponent} from './admin-featured.component'
-
-import * as moment from 'moment'
+import {AssignJudgeComponent} from './assign-judge.component'
 
 @Injectable()
 export class TablesService {
@@ -105,6 +102,21 @@ export class TablesService {
         this.tournamentService.updateTable(tableId, {
           status: 'done',
           doneTime: now,
+        })
+      })
+    })
+  }
+
+  markAsHavingResult() {
+    const dialogRef = this.md.open(AddTablesDialogComponent)
+    handleReturn(dialogRef)
+    dialogRef.componentInstance.title = 'Mark tables as having result'
+    dialogRef.componentInstance.displayOptions = false
+    dialogRef.afterClosed().subscribe((val) => {
+      if (!val) return
+      val.tables.forEach((tableId) => {
+        this.tournamentService.updateTable(tableId, {
+          hasResult: true,
         })
       })
     })
