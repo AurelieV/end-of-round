@@ -1,15 +1,11 @@
-import {
-  TournamentService,
-  CoverageData,
-  Result,
-} from './../tournament/tournament.service'
-import {Component, ViewChild, TemplateRef, ElementRef} from '@angular/core'
-import {TablesService} from '../tables/tables.service'
-import {Observable} from 'rxjs/Observable'
-import {Table, Zone} from '../tournament/tournament.service'
-import {MatDialogRef, MatDialog} from '@angular/material'
-import {handleReturn} from '../shared/handle-return'
-import {NotificationService} from '../../notification.service'
+import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material';
+import { Observable } from 'rxjs/Observable';
+import { NotificationService } from '../../notification.service';
+import { handleReturn } from '../shared/handle-return';
+import { TablesService } from '../tables/tables.service';
+import { Table, Zone } from '../tournament/tournament.service';
+import { CoverageData, Result, TournamentService } from './../tournament/tournament.service';
 
 @Component({
   templateUrl: './scorekeeper.component.html',
@@ -129,12 +125,11 @@ export class ScorekeeperComponent {
       })
       .data.map((player) => {
         return {
-          table: Number(player['Table Number']),
-          player: player['Team Name'],
-          seat: player['Player Seat'],
+          table: Number(player['Table']),
+          player: player['Name']
         }
       })
-      .filter((t) => t.table && !isNaN(t.table) && t.seat === 'A')
+      .filter((t) => t.table && !isNaN(t.table))
     const tables = {}
     lines.forEach((line) => {
       if (tables[line.table]) {
