@@ -1,22 +1,16 @@
-import {TableStatus} from './tournament.service'
-import {Injectable, NgZone} from '@angular/core'
-import {
-  AngularFireDatabase,
-  AngularFireObject,
-  AngularFireList,
-} from 'angularfire2/database'
-import {BehaviorSubject} from 'rxjs/BehaviorSubject'
-import {Observable} from 'rxjs/Observable'
+import {Injectable} from '@angular/core'
+import {AngularFireDatabase} from 'angularfire2/database'
+import 'rxjs/add/observable/combineLatest'
 import 'rxjs/add/operator/distinctUntilChanged'
 import 'rxjs/add/operator/take'
-import 'rxjs/add/observable/combineLatest'
-
-import {UserService} from './../user/user.service'
-import {TournamentData, Tournament, Zone, ZoneData, Message} from '../../model'
-export {Tournament, TournamentData, Zone, ZoneData, Message}
-import {DatabaseAccessor} from './../../utils/database-accessor'
-import {NotificationService} from './../../notification.service'
+import {Observable} from 'rxjs/Observable'
 import {ErrorService} from '../../error.service'
+import {Message, Tournament, TournamentData, Zone, ZoneData} from '../../model'
+import {NotificationService} from './../../notification.service'
+import {DatabaseAccessor} from './../../utils/database-accessor'
+import {TableStatus} from './tournament.service'
+
+export {Tournament, TournamentData, Zone, ZoneData, Message}
 
 export interface TableData {
   zoneId: string
@@ -98,7 +92,6 @@ export interface TableFilter {
 export class TournamentService extends DatabaseAccessor {
   constructor(
     db: AngularFireDatabase,
-    private userService: UserService,
     private notif: NotificationService,
     private errorService: ErrorService
   ) {
@@ -293,15 +286,11 @@ export class TournamentService extends DatabaseAccessor {
   }
 
   sendMessage(zoneId: string, message: string) {
-    this.userService.userInfo.take(1).subscribe((info) => {
-      this.db.list<Message>(`/messages/${this.key}/${zoneId}`).push({
-        login: info
-          ? `${info.given_name}.${(info.family_name || '').slice(0, 2)}`
-          : 'Anonymous',
-        message,
-        timestamp: -new Date().valueOf(),
-        uid: this.userService.uid,
-      })
+    this.db.list<Message>(`/messages/${this.key}/${zoneId}`).push({
+      login: 'Anonymous',
+      message,
+      timestamp: -new Date().valueOf(),
+      uid: null,
     })
   }
 

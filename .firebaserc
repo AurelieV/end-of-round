@@ -1,6 +1,5 @@
 {
   "projects": {
-    "default": "end-of-round-dev",
-    "prod": "end-of-round"
+    "default": "purple-fox-china"
   }
 }

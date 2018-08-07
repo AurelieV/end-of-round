@@ -1,8 +1,7 @@
 <mat-toolbar color="primary" class="header">
-    <div class="connection" (click)="openProfile()">
+    <div class="connection">
         <div class="connection-status" [class.connected]="connectionService.isConnected"></div>
-        <mat-icon *ngIf="isStrongConnected$ | async">&#xE7FD;</mat-icon>
-        <mat-icon *ngIf="!(isStrongConnected$ | async)">&#xE7FF;</mat-icon>
+        <mat-icon>&#xE7FF;</mat-icon>
     </div>
     <div class="header-content">
         <span>{{(title$ | async)}}</span>

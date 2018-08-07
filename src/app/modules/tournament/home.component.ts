@@ -1,12 +1,10 @@
-import {UserService, User} from './../user/user.service'
+import {Component, OnDestroy, OnInit} from '@angular/core'
 import {Router} from '@angular/router'
-import {TimeService} from './../time/time.service'
-import {Observable} from 'rxjs/Observable'
-import {Component, OnInit, OnDestroy} from '@angular/core'
 import 'rxjs/add/operator/take'
-
-import {TournamentService, Zone} from './tournament.service'
+import {Observable} from 'rxjs/Observable'
 import {Subscription} from 'rxjs/Subscription'
+import {TimeService} from './../time/time.service'
+import {TournamentService, Zone} from './tournament.service'
 
 @Component({
   selector: 'home',
@@ -17,7 +15,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   information: Observable<string>
   isLoading: boolean = true
   zones$: Observable<Zone[]>
-  user$: Observable<User>
 
   zoneId: string
   private subcription: Subscription
@@ -25,8 +22,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   constructor(
     private tournamentService: TournamentService,
     private timeService: TimeService,
-    private router: Router,
-    private userService: UserService
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -40,7 +36,6 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.zoneId = zones[0].key
       }
     })
-    this.user$ = this.userService.user
   }
 
   addTime() {
@@ -53,14 +48,6 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.tournamentService.key,
       'zone',
       this.zoneId,
-    ])
-  }
-
-  goToCoverage() {
-    this.router.navigate([
-      '/tournament',
-      this.tournamentService.key,
-      'coverage',
     ])
   }
 

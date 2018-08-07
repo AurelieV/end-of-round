@@ -1,39 +1,33 @@
-import {AuthentRedirectComponent} from './authent-redirect.component'
-import {SharedModule} from './modules/shared/shared.module'
-import {BrowserModule} from '@angular/platform-browser'
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations'
 import {NgModule} from '@angular/core'
 import {FormsModule} from '@angular/forms'
 import {HttpModule} from '@angular/http'
-import {RouterModule, Routes, PreloadAllModules} from '@angular/router'
 import {
-  MatListModule,
-  MatToolbarModule,
   MatButtonModule,
+  MatDialogModule,
   MatIconModule,
+  MatListModule,
   MatMenuModule,
   MatSnackBarModule,
-  MatDialogModule,
+  MatToolbarModule,
 } from '@angular/material'
+import {BrowserModule} from '@angular/platform-browser'
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations'
+import {PreloadAllModules, RouterModule, Routes} from '@angular/router'
 import {AngularFireModule} from 'angularfire2'
-import {AngularFireDatabaseModule} from 'angularfire2/database'
 import {AngularFireAuthModule} from 'angularfire2/auth'
-
+import {AngularFireDatabaseModule} from 'angularfire2/database'
 import {environment} from '../environments/environment'
-
 /* Components */
 import {AppComponent} from './app.component'
-import {TournamentListComponent} from './tournament-list.component'
 import {DocumentationComponent} from './documentation.component'
-import {LoginComponent} from './login.component'
-
+import {ErrorComponent} from './error.component'
+import {ErrorService} from './error.service'
+import {SharedModule} from './modules/shared/shared.module'
 /* Modules */
 import {UserModule} from './modules/user/user.module'
-
 /* Service */
 import {NotificationService} from './notification.service'
-import {ErrorService} from './error.service'
-import {ErrorComponent} from './error.component'
+import {TournamentListComponent} from './tournament-list.component'
 
 const appRoutes: Routes = [
   {
@@ -41,16 +35,6 @@ const appRoutes: Routes = [
     component: TournamentListComponent,
     pathMatch: 'full',
     data: {section: 'TournamentList'},
-  },
-  {
-    path: 'login',
-    component: LoginComponent,
-    data: {section: 'Login'},
-  },
-  {
-    path: 'authent-redirect',
-    component: AuthentRedirectComponent,
-    data: {section: 'Login'},
   },
   {
     path: 'tournament/:tournamentKey',
@@ -76,8 +60,6 @@ const appRoutes: Routes = [
     TournamentListComponent,
     DocumentationComponent,
     ErrorComponent,
-    LoginComponent,
-    AuthentRedirectComponent,
   ],
   imports: [
     /* Angular */

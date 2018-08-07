@@ -1,23 +1,14 @@
-import {UserInfo, UserService} from './../user/user.service'
+import {Component, OnDestroy, OnInit} from '@angular/core'
 import {MatDialog} from '@angular/material'
-import {NotificationService} from './../../notification.service'
-import {ConnectionService} from '../user/connection.service'
+import {ActivatedRoute, Router} from '@angular/router'
+import * as moment from 'moment'
+import 'rxjs/add/observable/timer'
 import {Observable} from 'rxjs/Observable'
 import {Subscription} from 'rxjs/Subscription'
-import 'rxjs/add/observable/timer'
-import {
-  ActivatedRoute,
-  Router,
-  NavigationEnd,
-  PRIMARY_OUTLET,
-} from '@angular/router'
-import {Component, OnInit, OnDestroy} from '@angular/core'
-
-import {TournamentService, Tournament} from './tournament.service'
-
-import * as moment from 'moment'
-import {SetClockComponent} from './set-clock.component'
 import {handleReturn} from '../shared/handle-return'
+import {NotificationService} from './../../notification.service'
+import {SetClockComponent} from './set-clock.component'
+import {Tournament, TournamentService} from './tournament.service'
 
 @Component({
   templateUrl: './tournament.component.html',
@@ -35,8 +26,7 @@ export class TournamentComponent implements OnInit, OnDestroy {
     private tournamentService: TournamentService,
     private router: Router,
     private notificationService: NotificationService,
-    private md: MatDialog,
-    private userService: UserService
+    private md: MatDialog
   ) {}
 
   ngOnInit() {
@@ -80,13 +70,8 @@ export class TournamentComponent implements OnInit, OnDestroy {
   }
 
   openClock() {
-    this.userService
-      .isAuthorized(this.tournamentService.key)
-      .take(1)
-      .subscribe((isAuthorized) => {
-        const clockDialog = this.md.open(SetClockComponent)
-        handleReturn(clockDialog)
-      })
+    const clockDialog = this.md.open(SetClockComponent)
+    handleReturn(clockDialog)
   }
 
   ngOnDestroy() {

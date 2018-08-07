@@ -1,31 +1,26 @@
+import {NgModule} from '@angular/core'
 import {FormsModule} from '@angular/forms'
 import {
   MatButtonModule,
-  MatToolbarModule,
-  MatIconModule,
-  MatListModule,
-  MatInputModule,
-  MatDialogModule,
   MatCheckboxModule,
+  MatDialogModule,
+  MatIconModule,
+  MatInputModule,
+  MatListModule,
+  MatToolbarModule,
 } from '@angular/material'
 import {RouterModule, Routes} from '@angular/router'
-import {NgModule} from '@angular/core'
-
 import {SharedModule} from '../shared/shared.module'
-
 /* Components */
 import {AdministrationComponent} from './administration.component'
-import {CreateTournamentComponent} from './create-tournament.component'
-
 /* Service */
 import {AdministrationService} from './administration.service'
-import {AuthenticatedGuard} from '../user/auth-gards.service'
+import {CreateTournamentComponent} from './create-tournament.component'
 
 export const routes: Routes = [
   {
     path: '',
     component: AdministrationComponent,
-    canActivate: [AuthenticatedGuard],
     children: [
       {path: '', component: CreateTournamentComponent},
       {

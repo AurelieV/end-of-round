@@ -1,13 +1,11 @@
-import {ProfileComponent} from './modules/user/profile.component'
-import {TournamentData} from './model'
+import {Component} from '@angular/core'
+import {MatDialog} from '@angular/material'
+import {NavigationEnd, Router} from '@angular/router'
 import {AngularFireDatabase} from 'angularfire2/database'
 import {Observable} from 'rxjs/Observable'
-import {ConnectionService} from './modules/user/connection.service'
-import {Router, PRIMARY_OUTLET, NavigationEnd} from '@angular/router'
-import {UserService} from './modules/user/user.service'
-import {Component} from '@angular/core'
 import {Subscription} from 'rxjs/Subscription'
-import {MatDialog} from '@angular/material'
+import {TournamentData} from './model'
+import {ConnectionService} from './modules/user/connection.service'
 
 interface State {
   isOnDashboard: boolean
@@ -17,7 +15,6 @@ interface State {
   isOnMainPage: boolean
   isOnCoverage: boolean
   isOnScorekeeper: boolean
-  isOnLogin: boolean
   isOnMissingTables: boolean
   tournamentKey: string
 }
@@ -37,15 +34,12 @@ export class AppComponent {
     isOnMainPage: false,
     isOnCoverage: false,
     isOnScorekeeper: false,
-    isOnLogin: false,
     isOnMissingTables: false,
   }
   subscriptions: Subscription[] = []
   title$: Observable<string>
-  isStrongConnected$: Observable<boolean>
 
   constructor(
-    private userService: UserService,
     private router: Router,
     public connectionService: ConnectionService,
     private db: AngularFireDatabase,
@@ -60,9 +54,6 @@ export class AppComponent {
       })
     )
     this.title$ = Observable.of('')
-    this.isStrongConnected$ = this.userService.user.map(
-      (user) => user && !user.isAnonymous
-    )
   }
 
   private analyseState(): State {
@@ -89,7 +80,6 @@ export class AppComponent {
       isOnMainPage: sections.includes('Home'),
       isOnCoverage: sections.includes('Coverage'),
       isOnScorekeeper: sections.includes('Scorekeeper'),
-      isOnLogin: sections.includes('Login'),
       isOnMissingTables: sections.includes('Missing tables'),
       tournamentKey: params.tournamentKey,
     }
@@ -105,15 +95,9 @@ export class AppComponent {
       this.title$ = Observable.of('Select a tournament')
     } else if (this.state.isOnAdministration) {
       this.title$ = Observable.of('Administration')
-    } else if (this.state.isOnLogin) {
-      this.title$ = Observable.of('Login page')
     } else {
       this.title$ = Observable.of('')
     }
-  }
-
-  openProfile() {
-    this.md.open(ProfileComponent)
   }
 
   ngOnDestroy() {

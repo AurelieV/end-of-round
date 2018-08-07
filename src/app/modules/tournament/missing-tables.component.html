@@ -17,7 +17,7 @@
           <mat-checkbox [(ngModel)]="isPlayer2Missing"></mat-checkbox>
           <div>{{table.coverage.player2}}</div>
         </div>
-        <button (click)="submit()" [disabled]="isSubmitting || (!isPlayer1Missing && !isPlayer2Missing)" mat-raised-button color="primary">Add to missing list</button>
+        <button (click)="submit()" [disabled]="isSubmitting" mat-raised-button color="primary">Add to missing list</button>
       </ng-template>
       <div *ngIf="!table.coverage">No data for this table</div>
     </div>

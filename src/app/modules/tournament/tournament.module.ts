@@ -1,34 +1,28 @@
-import {SetClockComponent} from './set-clock.component'
-import {MissingTablesComponent} from './missing-tables.component'
+import {NgModule} from '@angular/core'
 import {FormsModule} from '@angular/forms'
 import {
-  MatDialogModule,
   MatButtonModule,
-  MatInputModule,
-  MatToolbarModule,
-  MatIconModule,
-  MatRadioModule,
-  MatMenuModule,
-  MatSelectModule,
   MatCheckboxModule,
+  MatDialogModule,
+  MatIconModule,
+  MatInputModule,
+  MatMenuModule,
+  MatRadioModule,
+  MatSelectModule,
+  MatToolbarModule,
 } from '@angular/material'
 import {RouterModule, Routes} from '@angular/router'
-import {NgModule} from '@angular/core'
-
 import {SharedModule} from '../shared/shared.module'
-import {TournamentService} from './tournament.service'
-
-/* Components */
-import {TournamentComponent} from './tournament.component'
-import {HomeComponent} from './home.component'
-import {MainComponent} from './main.component'
-
 /* Modules */
 import {ZoneModule} from '../zone/zone.module'
 import {TimeModule} from './../time/time.module'
-
-/* Guards */
-import {AuthenticatedGuard, ConnectedGuard} from '../user/auth-gards.service'
+import {HomeComponent} from './home.component'
+import {MainComponent} from './main.component'
+import {MissingTablesComponent} from './missing-tables.component'
+import {SetClockComponent} from './set-clock.component'
+/* Components */
+import {TournamentComponent} from './tournament.component'
+import {TournamentService} from './tournament.service'
 
 export const routes: Routes = [
   {
@@ -49,19 +43,16 @@ export const routes: Routes = [
             path: 'dashboard',
             loadChildren: '../dashboard/dashboard.module#DashboardModule',
             data: {section: 'Dashboard'},
-            canActivate: [AuthenticatedGuard],
           },
           {
             path: 'missing-tables',
             component: MissingTablesComponent,
             data: {section: 'Missing tables'},
-            canActivate: [ConnectedGuard],
           },
           {
             path: 'zone/:zoneKey',
             loadChildren: '../zone/zone.module#ZoneWithRouteModule',
             data: {section: 'Zone'},
-            canActivate: [ConnectedGuard],
           },
           {
             path: 'coverage',
@@ -71,7 +62,6 @@ export const routes: Routes = [
             path: 'scorekeep',
             loadChildren: '../scorekeeper/scorekeeper.module#ScoreKeeperModule',
             data: {section: 'Scorekeeper'},
-            canActivate: [AuthenticatedGuard],
           },
         ],
       },

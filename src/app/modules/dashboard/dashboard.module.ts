@@ -1,22 +1,19 @@
-import {TablesModule} from './../tables/tables.module'
+import {NgModule} from '@angular/core'
+import {FormsModule} from '@angular/forms'
 import {
-  MatDialogModule,
-  MatInputModule,
   MatButtonModule,
-  MatToolbarModule,
-  MatIconModule,
   MatCheckboxModule,
+  MatDialogModule,
+  MatIconModule,
+  MatInputModule,
   MatMenuModule,
 } from '@angular/material'
-import {FormsModule} from '@angular/forms'
-import {NgModule} from '@angular/core'
 import {RouterModule, Routes} from '@angular/router'
-
 import {SharedModule} from '../shared/shared.module'
-import {ZoneMessageModule} from './../zone-message/zone-message.module'
 import {ZoneModule} from '../zone/zone.module'
+import {TablesModule} from './../tables/tables.module'
 import {TimeModule} from './../time/time.module'
-
+import {ZoneMessageModule} from './../zone-message/zone-message.module'
 /* Components */
 import {DashboardComponent} from './dashboard.component'
 import {ZoneInfoComponent} from './zone-info.component'
