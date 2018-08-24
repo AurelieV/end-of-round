@@ -4,22 +4,22 @@
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
 export const environment = {
-  production: true,
+  production: false,
   firebaseConfig: {
-    apiKey: 'AIzaSyDALInVBJ45EvbBmkW5Sz9mCxXI1bpIrno',
-    authDomain: 'purple-fox-china.firebaseapp.com',
-    databaseURL: 'https://purple-fox-china.mtgjudge.cn',
-    projectId: 'purple-fox-china',
-    storageBucket: 'purple-fox-china.appspot.com',
-    messagingSenderId: '335123173342',
+    apiKey: 'AIzaSyCQfbpg8loIPtP0Db1L6-EDtIRsed6VDbM',
+    authDomain: 'end-of-round-dev.firebaseapp.com',
+    databaseURL: 'https://end-of-round-dev.firebaseio.com',
+    projectId: 'end-of-round-dev',
+    storageBucket: '',
+    messagingSenderId: '525436489918',
   },
   accessUrl: '/api/addAccess',
   authenticateUrl: '/api/authenticate',
   authenticateSettings: {
-    authority: 'https://apps.mtgjudge.cn/openid/',
-    client_id: '428279',
-    redirect_uri: 'http://eor.mtgjudge.cn/authent-redirect',
-    post_logout_redirect_uri: 'http://eor.mtgjudge.cn',
+    authority: 'https://apps.magicjudges.org/openid/',
+    client_id: '495440',
+    redirect_uri: 'http://localhost:4200/authent-redirect',
+    post_logout_redirect_uri: 'http://localhost:4200',
     response_type: 'code',
     scope: 'openid profile dciprofile',
   },
